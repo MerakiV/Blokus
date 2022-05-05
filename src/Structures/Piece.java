@@ -1,13 +1,15 @@
+package Structures;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-class Piece {
+public class Piece {
 	int disp;
 	int [] dispositionList;
 	List<Shape> shapeList;
 
-	Piece(Shape base) {
+	 public Piece(Shape base) {
 		disp = 0;
 		dispositionList = new int[16];
 		shapeList = new ArrayList<>();
@@ -37,7 +39,7 @@ class Piece {
 		}
 	}
 
-	void flipV() {
+	public void flipV() {
 		int r, fv, fh, newbit;
 		r  = disp & ((1 << 0) | (1 << 1));
 		fv = disp & (1 << 2);
@@ -52,7 +54,7 @@ class Piece {
 		disp = r | newbit | fh;
 	}
 
-	void flipH() {
+	public void flipH() {
 		int r, fv, fh, newbit;
 		r  = disp & ((1 << 0) | (1 << 1));
 		fv = disp & (1 << 2);
@@ -67,7 +69,7 @@ class Piece {
 		disp = r | fv | newbit;
 	}
 
-	void rotateClockwise() {
+	public void rotateClockwise() {
 		int r, fv, fh, newbit;
 		r  = disp & ((1 << 0) | (1 << 1));
 		fv = disp & (1 << 2);
@@ -78,7 +80,7 @@ class Piece {
 		disp = newbit | fv | fh;
 	}
 
-	void rotateCounterclockwise() {
+	public void rotateCounterclockwise() {
 		int r, fv, fh, newbit;
 		r  = disp & ((1 << 0) | (1 << 1));
 		fv = disp & (1 << 2);
@@ -89,7 +91,7 @@ class Piece {
 		disp = newbit | fv | fh;
 	}
 
-	void printPiece() {
+	public void printPiece() {
 		Shape s;
 		int i = 0;
 		System.out.println("--All possible shapes :");

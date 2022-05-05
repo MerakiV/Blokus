@@ -1,4 +1,4 @@
-package Structure;
+package Structures;
 
 public class Game {
 

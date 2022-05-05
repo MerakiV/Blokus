@@ -1,7 +1,9 @@
 package Players;
 
-import game.rules.Board;
-import game.rules.Piece;
+import Structures.Board;
+import Structures.Piece;
+
+import
 
 import java.util.ArrayList;
 

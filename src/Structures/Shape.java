@@ -1,8 +1,10 @@
-class Shape {
+package Structures;
+
+public class Shape {
 	int Nlin, Ncol;
 	boolean [][] shape;
 
-	Shape(int l, int c) {
+	public Shape(int l, int c) {
 		Nlin = l;
 		Ncol = c;
 		shape = new boolean[l][c];
@@ -20,7 +22,7 @@ class Shape {
 		return shape;
 	}
 
-	Shape flipV() {
+	public Shape flipV() {
 		Shape s2 = new Shape(Nlin, Ncol);
 		boolean [][] tab = s2.getShape();
 
@@ -34,7 +36,7 @@ class Shape {
 		return s2;
 	}
 
-	Shape flipH() {
+	public Shape flipH() {
 		Shape s2 = new Shape(Nlin, Ncol);
 		boolean [][] tab = s2.getShape();
 
@@ -48,7 +50,7 @@ class Shape {
 		return s2;
 	}
 
-	Shape rotate90() {
+	public Shape rotate90() {
 		Shape s2 = new Shape(Ncol, Nlin);
 		boolean [][] tab = s2.getShape();
 
@@ -81,7 +83,7 @@ class Shape {
 		return true;
 	}
 
-	void printShape() {
+	public void printShape() {
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
 				if (shape[i][j]) {
