@@ -3,6 +3,7 @@ package Structures;
 public class Shape {
 	int Nlin, Ncol;
 	boolean [][] shape;
+	int anchorX, anchorY;
 
 	public Shape(int l, int c) {
 		Nlin = l;
@@ -33,6 +34,9 @@ public class Shape {
 			}
 		}
 
+		s2.anchorX = s2.Nlin-anchorX-1;
+		s2.anchorY = anchorY;
+
 		return s2;
 	}
 
@@ -47,6 +51,9 @@ public class Shape {
 			}
 		}
 
+		s2.anchorX = anchorX;
+		s2.anchorY = s2.Ncol-anchorY-1;
+
 		return s2;
 	}
 
@@ -59,6 +66,9 @@ public class Shape {
 				tab[j][Nlin - i - 1] = shape[i][j];
 			}
 		}
+
+		s2.anchorX = anchorY;
+		s2.anchorY = s2.Nlin-anchorX-1;
 
 		return s2;
 	}
