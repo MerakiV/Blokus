@@ -5,9 +5,11 @@ public class Shape {
 	boolean [][] shape;
 	int anchorX, anchorY;
 
-	public Shape(int l, int c) {
+	public Shape(int l, int c, int ax, int ay) {
 		Nlin = l;
 		Ncol = c;
+		anchorX = ax;
+		anchorY = ay;
 		shape = new boolean[l][c];
 	}
 
@@ -24,7 +26,7 @@ public class Shape {
 	}
 
 	public Shape flipV() {
-		Shape s2 = new Shape(Nlin, Ncol);
+		Shape s2 = new Shape(Nlin, Ncol, anchorX, anchorY);
 		boolean [][] tab = s2.getShape();
 
 		for (int i=0; i<=Nlin/2; i++) {
@@ -41,7 +43,7 @@ public class Shape {
 	}
 
 	public Shape flipH() {
-		Shape s2 = new Shape(Nlin, Ncol);
+		Shape s2 = new Shape(Nlin, Ncol, anchorX, anchorY);
 		boolean [][] tab = s2.getShape();
 
 		for (int i=0; i<Nlin; i++) {
@@ -58,7 +60,7 @@ public class Shape {
 	}
 
 	public Shape rotate90() {
-		Shape s2 = new Shape(Ncol, Nlin);
+		Shape s2 = new Shape(Nlin, Ncol, anchorX, anchorY);
 		boolean [][] tab = s2.getShape();
 
 		for (int i=0; i<Nlin; i++) {
