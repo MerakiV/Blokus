@@ -1,17 +1,7 @@
 package Players;
 
-import game.rules.Board;
+import Structures.Board;
 
 public abstract class PlayerAI extends Player {
     protected int difficultyLevel;
-
-    @Override
-    public Board play() {
-        return null;
-    }
-
-    @Override
-    public boolean canPlay() {
-        return false;
-    }
 }
