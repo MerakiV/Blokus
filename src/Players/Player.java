@@ -8,7 +8,5 @@ import java.util.ArrayList;
 public abstract class Player {
     protected int score;
     protected ArrayList<Piece> pieces;
-    protected Board board;
-
 
 }
