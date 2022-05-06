@@ -13,7 +13,7 @@ import javax.swing.*;
 
 public class GameInterface implements Runnable {
     private JFrame frame;
-    //private GameGraphic gameGraphics;
+    private GameGraphic gameGraphics;
 
 
     public GameInterface() {
@@ -23,9 +23,17 @@ public class GameInterface implements Runnable {
     public static void start(){
         SwingUtilities.invokeLater(new GameInterface());
     }
+
     public void run(){
         frame = new JFrame("Blokus");
+        frame.setName("Blokus");
+        frame.setTitle("Blokus");
+        frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        gameGraphics = new GameGraphic();
+        frame.getContentPane().add(gameGraphics, BorderLayout.CENTER);
+
         frame.setSize(1280, 800);
         frame.setVisible(true);
 
