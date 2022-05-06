@@ -1,15 +1,7 @@
 package Players;
 
-import game.rules.Board;
+import Structures.Board;
 
 public class PlayerHuman extends Player {
-    @Override
-    public Board play() {
-        return null;
-    }
 
-    @Override
-    public boolean canPlay() {
-        return false;
-    }
 }
