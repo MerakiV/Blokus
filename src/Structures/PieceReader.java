@@ -23,17 +23,11 @@ public class PieceReader {
     int i = 0; //number of pieces
     int j; //counter of lines
     int k; //counter of columns
-
+    char currentChar;
     String token = null;
     String [] tokenargs;
-
-    List<Piece> pieceList; //liste des pièces
     boolean anchorFound = false;
 
-    char currentChar;
-
-    //créer shape, ensuite créer pièce (les dispositions sont calculées automatiquement), puis mettre dans une liste
-    // de pièces
 
     PieceReader() throws FileNotFoundException {
         f = new File("resources/pieces/normal.txt");
@@ -105,8 +99,8 @@ public class PieceReader {
                 //l.add(p);
 
                 i++;
-                s.nextLine(); //espace
-                s.nextLine(); //espace
+                s.nextLine(); //space
+                s.nextLine(); //space
                 anchorFound = false;
             }
         } catch (Exception e) { //no piece

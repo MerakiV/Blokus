@@ -115,16 +115,6 @@ public enum PieceType {
      * -------
      *
      * */
-    FIVE_L,
-
-    /*
-     *
-     * -------
-     * -##----
-     * --###--
-     * -------
-     *
-     * */
     FIVE_LIGHTNING,
 
     /*
