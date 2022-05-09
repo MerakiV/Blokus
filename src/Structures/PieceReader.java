@@ -5,36 +5,35 @@ import java.util.*;
 import java.io.File;
 
 public class PieceReader {
-
-    Scanner s;
-    Piece p;
+    Piece piece;
     Shape shape;
-    List<Piece> l;
-    File f;
-
+    List<Piece> pieceList;
     int Ncol;
     int Nlin;
     int anchorX;
     int anchorY;
     boolean [][] baseShape;
 
+    boolean anchorFound = false;
+
+
+    Scanner sc;
+    File f;
+    String token = null;
+    String [] tokenArgs;
     int i = 0; //number of pieces
     int j; //counter of lines
     int k; //counter of columns
     char currentChar;
-    String token = null;
-    String [] tokenargs;
-    boolean anchorFound = false;
-
 
     PieceReader() throws FileNotFoundException {
         f = new File("resources/pieces/normal.txt");
-        s = new Scanner(f);
+        sc = new Scanner(f);
     }
 
     public void readPieces(){
 
-        l = new ArrayList<>();
+        pieceList = new ArrayList<>();
 
         /* Model of the file:
          * HEIGHT (int)
@@ -50,29 +49,29 @@ public class PieceReader {
          */
 
         try { //init
-            s.useDelimiter(";");
+            sc.useDelimiter(";");
             while (i < 21){ //number of pieces
                 //System.out.println("\n");
-                token = s.next();
+                token = sc.next();
                 //System.out.println(token);
-                tokenargs = token.split("\n");
-                Nlin = Character.getNumericValue(tokenargs[0].charAt(0));
+                tokenArgs = token.split("\n");
+                Nlin = Character.getNumericValue(tokenArgs[0].charAt(0));
                 //System.out.println(Nlin);
-                Ncol = Character.getNumericValue(tokenargs[1].charAt(0));
+                Ncol = Character.getNumericValue(tokenArgs[1].charAt(0));
                 //System.out.println(Ncol);
                 baseShape = new boolean[Nlin][Ncol]; //everything is initialized to 0
-                for (j = 2; j < tokenargs.length - 1; j++) {
-                    currentChar = tokenargs[j].charAt(0);
+                for (j = 2; j < tokenArgs.length - 1; j++) {
+                    currentChar = tokenArgs[j].charAt(0);
                     if (currentChar == '#' || currentChar == 'X' || currentChar == '-') {
-                        for (k = 0; k < tokenargs[j].length()-1; k++) {
-                            currentChar = tokenargs[j].charAt(k);
+                        for (k = 0; k < tokenArgs[j].length()-1; k++) {
+                            currentChar = tokenArgs[j].charAt(k);
                             if (currentChar == '#' || currentChar == 'X') {
                                 //System.out.println(tokenargs[j].charAt(k));
                                 baseShape[j-2][k] = true;
                                 //System.out.println(Arrays.deepToString(baseShape));
                                 if (currentChar == 'X') {
                                     if (anchorFound) {
-                                        System.out.println("Error, the piece named " +tokenargs[j + 1]+" has several anchors.");
+                                        System.out.println("Error, the piece named " +tokenArgs[j + 1]+" has several anchors.");
                                         System.out.println("Anchors must be unique for every piece.");
                                         System.exit(0);
                                     }
@@ -86,7 +85,7 @@ public class PieceReader {
                     }
                 }
                 if (!anchorFound) {
-                    System.out.println("Error, the piece named "+tokenargs[j + 1]+" has no anchor.");
+                    System.out.println("Error, the piece named "+tokenArgs[j + 1]+" has no anchor.");
                     System.exit(0);
                 }
                 //System.out.println(Arrays.deepToString(baseShape));
@@ -97,20 +96,20 @@ public class PieceReader {
 
                 //shape.printShape();
 
-                shape.setName(tokenargs[j]); //set enum type?
+                shape.setName(tokenArgs[j]); //set enum type?
 
                 //System.out.println(shape.getName()); //name (shape + piece)
 
-                p = new Piece(shape);
-                p.setName(tokenargs[j]); //set enum type?
+                piece = new Piece(shape);
+                piece.setName(tokenArgs[j]); //set enum type?
 
                 //p.printPiece();
 
-                l.add(p);
+                pieceList.add(piece);
 
                 i++;
-                s.nextLine(); //space
-                s.nextLine(); //space
+                sc.nextLine(); //space
+                sc.nextLine(); //space
                 anchorFound = false;
             }
         } catch (Exception e) {
@@ -119,17 +118,16 @@ public class PieceReader {
     }
 
     public List<Piece> getPiecesList(){
-        return l;
+        return pieceList;
     }
 
     public void printPiecesList(){
         Piece p;
         int i = 0;
         System.out.println("---------- ALL PIECES : ------------");
-        Iterator<Piece> it = l.iterator();
-        while(it.hasNext()) {
+        for (Piece value : pieceList) {
             System.out.println();
-            p = it.next();
+            p = value;
             System.out.println("----- Piece " + p.getName() + " : -----");
             System.out.println();
             p.printPiece();

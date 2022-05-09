@@ -2,8 +2,6 @@ package Structures;
 
 //to do: change Shape names too (and enums?)
 
-import java.util.Arrays;
-
 public class Shape {
 	int Nlin, Ncol;
 	boolean [][] shape; //values only 0 or 1
