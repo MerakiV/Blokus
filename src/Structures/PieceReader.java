@@ -34,7 +34,7 @@ public class PieceReader {
         s = new Scanner(f);
     }
 
-    void readPieces(){
+    public void readPieces(){
 
         /* Model of the file:
          * HEIGHT (int)
@@ -60,7 +60,7 @@ public class PieceReader {
                 System.out.println(Nlin);
                 Ncol = Character.getNumericValue(tokenargs[1].charAt(0));
                 System.out.println(Ncol);
-                baseShape = new boolean[Nlin][Ncol]; //everything is initialized to false
+                baseShape = new boolean[Nlin][Ncol]; //everything is initialized to 0
                 for (j = 2; j < tokenargs.length - 1; j++) {
                     currentChar = tokenargs[j].charAt(0);
                     if (currentChar == '#' || currentChar == 'X' || currentChar == '-') {
@@ -82,20 +82,30 @@ public class PieceReader {
                                 }
                             }
                         }
-                        System.out.println(tokenargs[j]);
+                        //System.out.println(tokenargs[j]);
                     }
                 }
                 if (!anchorFound) {
                     System.out.println("Error, the piece named "+tokenargs[j + 1]+" has no anchor.");
                     System.exit(0);
                 }
-                System.out.println(Arrays.deepToString(baseShape));
+                //System.out.println(Arrays.deepToString(baseShape));
 
                 shape = new Shape(Nlin, Ncol, anchorX, anchorY);
+                shape.setShape(baseShape);
+                System.out.println(Arrays.deepToString(shape.getShape()));
+
+                shape.printShape();
+
                 shape.setName(tokenargs[j]); //set enum type?
+
                 System.out.println(shape.getName()); //name (shape + piece)
-                //p = new Piece(shape);
-                //p.setName(tokenargs[j]); //set enum type?
+
+                p = new Piece(shape);
+                p.setName(tokenargs[j]); //set enum type?
+
+                p.printPiece();
+
                 //l.add(p);
 
                 i++;
@@ -106,5 +116,9 @@ public class PieceReader {
         } catch (Exception e) { //no piece
             System.out.println(e);
         }
+    }
+
+    public List<Piece> getPiecesList(){
+        return l;
     }
 }

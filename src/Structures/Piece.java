@@ -24,11 +24,11 @@ public class Piece {
 			allDisp[4 + i] = s.flipV();
 			allDisp[8 + i] = s.flipH();
 			allDisp[12+ i] = allDisp[8 + i].flipV();
-			s = s.rotate90();
+			//s = s.rotate90();
 		}
 
 		// Finding dupes
-		for (i=0; i<16; i++) {
+		/*for (i=0; i<16; i++) {
 			s = allDisp[i];
 			d = shapeList.indexOf(s);
 			if (d==-1) {
@@ -37,7 +37,7 @@ public class Piece {
 			} else {
 				dispositionList[i] = d;
 			}
-		}
+		}*/
 	}
 
 	public void flipV() {

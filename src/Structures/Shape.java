@@ -1,8 +1,10 @@
 package Structures;
 
+//to do: change Shape names too (and enums?)
+
 public class Shape {
 	int Nlin, Ncol;
-	boolean [][] shape;
+	boolean [][] shape; //values only 0 or 1
 	int anchorX, anchorY;
 	String name;
 	public Shape(int l, int c, int ax, int ay) {
@@ -19,6 +21,10 @@ public class Shape {
 
 	int getColumns() {
 		return Ncol;
+	}
+
+	public void setShape(boolean [][] s){
+		shape = s;
 	}
 
 	boolean [][] getShape() {
@@ -106,7 +112,10 @@ public class Shape {
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
 				if (shape[i][j]) {
-					System.out.print("#");
+					if(i == anchorX && j == anchorY)
+						System.out.print("X");
+					else
+						System.out.print("#");
 				} else {
 					System.out.print("-");
 				}
