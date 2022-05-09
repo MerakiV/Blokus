@@ -1,7 +1,6 @@
 package Interface;
 
-import java.awt.BorderLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,11 +13,8 @@ import javax.swing.*;
 public class GameInterface implements Runnable {
     private JFrame frame;
     private GameGraphic gameGraphics;
+    private MenuInterface menu;
 
-
-    public GameInterface() {
-
-    }
 
     public static void start(){
         SwingUtilities.invokeLater(new GameInterface());
@@ -31,11 +27,19 @@ public class GameInterface implements Runnable {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        gameGraphics = new GameGraphic();
-        frame.getContentPane().add(gameGraphics, BorderLayout.CENTER);
-
         frame.setSize(1280, 800);
         frame.setVisible(true);
+
+        try {
+            menu = new MenuInterface();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        frame.getContentPane().add(menu, BorderLayout.CENTER);
+
+//        gameGraphics = new GameGraphic();
+//        frame.getContentPane().add(gameGraphics, BorderLayout.CENTER);
+
 
     }
 }
