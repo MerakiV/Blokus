@@ -4,7 +4,7 @@ public class Shape {
 	int Nlin, Ncol;
 	boolean [][] shape;
 	int anchorX, anchorY;
-
+	String name;
 	public Shape(int l, int c, int ax, int ay) {
 		Nlin = l;
 		Ncol = c;
@@ -93,6 +93,13 @@ public class Shape {
 		}
 
 		return true;
+	}
+
+	public void setName(String s){
+		name = s;
+	}
+	public String getName(){
+		return name;
 	}
 
 	public void printShape() {

@@ -8,6 +8,7 @@ public class Piece {
 	int disp;
 	int [] dispositionList;
 	List<Shape> shapeList;
+	String name; //name of the piece
 
 	 public Piece(Shape base) {
 		disp = 0;
@@ -89,6 +90,13 @@ public class Piece {
 		newbit = (r-1)%4;
 
 		disp = newbit | fv | fh;
+	}
+
+	public void setName(String s) {
+		name = s;
+	}
+	public String getName(){
+		 return name;
 	}
 
 	public void printPiece() {
