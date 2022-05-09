@@ -1,10 +1,8 @@
 package Structures;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 import java.io.File;
-import java.util.List;
 
 public class PieceReader {
 
@@ -36,6 +34,8 @@ public class PieceReader {
 
     public void readPieces(){
 
+        l = new ArrayList<>();
+
         /* Model of the file:
          * HEIGHT (int)
          * LENGTH (int)
@@ -52,14 +52,14 @@ public class PieceReader {
         try { //init
             s.useDelimiter(";");
             while (i < 21){ //number of pieces
-                System.out.println("\n");
+                //System.out.println("\n");
                 token = s.next();
                 //System.out.println(token);
                 tokenargs = token.split("\n");
                 Nlin = Character.getNumericValue(tokenargs[0].charAt(0));
-                System.out.println(Nlin);
+                //System.out.println(Nlin);
                 Ncol = Character.getNumericValue(tokenargs[1].charAt(0));
-                System.out.println(Ncol);
+                //System.out.println(Ncol);
                 baseShape = new boolean[Nlin][Ncol]; //everything is initialized to 0
                 for (j = 2; j < tokenargs.length - 1; j++) {
                     currentChar = tokenargs[j].charAt(0);
@@ -93,32 +93,47 @@ public class PieceReader {
 
                 shape = new Shape(Nlin, Ncol, anchorX, anchorY);
                 shape.setShape(baseShape);
-                System.out.println(Arrays.deepToString(shape.getShape()));
+                //System.out.println(Arrays.deepToString(shape.getShape()));
 
-                shape.printShape();
+                //shape.printShape();
 
                 shape.setName(tokenargs[j]); //set enum type?
 
-                System.out.println(shape.getName()); //name (shape + piece)
+                //System.out.println(shape.getName()); //name (shape + piece)
 
                 p = new Piece(shape);
                 p.setName(tokenargs[j]); //set enum type?
 
-                p.printPiece();
+                //p.printPiece();
 
-                //l.add(p);
+                l.add(p);
 
                 i++;
                 s.nextLine(); //space
                 s.nextLine(); //space
                 anchorFound = false;
             }
-        } catch (Exception e) { //no piece
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     public List<Piece> getPiecesList(){
         return l;
+    }
+
+    public void printPiecesList(){
+        Piece p;
+        int i = 0;
+        System.out.println("---------- ALL PIECES : ------------");
+        Iterator<Piece> it = l.iterator();
+        while(it.hasNext()) {
+            System.out.println();
+            p = it.next();
+            System.out.println("----- Piece " + p.getName() + " : -----");
+            System.out.println();
+            p.printPiece();
+            System.out.println();
+        }
     }
 }

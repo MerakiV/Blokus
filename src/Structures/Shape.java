@@ -2,6 +2,8 @@ package Structures;
 
 //to do: change Shape names too (and enums?)
 
+import java.util.Arrays;
+
 public class Shape {
 	int Nlin, Ncol;
 	boolean [][] shape; //values only 0 or 1
@@ -66,8 +68,8 @@ public class Shape {
 	}
 
 	public Shape rotate90() {
-		Shape s2 = new Shape(Nlin, Ncol, anchorX, anchorY);
-		boolean [][] tab = s2.getShape();
+		Shape s2 = new Shape(Ncol, Nlin, anchorX, anchorY);
+		boolean [][] tab = new boolean[Ncol][Nlin];
 
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
@@ -75,8 +77,10 @@ public class Shape {
 			}
 		}
 
+		s2.setShape(tab);
+
 		s2.anchorX = anchorY;
-		s2.anchorY = s2.Nlin-anchorX-1;
+		s2.anchorY = s2.Ncol-anchorX-1;
 
 		return s2;
 	}
