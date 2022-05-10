@@ -94,8 +94,7 @@ public class PieceReader {
                     System.exit(0);
                 }
 
-                shape = new Shape(Nlin, Ncol, anchorX, anchorY);
-                shape.setShape(baseShape);
+                shape = new Shape(Nlin, Ncol, anchorX, anchorY, baseShape);
                 shape.setName(tt.valueOf(tokenArgs[j])); //TBI set enum type?
 
                 piece = new Piece(shape);
@@ -120,7 +119,6 @@ public class PieceReader {
 
     public void printPiecesList(){
         Piece p;
-        int i = 0;
         System.out.println("---------- ALL PIECES : ------------");
         for (Piece value : pieceList) {
             System.out.println();
