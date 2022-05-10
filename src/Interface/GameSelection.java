@@ -11,16 +11,17 @@ import java.io.InputStream;
 
 public class GameSelection extends JComponent {
     public JFrame frame;
-    Image backGround, red, blue, green, yellow;
+    Image backGround, logo, red, blue, green, yellow;
     JComboBox selectP1, selectP2, selectC1P1, selectC2P1, selectC1P2, selectC2P2;
-    JButton PlayButton;
+    HoverButton PlayButton;
+    BackButton back;
+
     JLabel selectColor, player1, player2;
 
     public GameSelection(JFrame f) throws IOException {
         frame = f;
-        System.out.println("bg :");
         backGround = chargeImg("images/boarder.png");
-        System.out.println("bg fin :" + backGround);
+        logo = chargeImg("images/LogoBlokus.png");
         red = chargeImg("tiles/redBloc.png");
         blue = chargeImg("tiles/blueBloc.png");
         green = chargeImg("tiles/greenBloc.png");
@@ -43,6 +44,9 @@ public class GameSelection extends JComponent {
         Image[] colors = { red, blue, green, yellow };
         String[] players = { "Human", "AI Easy", "AI Medium", "AI Hard" };
 
+        player1 = createLabel("Player 1");
+        player2 = createLabel("Player 2");
+        selectColor = createLabel("press the squares to select your color.");
         selectP1 = createComboBox(players);
         selectP2 = createComboBox(players);
         selectC1P1 = createComboBox(colors);
@@ -50,7 +54,7 @@ public class GameSelection extends JComponent {
         selectC1P2 = createComboBox(colors);
         selectC2P2 = createComboBox(colors);
         // PlayButton = new HoverButton(this, "Play", frame.getWidth() / 2,
-        // frame.getHeight() * 9 / 10);
+        // frame.getHeight() * 0.9);
     }
 
     public Image chargeImg(String nom) {
@@ -66,37 +70,26 @@ public class GameSelection extends JComponent {
         return img;
     }
 
-    public Image[] createButtonImg(String name) throws IOException {
-        Image img1, img2;
-        InputStream in1 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/" + name + "/normal.png");
-        img1 = ImageIO.read(in1);
-        InputStream in2 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/" + name + "/mouseOver.png");
-        img2 = ImageIO.read(in2);
-        return new Image[] {
-                img1, img2
-        };
-    }
-
     public void drawButtons(Graphics g) {
 
     }
 
     public void drawBg(Graphics g) {
         g.drawImage(backGround, 0, 0, frame.getWidth(), frame.getHeight(), null);
+        g.drawImage(logo, (frame.getWidth() - logo.getWidth(null)) / 2, (int) (frame.getHeight() * 0.07), null);
     }
 
     public void drawBoard(Graphics g) {
-        // Image board = chargeImg("");
-        int boardHeight = 100;
-        int boardWidth = 100;
-        // g.drawImage(board, (frame.getWidth() - boardWidth) / 2, (frame.getHeight() -
-        // boardHeight) / 2,
-        // boardWidth, boardHeight, null);
+        Image board = chargeImg("images/board.png");
+        int boardWidth = frame.getWidth() / 4;
+        int boardHeight = frame.getWidth() / 4;
+
+        g.drawImage(board, (frame.getWidth() - boardWidth) / 2, (frame.getHeight() - boardHeight) / 2, boardWidth,
+                boardHeight, null);
     }
 
     public void paintComponent(Graphics g) {
         drawBg(g);
-        System.out.println("Height : " + frame.getHeight() + ", Width : " + frame.getWidth());
         drawBoard(g);
         drawButtons(g);
 
