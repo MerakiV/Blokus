@@ -40,17 +40,17 @@ public class Piece {
 		}
 	}
 
+	Shape getShape() {
+		return shapeList.get(dispositionList[disp]);
+	}
+
 	public void flipV() {
 		int r, fv, fh, newbit;
 		r  = disp & ((1 << 0) | (1 << 1));
 		fv = disp & (1 << 2);
 		fh = disp & (1 << 3);
 
-		if (fv==0) {
-			newbit = (1 << 2);
-		} else {
-			newbit = 0;
-		}
+		newbit = ((fv==0) ? (1 << 2) : 0);
 
 		disp = r | newbit | fh;
 	}
@@ -61,11 +61,7 @@ public class Piece {
 		fv = disp & (1 << 2);
 		fh = disp & (1 << 3);
 
-		if (fh==0) {
-			newbit = (1 << 3);
-		} else {
-			newbit = 0;
-		}
+		newbit = ((fh==0) ? (1 << 3) : 0);
 
 		disp = r | fv | newbit;
 	}
@@ -76,7 +72,7 @@ public class Piece {
 		fv = disp & (1 << 2);
 		fh = disp & (1 << 3);
 
-		newbit = (r+1)%4;
+		newbit = ((fv^fh==0) ? ((r+1)%4) : ((r-1)%4));
 
 		disp = newbit | fv | fh;
 	}
@@ -87,7 +83,7 @@ public class Piece {
 		fv = disp & (1 << 2);
 		fh = disp & (1 << 3);
 
-		newbit = (r-1)%4;
+		newbit = ((fv^fh==0) ? ((r-1)%4) : ((r+1)%4));
 
 		disp = newbit | fv | fh;
 	}
