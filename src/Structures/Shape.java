@@ -6,7 +6,7 @@ public class Shape {
 	int Nlin, Ncol;
 	boolean [][] shape; //values only 0 or 1
 	int anchorX, anchorY;
-	String name;
+	TileType name;
 	public Shape(int l, int c, int ax, int ay) {
 		Nlin = l;
 		Ncol = c;
@@ -71,7 +71,7 @@ public class Shape {
 
 	public Shape rotate90() {
 		Shape s2 = new Shape(Ncol, Nlin, anchorX, anchorY);
-		boolean [][] tab = new boolean[Ncol][Nlin];
+		boolean [][] tab = s2.getShape();
 
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
@@ -107,10 +107,10 @@ public class Shape {
 		return true;
 	}
 
-	public void setName(String s){
-		name = s;
+	public void setName(TileType tt){
+		name = tt;
 	}
-	public String getName(){
+	public TileType getName(){
 		return name;
 	}
 

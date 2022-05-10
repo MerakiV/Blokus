@@ -1,7 +1,8 @@
 package Structures;
 
+import java.util.Arrays;
+
 public class TestPieceReader {
-    static PieceReader pr;
 
     public static void main(String[] args) throws Exception
     {
@@ -9,6 +10,9 @@ public class TestPieceReader {
         pr.readPieces();
 
         pr.printPiecesList();
+
+        //PieceType pt = PieceType.ONE;
+        //System.out.println(pt);
     }
 
 
