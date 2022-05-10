@@ -1,20 +1,34 @@
 package Interface;
 
-import java.awt.event.MouseAdapter;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 public class BlokusMouseAdapter implements MouseListener {
 
-    Button current;
+    HoverButton current;
     MenuInterface menuUi;
-    BlokusMouseAdapter(Button b, MenuInterface m) {
+    TutorialInterface tuto;
+    BlokusMouseAdapter(HoverButton b, MenuInterface m) {
         current = b;
         menuUi = m;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        System.out.println("Name:"+current.name);
+        if(current.name == "Tutorial"){
+            menuUi.frame.getContentPane().remove(menuUi);
+            try {
+                tuto = new TutorialInterface(menuUi.frame, menuUi);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            menuUi.frame.getContentPane().add(tuto, BorderLayout.CENTER);
+            menuUi.frame.getContentPane().invalidate();
+            menuUi.frame.getContentPane().validate();
+        }
     }
 
     @Override

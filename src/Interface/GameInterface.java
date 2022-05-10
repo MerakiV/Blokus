@@ -28,10 +28,11 @@ public class GameInterface implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setSize(1280, 800);
+        frame.getContentPane().setBackground(Color.white);
         frame.setVisible(true);
 
         try {
-            menu = new MenuInterface();
+            menu = new MenuInterface(frame);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,6 +41,6 @@ public class GameInterface implements Runnable {
 //        gameGraphics = new GameGraphic();
 //        frame.getContentPane().add(gameGraphics, BorderLayout.CENTER);
 
-
     }
+
 }
