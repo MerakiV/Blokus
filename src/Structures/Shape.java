@@ -31,6 +31,10 @@ public class Shape {
 		return shape;
 	}
 
+	boolean isEmpty(int i, int j) {
+		return (i<0 || i>=Nlin || j<0 || j>=Ncol || !shape[i][j]);
+	}
+
 	public Shape flipV() {
 		Shape s2 = new Shape(Nlin, Ncol, anchorX, anchorY);
 		boolean [][] tab = s2.getShape();
