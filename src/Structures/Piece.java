@@ -10,7 +10,7 @@ public class Piece {
 	List<Shape> shapeList;
 	PieceType name; //name of the piece
 
-	 public Piece(Shape base) {
+	public Piece(Shape base) {
 		disp = 0;
 		dispositionList = new int[16];
 		shapeList = new ArrayList<>();
