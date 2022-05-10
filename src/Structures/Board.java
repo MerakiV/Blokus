@@ -98,6 +98,7 @@ public class Board {
                     t = new Tile(x+i, y+j);
                     for (int k=0; k<4; k++) {
                         for (int l=0; l<4; l++) {
+                            // Removes the tiles this piece is occupying if it's an avaliable corner for any color.
                             avaliableCorners.get(k).get(l).remove(t);
                         }
                     }
@@ -139,12 +140,16 @@ public class Board {
                 switch(grid[i][j]) {
                     case BLUE:
                         System.out.print("B");
+                        break;
                     case RED:
                         System.out.print("R");
+                        break;
                     case GREEN:
                         System.out.print("G");
+                        break;
                     case YELLOW:
                         System.out.print("Y");
+                        break;
                     case WHITE:
                         if (seeFor==-1) {
                             System.out.print("-");
@@ -160,6 +165,7 @@ public class Board {
                                 System.out.print("-");
                             }
                         }
+                        break;
                 }
             }
             System.out.print("\n");
