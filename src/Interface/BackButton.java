@@ -59,7 +59,7 @@ public class BackButton extends JPanel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("Remove");
-        tutoUI.frame.getContentPane().remove(tutoUI);
+        tutoUI.frame.getContentPane().removeAll();
         try {
             menu = new MenuInterface(tutoUI.frame);
         } catch (IOException ex) {
