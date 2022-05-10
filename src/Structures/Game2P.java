@@ -21,7 +21,8 @@ public class Game2P extends Game{
         Set<Piece> masterList = pRead.getPiecesList();
 
         //TBI : create board
-        board = new Board();
+        //with GameSettings
+        //board = new Board(set.p1c1, set.p1c2, set.p2c1, set.p2c2);
 
         //TBI : create players
         /* once AI is implemented

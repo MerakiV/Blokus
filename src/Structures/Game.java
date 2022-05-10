@@ -14,5 +14,7 @@ public abstract class Game {
 
     public Color getCurrentColor(){return currentColor;}
 
+    public Board getBoard(){return board;}
+
     public abstract void nextTurn();
 }
