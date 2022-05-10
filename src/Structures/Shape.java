@@ -1,5 +1,7 @@
 package Structures;
 
+import java.util.ArrayList;
+
 //to do: change Shape names too (and enums?)
 
 public class Shape {
@@ -7,12 +9,25 @@ public class Shape {
 	boolean [][] shape; //values only 0 or 1
 	int anchorX, anchorY;
 	TileType name;
-	public Shape(int l, int c, int ax, int ay) {
+
+    // Note : 0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast
+    ArrayList<ArrayList<Tile>> avaliableCorners;
+
+	public Shape(int l, int c, int ax, int ay, boolean [][] s) {
 		Nlin = l;
 		Ncol = c;
 		anchorX = ax;
 		anchorY = ay;
-		shape = new boolean[l][c];
+		shape = s;
+		avaliableCorners = new ArrayList<>(4);
+		for (int i=0; i<4; i++) {
+			avaliableCorners.add(new ArrayList<>(3));
+		}
+		for (int i=0; i<Nlin; i++) {
+			for (int j=0; j<Ncol; j++) {
+				if (isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i,j)); }
+			}
+		}
 	}
 
 	int getLines() {
@@ -36,8 +51,7 @@ public class Shape {
 	}
 
 	public Shape flipV() {
-		Shape s2 = new Shape(Nlin, Ncol, anchorX, anchorY);
-		boolean [][] tab = s2.getShape();
+		boolean [][] tab = new boolean[Nlin][Ncol];
 
 		for (int i=0; i<=Nlin/2; i++) {
 			for (int j=0; j<Ncol; j++) {
@@ -46,15 +60,11 @@ public class Shape {
 			}
 		}
 
-		s2.anchorX = s2.Nlin-anchorX-1;
-		s2.anchorY = anchorY;
-
-		return s2;
+		return new Shape(Ncol, Nlin, anchorX, anchorY, tab);
 	}
 
 	public Shape flipH() {
-		Shape s2 = new Shape(Nlin, Ncol, anchorX, anchorY);
-		boolean [][] tab = s2.getShape();
+		boolean [][] tab = new boolean[Nlin][Ncol];
 
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<=Ncol/2; j++) {
@@ -63,15 +73,11 @@ public class Shape {
 			}
 		}
 
-		s2.anchorX = anchorX;
-		s2.anchorY = s2.Ncol-anchorY-1;
-
-		return s2;
+		return new Shape(Ncol, Nlin, anchorX, anchorY, tab);
 	}
 
 	public Shape rotate90() {
-		Shape s2 = new Shape(Ncol, Nlin, anchorX, anchorY);
-		boolean [][] tab = s2.getShape();
+		boolean [][] tab = new boolean[Nlin][Ncol];
 
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
@@ -79,12 +85,7 @@ public class Shape {
 			}
 		}
 
-		s2.setShape(tab);
-
-		s2.anchorX = anchorY;
-		s2.anchorY = s2.Ncol-anchorX-1;
-
-		return s2;
+		return new Shape(Ncol, Nlin, anchorY, Nlin - anchorX - 1, tab);
 	}
 
 	@Override
