@@ -16,9 +16,11 @@ public class MenuInterface extends JComponent {
     public Button conti;
     public Button tutorial;
     public Button exit;
+    public JFrame frame;
     Integer x = 640;
 
-    public MenuInterface() throws IOException {
+    public MenuInterface(JFrame f) throws IOException {
+        frame = f;
         String bg = "images/background.png";
         backGround = chargeImg(bg);
         inItUIButton();
@@ -39,7 +41,6 @@ public class MenuInterface extends JComponent {
     public Image chargeImg(String nom){
         Image img = null;
         try { //on récupère l'image à l'adresse où on l’a mise…
-//            bgImg = ImageIO.read(getClass().getResource(bg));
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(nom);
             img = ImageIO.read(in);
             //fin chargement des images.
@@ -50,7 +51,7 @@ public class MenuInterface extends JComponent {
         return img;
     }
 
-    public Image[] createCardImg(String name) throws IOException {
+    public Image[] createButtonImg(String name) throws IOException {
         Image img1, img2;
         InputStream in1 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/"+ name + "/normal.png");
         img1 = ImageIO.read(in1);
@@ -74,7 +75,6 @@ public class MenuInterface extends JComponent {
 
 
     public void paintComponent(Graphics g) {
-        System.out.println("Repaint");
         drawBg(g);
         drawButtons(g);
 

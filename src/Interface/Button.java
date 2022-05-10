@@ -27,7 +27,7 @@ public class Button extends JPanel{
     public Button(MenuInterface menuUI,String name, Integer x, Integer y) throws IOException {
         this.menuUI = menuUI;
         this.name = name;//设置名称
-        this.img = this.menuUI.createCardImg(name);
+        this.img = this.menuUI.createButtonImg(name);
         this.normalImage = this.img[0];
         this.rolloverImage = this.img[1];
         this.currentImage = normalImage;
