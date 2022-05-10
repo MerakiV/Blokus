@@ -3,15 +3,12 @@ package Interface;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 
 import javax.swing.*;
 
 
-public class Button extends JPanel{
+public class HoverButton extends JPanel{
     private MenuInterface menuUI;
     private Image[] img;
 
@@ -24,7 +21,7 @@ public class Button extends JPanel{
 
     public String name = null;
 
-    public Button(MenuInterface menuUI,String name, Integer x, Integer y) throws IOException {
+    public HoverButton(MenuInterface menuUI,String name, Integer x, Integer y) throws IOException {
         this.menuUI = menuUI;
         this.name = name;//设置名称
         this.img = this.menuUI.createButtonImg(name);

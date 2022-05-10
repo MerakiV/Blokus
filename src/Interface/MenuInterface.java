@@ -1,21 +1,17 @@
 package Interface;
 
-import javafx.scene.canvas.GraphicsContext;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class MenuInterface extends JComponent {
     Image backGround;
-    public Button newGame;
-    public Button conti;
-    public Button tutorial;
-    public Button exit;
+    public HoverButton newGame;
+    public HoverButton conti;
+    public HoverButton tutorial;
+    public HoverButton exit;
     public JFrame frame;
     Integer x = 640;
 
@@ -28,13 +24,13 @@ public class MenuInterface extends JComponent {
 
 
     private void inItUIButton() throws IOException {
-        this.newGame = new Button(this, "NG", x-217, 280);
+        this.newGame = new HoverButton(this, "NG", x-217, 280);
         add(this.newGame);
-        this.conti = new Button(this, "Continue", x-217, 390);
+        this.conti = new HoverButton(this, "Continue", x-217, 390);
         add(this.conti);
-        this.tutorial = new Button(this, "Tutorial",x-217, 500);
+        this.tutorial = new HoverButton(this, "Tutorial",x-217, 500);
         add(this.tutorial);
-        this.exit = new Button(this, "Exit", x-217, 610);
+        this.exit = new HoverButton(this, "Exit", x-217, 610);
         add(this.exit);
     }
 
