@@ -15,7 +15,7 @@ public class Piece {
 		dispositionList = new int[16];
 		shapeList = new ArrayList<>();
 
-		int i, d, t;
+		int i, d;
 		Shape s = base;
 		Shape [] allDisp = new Shape[16];
 		// Calculating all possible rotations/flips
@@ -72,7 +72,7 @@ public class Piece {
 		fv = disp & (1 << 2);
 		fh = disp & (1 << 3);
 
-		newbit = ((fv^fh==0) ? ((r+1)%4) : ((r-1)%4));
+		newbit = (((fv^(fh >> 1)) == 0) ? ((r+1)%4) : ((r-1)%4));
 
 		disp = newbit | fv | fh;
 	}
@@ -83,7 +83,7 @@ public class Piece {
 		fv = disp & (1 << 2);
 		fh = disp & (1 << 3);
 
-		newbit = ((fv^fh==0) ? ((r-1)%4) : ((r+1)%4));
+		newbit = (((fv^(fh >> 1)) == 0) ? ((r-1)%4) : ((r+1)%4));
 
 		disp = newbit | fv | fh;
 	}
