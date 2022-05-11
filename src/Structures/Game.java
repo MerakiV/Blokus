@@ -1,6 +1,7 @@
 package Structures;
 
 import Players.Player;
+import Players.Player2P;
 
 public abstract class Game {
     Board board;

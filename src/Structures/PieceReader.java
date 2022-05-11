@@ -107,7 +107,6 @@ public class PieceReader {
                 sc.nextLine(); //empty line
                 sc.nextLine(); //empty line
                 anchorFound = false;
-                System.out.println("Piece read successfully");
             }
         } catch (Exception e) {
             System.out.println(e);

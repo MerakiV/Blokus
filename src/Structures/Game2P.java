@@ -1,28 +1,16 @@
 package Structures;
 
-import Players.Player;
+import Players.Player2P;
 import Players.PlayerHuman2P;
 
-import java.util.Set;
-
 public class Game2P extends Game{
-    Player p1,p2;
+    public Player2P p1,p2;
+    public Player2P currentPlayer2P;
 
     public Game2P(GameSettings2P set){
-        //create list of pieces from PieceReader
-        PieceReader pRead = null;
-        try {
-            pRead = new PieceReader();
-        } catch(Exception e) {
-            System.err.println("FATAL ERROR : missing piece file");
-            System.exit(1);
-        }
-
-        Set<Piece> masterList = pRead.getPiecesList();
-
         //TBI : create board
         //with GameSettings
-        //board = new Board(set.p1c1, set.p1c2, set.p2c1, set.p2c2);
+        board = new Board(set.p1c1, set.p2c1, set.p1c2, set.p2c2);
 
         //TBI : create players
         /* once AI is implemented
@@ -36,12 +24,30 @@ public class Game2P extends Game{
         p2 = new PlayerHuman2P(set.p2c1, set.p2c2);
 
         //set p1 as current player
-        currentPlayer = p1;
+        currentPlayer2P = p1;
+        currentPlayer = p1.pcol1;
+        currentColor = p1.pcol1.getColor();
     }
 
     public void nextTurn(){
-        if(currentPlayer == p1) currentPlayer = p2;
-        else currentPlayer = p1;
+        if(currentPlayer == p1.pcol1){
+            currentPlayer = p2.pcol1;
+            currentPlayer2P = p2;
+        }
+        else if(currentPlayer == p1.pcol2){
+            currentPlayer = p2.pcol2;
+            currentPlayer2P = p2;
+        }
+        else if(currentPlayer == p2.pcol1){
+            currentPlayer = p1.pcol2;
+            currentPlayer2P = p1;
+        }
+        else{ //currentPlayer == p2.col2
+            currentPlayer = p1.pcol1;
+            currentPlayer2P = p1;
+        }
     }
+
+
 
 }
