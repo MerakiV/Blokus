@@ -15,14 +15,15 @@ public class GameSelection extends JComponent {
     JPanel panel;
     Image backGround, logo, red, blue, green, yellow, board;
     JComboBox selectP1, selectP2, selectC1P1, selectC2P1, selectC1P2, selectC2P2;
-    HoverButton playButton;
-    BackButton back;
+    HoverButton playButton, backButton;
     int height, width;
 
     JLabel selectColor, player1, player2;
 
     public GameSelection(JFrame f) throws IOException {
         frame = f;
+        width = frame.getWidth();
+        height = frame.getHeight();
         panel = new JPanel();
         backGround = new Image(frame, "images/border.png");
         board = new Image(frame, "images/board.png");
@@ -58,36 +59,34 @@ public class GameSelection extends JComponent {
         selectC2P1 = createComboBox(colors);
         selectC1P2 = createComboBox(colors);
         selectC2P2 = createComboBox(colors);
-        add(this.panel);
-        playButton = new HoverButton(this, "Play", (frame.getWidth() - 290) / 2, (int) (frame.getHeight() * 0.8));
+        backButton = new HoverButton(this, "Back", (int) (width * 0.05), (int) (height * 0.08));
+        add(this.backButton);
+        playButton = new HoverButton(this, "Play", (width - 270) / 2, (int) (height * 0.8));
         add(this.playButton);
     }
 
-    // TO DO : Position the button Properly
+    private void resetBound(int width, int height) {
+        this.playButton.setButtonBound((width - 270) / 2, (int) (height * 0.8));
+    }
+
     public void drawButtons(Graphics g) {
-        int frameWidth = frame.getWidth();
-        int frameHeight = frame.getHeight();
         int imageWidth = playButton.getCurrentImageWidth();
 
-        g.drawImage(this.playButton.getCurrentImage(), (frameWidth - imageWidth) / 2, (int) (frameHeight * 0.8), this);
+        resetBound(width, height);
+        g.drawImage(this.backButton.getCurrentImage(), (int) (width * 0.05), (int) (height * 0.08), null);
+        g.drawImage(this.playButton.getCurrentImage(), (width - imageWidth) / 2, (int) (height * 0.8), this);
     }
 
     public void drawBg(Graphics g) {
-        int frameWidth = frame.getWidth();
-        int frameHeight = frame.getHeight();
-
-        backGround.drawImg(g, 0, 0, frameWidth, frameHeight);
-        logo.drawImg(g, (frameWidth - logo.getWidth()) / 2, (int) (frameHeight * 0.07), logo.getWidth(),
+        backGround.drawImg(g, 0, 0, width, height);
+        logo.drawImg(g, (width - logo.getWidth()) / 2, (int) (height * 0.07), logo.getWidth(),
                 logo.getHeight());
     }
 
     public void drawBoard(Graphics g) {
-        int frameWidth = frame.getWidth();
-        int frameHeight = frame.getHeight();
-
-        int boardWidth = frameWidth / 4;
-        int boardHeight = frameWidth / 4;
-        board.drawImg(g, (frameWidth - boardWidth) / 2, (frameHeight - boardHeight) / 2, boardWidth,
+        int boardWidth = width / 4;
+        int boardHeight = width / 4;
+        board.drawImg(g, (width - boardWidth) / 2, (height - boardHeight) / 2, boardWidth,
                 boardHeight);
 
         // panel.add(selectColor, (frameWidth - selectColor.getWidth()) / 2, (int)
@@ -95,6 +94,9 @@ public class GameSelection extends JComponent {
     }
 
     public void paintComponent(Graphics g) {
+        width = frame.getWidth();
+        height = frame.getHeight();
+
         drawBg(g);
         drawBoard(g);
         drawButtons(g);
