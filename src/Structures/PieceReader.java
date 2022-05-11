@@ -31,12 +31,12 @@ public class PieceReader {
     char currentChar;
 
     public PieceReader() throws FileNotFoundException {
-        f = new File("../resources/pieces/normal.txt");
+        f = new File("resources/pieces/normal.txt");
         sc = new Scanner(f);
         readPieces();
     }
 
-    public void readPieces(){
+    void readPieces(){
 
         pieceList = new ArrayList<>();
 
@@ -107,7 +107,6 @@ public class PieceReader {
                 sc.nextLine(); //empty line
                 sc.nextLine(); //empty line
                 anchorFound = false;
-                System.out.println("Piece read successfully");
             }
         } catch (Exception e) {
             System.out.println(e);
