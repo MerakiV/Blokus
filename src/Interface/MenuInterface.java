@@ -15,7 +15,7 @@ public class MenuInterface extends JComponent {
     public HoverButton tutorial;
     public HoverButton exit;
     public JFrame frame;
-    int x, y ;
+    int x ;
     int height;
     int width;
 

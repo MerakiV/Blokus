@@ -10,7 +10,7 @@ public class MenuMouseAdapter implements MouseListener {
     HoverButton current;
     MenuInterface menuUi;
     TutorialInterface tuto;
-    GameSelection gameSetting;
+    GameSelection gameSelec;
 
     MenuMouseAdapter(HoverButton b, MenuInterface m) {
         current = b;
@@ -30,13 +30,17 @@ public class MenuMouseAdapter implements MouseListener {
             menuUi.frame.getContentPane().add(tuto, BorderLayout.CENTER);
             menuUi.frame.getContentPane().invalidate();
             menuUi.frame.getContentPane().validate();
-        } else if (current.name == "NG"){
+        }
+        else if(current.name == "NG"){
             menuUi.frame.getContentPane().remove(menuUi);
             try {
-                gameSetting = new GameSelection(menuUi.frame);
+                gameSelec = new GameSelection(menuUi.frame);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+            menuUi.frame.getContentPane().add(gameSelec, BorderLayout.CENTER);
+            menuUi.frame.getContentPane().invalidate();
+            menuUi.frame.getContentPane().validate();
         }
     }
 
