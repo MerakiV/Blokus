@@ -13,6 +13,7 @@ import javax.swing.*;
 public class HoverButton extends JPanel{
     private MenuInterface menuUI;
     private GamePlay gameMenu;
+    private GameSelection selectMenu;
     private TutorialInterface tutoUI;
 
     private Image[] img;
@@ -45,10 +46,28 @@ public class HoverButton extends JPanel{
         Image newNormal = this.img[0].getScaledInstance(newS, newS, Image.SCALE_DEFAULT);
         this.normalImage = newNormal;
         // Hovered Image
-        this.rolloverImage = this.img[1];
+        this.rolloverImage = newNormal.getScaledInstance((int) (newS * 1.1), (int) (newS * 1.1), Image.SCALE_DEFAULT);
         this.currentImage = normalImage;
         this.setBounds(x, y, newS, newS);
-        this.addMouseListener(new BlokusMouseAdapter(this, this.gameMenu));
+        this.addMouseListener(new GameMouseAdapter(this, this.gameMenu));
+    }
+
+    // Hover Button for Game Selection
+    public HoverButton(GameSelection selectMenu, String name, int x, int y) throws IOException {
+        this.selectMenu = selectMenu;
+        this.name = name;
+        this.img = createButtonImg(name);
+        // Original Image
+        // int newS = (int) (selectMenu.frame.getWidth() * 0.3);
+        // Image newNormal = this.img[0].getScaledInstance(newS, newS,
+        normalImage = this.img[0];
+        // Image.SCALE_DEFAULT);
+        // this.normalImage = newNormal;
+        // Hovered Image
+        this.rolloverImage = this.img[1];
+        this.currentImage = normalImage;
+        this.setBounds(x, y, normalImage.getWidth(null), normalImage.getHeight(null));
+        this.addMouseListener(new NGMouseAdapter(this, this.selectMenu));
     }
 
     public HoverButton(TutorialInterface tutoUI, String name, int x, int y) throws IOException {
@@ -64,7 +83,7 @@ public class HoverButton extends JPanel{
 
     public void paint(Graphics g) {
         this.setOpaque(false);
-        if (enabled){
+        if (enabled) {
             g.drawImage(currentImage, this.getX(), this.getY(), this.getWidth(),
                     this.getHeight(), this);
         }
@@ -72,9 +91,9 @@ public class HoverButton extends JPanel{
 
     public Image[] createButtonImg(String name) throws IOException {
         Image img1, img2;
-        InputStream in1 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/"+ name + "/normal.png");
+        InputStream in1 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/" + name + "/normal.png");
         img1 = ImageIO.read(in1);
-        InputStream in2 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/"+ name + "/mouseOver.png");
+        InputStream in2 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/" + name + "/mouseOver.png");
         img2 = ImageIO.read(in2);
         return new Image[] {
                 img1, img2
@@ -85,18 +104,20 @@ public class HoverButton extends JPanel{
     public boolean isEnabled() {
         return enabled;
     }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
-    public Image getCurrentImage(){
+    public Image getCurrentImage() {
         return currentImage;
     }
 
-
-    public Integer getCurrentImageWidth(){
-        return  currentImage.getWidth(null);
+    public Integer getCurrentImageWidth() {
+        return currentImage.getWidth(null);
     }
 
-
+    public int getCurrentImageHeight() {
+        return currentImage.getHeight(null);
+    }
 }

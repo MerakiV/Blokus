@@ -5,23 +5,20 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
-public class BlokusMouseAdapter implements MouseListener {
+public class MenuMouseAdapter implements MouseListener {
 
     HoverButton current;
     MenuInterface menuUi;
     MenuInterface menu;
     GamePlay game;
+    GameSelection selectMenu;
     TutorialInterface tutoUi;
     TutorialInterface tuto;
     GameSelection gameSelec;
 
-    BlokusMouseAdapter(HoverButton b, MenuInterface m) {
+    MenuMouseAdapter(HoverButton b, MenuInterface m) {
         current = b;
         menuUi = m;
-    }
-    BlokusMouseAdapter(HoverButton b, GamePlay g) {
-        current = b;
-        game = g;
     }
 
     BlokusMouseAdapter(HoverButton b, TutorialInterface g) {
@@ -31,8 +28,8 @@ public class BlokusMouseAdapter implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Name:"+current.name);
-        if(current.name == "Tutorial"){
+        System.out.println("Name:" + current.name);
+        if (current.name == "Tutorial") {
             menuUi.frame.getContentPane().remove(menuUi);
             try {
                 tuto = new TutorialInterface(menuUi.frame, menuUi);
@@ -42,8 +39,7 @@ public class BlokusMouseAdapter implements MouseListener {
             menuUi.frame.getContentPane().add(tuto, BorderLayout.CENTER);
             menuUi.frame.getContentPane().invalidate();
             menuUi.frame.getContentPane().validate();
-        }
-        else if(current.name == "NG"){
+        } else if (current.name == "NG") {
             menuUi.frame.getContentPane().remove(menuUi);
             try {
                 gameSelec = new GameSelection(menuUi.frame);
@@ -68,9 +64,10 @@ public class BlokusMouseAdapter implements MouseListener {
     }
 
     @Override
-    public void mousePressed(MouseEvent e){
+    public void mousePressed(MouseEvent e) {
 
     }
+
     @Override
     public void mouseReleased(MouseEvent e) {
         current.currentImage = current.rolloverImage;
@@ -100,6 +97,5 @@ public class BlokusMouseAdapter implements MouseListener {
             menuUi.repaint();
         }
     }
-
 
 }

@@ -10,9 +10,9 @@ import java.io.InputStream;
 
 import java.awt.Image;
 
-
 public class BackButton extends JPanel implements MouseListener {
     private TutorialInterface tutoUI;
+    private GameSelection selectMenu;
     private Image[] img;
 
     public Image normalImage;
@@ -36,11 +36,15 @@ public class BackButton extends JPanel implements MouseListener {
         this.addMouseListener(this);
     }
 
+    public void fixInterface(GameSelection selectMenu) {
+        this.selectMenu = selectMenu;
+    }
+
     public Image[] createButtonImg(String name) throws IOException {
         Image img1, img2;
-        InputStream in1 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/"+ name + "/normal.png");
+        InputStream in1 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/" + name + "/normal.png");
         img1 = ImageIO.read(in1);
-        InputStream in2 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/"+ name + "/mouseOver.png");
+        InputStream in2 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/" + name + "/mouseOver.png");
         img2 = ImageIO.read(in2);
         return new java.awt.Image[] {
                 img1, img2
@@ -49,27 +53,27 @@ public class BackButton extends JPanel implements MouseListener {
 
     public void paint(Graphics g) {
         this.setOpaque(false); // 背景透明
-        if (enabled){
+        if (enabled) {
             g.drawImage(currentImage, this.getX(), this.getY(), this.getWidth(), this.getHeight(), null);
         }
     }
 
-
     public boolean isEnabled() {
         return enabled;
     }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
-    public Image getCurrentImage(){
+    public Image getCurrentImage() {
         return currentImage;
     }
 
-
-    public Integer getCurrentImageWidth(){
-        return  currentImage.getWidth(null);
+    public Integer getCurrentImageWidth() {
+        return currentImage.getWidth(null);
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("Remove");
@@ -82,7 +86,6 @@ public class BackButton extends JPanel implements MouseListener {
         tutoUI.frame.getContentPane().add(menu, BorderLayout.CENTER);
         tutoUI.frame.getContentPane().invalidate();
         tutoUI.frame.getContentPane().validate();
-
 
     }
 

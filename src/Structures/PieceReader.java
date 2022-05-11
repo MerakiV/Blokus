@@ -30,9 +30,10 @@ public class PieceReader {
     int k; //counter of columns
     char currentChar;
 
-    PieceReader() throws FileNotFoundException {
+    public PieceReader() throws FileNotFoundException {
         f = new File("resources/pieces/normal.txt");
         sc = new Scanner(f);
+        readPieces();
     }
 
     public void readPieces(){

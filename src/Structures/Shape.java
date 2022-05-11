@@ -25,7 +25,10 @@ public class Shape {
 		}
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
-				if (isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i,j)); }
+				if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i-1, j-1)); }
+				if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(1).add(new Tile(i-1, j+1)); }
+				if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(2).add(new Tile(i+1, j+1)); }
+				if (isEmpty(i+1, j) && isEmpty(i, j-1) && isEmpty(i+1, j-1)) { avaliableCorners.get(3).add(new Tile(i+1, j-1)); }
 			}
 		}
 	}
@@ -60,7 +63,7 @@ public class Shape {
 			}
 		}
 
-		return new Shape(Ncol, Nlin, anchorX, anchorY, tab);
+		return new Shape(Nlin, Ncol, Nlin - anchorX - 1, anchorY, tab);
 	}
 
 	public Shape flipH() {
@@ -73,11 +76,11 @@ public class Shape {
 			}
 		}
 
-		return new Shape(Ncol, Nlin, anchorX, anchorY, tab);
+		return new Shape(Nlin, Ncol, anchorX, Ncol - anchorY - 1, tab);
 	}
 
 	public Shape rotate90() {
-		boolean [][] tab = new boolean[Nlin][Ncol];
+		boolean [][] tab = new boolean[Ncol][Nlin];
 
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {

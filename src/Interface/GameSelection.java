@@ -3,30 +3,32 @@ package Interface;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-//import javafx.scene.effect.Blend;
+import javafx.scene.layout.Background;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
 import java.io.IOException;
 import java.io.InputStream;
 
 public class GameSelection extends JComponent {
     public JFrame frame;
-    BufferedImage backGround, logo, red, blue, green, yellow;
+    Image backGround, logo, red, blue, green, yellow, board;
     JComboBox selectP1, selectP2, selectC1P1, selectC2P1, selectC1P2, selectC2P2;
-    HoverButton PlayButton;
+    HoverButton playButton;
     BackButton back;
+    int height, width;
 
     JLabel selectColor, player1, player2;
 
     public GameSelection(JFrame f) throws IOException {
         frame = f;
-        backGround = chargeImg("images/boarder.png");
-        logo = chargeImg("images/LogoBlokus.png");
-        red = chargeImg("tiles/redBloc.png");
-        blue = chargeImg("tiles/blueBloc.png");
-        green = chargeImg("tiles/greenBloc.png");
-        yellow = chargeImg("tiles/yellowBloc.png");
+        backGround = new Image(frame, "images/border.png");
+        board = new Image(frame, "images/board.png");
+        logo = new Image(frame, "images/LogoBlokus.png");
+        red = new Image(frame, "tiles/redBloc.png");
+        blue = new Image(frame, "tiles/blueBloc.png");
+        green = new Image(frame, "tiles/greenBloc.png");
+        yellow = new Image(frame, "tiles/yellowBloc.png");
         initUIButton();
     }
 
@@ -42,7 +44,7 @@ public class GameSelection extends JComponent {
     }
 
     private void initUIButton() throws IOException {
-        BufferedImage[] colors = { red, blue, green, yellow };
+        Image[] colors = { red, blue, green, yellow };
         String[] players = { "Human", "AI Easy", "AI Medium", "AI Hard" };
 
         player1 = createLabel("Player 1");
@@ -54,39 +56,37 @@ public class GameSelection extends JComponent {
         selectC2P1 = createComboBox(colors);
         selectC1P2 = createComboBox(colors);
         selectC2P2 = createComboBox(colors);
-        // PlayButton = new HoverButton(this, "Play", frame.getWidth() / 2,
-        // frame.getHeight() * 0.9);
+        playButton = new HoverButton(this, "Continue", (int) (frame.getWidth() * 0.91),
+                (int) (frame.getHeight() * 0.8));
+        add(playButton);
     }
 
-    public BufferedImage chargeImg(String nom) {
-        BufferedImage img = null;
-        try { // on récupère l'image à l'adresse où on l’a mise…
-            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(nom);
-            img = ImageIO.read(in);
-            System.out.println("chargement des images ok");
-            // fin chargement des images.
-        } catch (Exception e) {
-            System.out.println("erreur dans le chargement des images:" + e);
-        }
-        return img;
-    }
-
+    // TO DO : Position the button Properly
     public void drawButtons(Graphics g) {
+        int frameWidth = frame.getWidth();
+        int frameHeight = frame.getHeight();
+        int imageWidth = playButton.getCurrentImageWidth();
 
+        g.drawImage(this.playButton.getCurrentImage(), (frameWidth - imageWidth) / 2, (int) (frameHeight * 0.78), this);
     }
 
     public void drawBg(Graphics g) {
-        g.drawImage(backGround, 0, 0, frame.getWidth(), frame.getHeight(), null);
-        g.drawImage(logo, (frame.getWidth() - logo.getWidth(null)) / 2, (int) (frame.getHeight() * 0.07), null);
+        int frameWidth = frame.getWidth();
+        int frameHeight = frame.getHeight();
+
+        backGround.drawImg(g, 0, 0, frameWidth, frameHeight);
+        logo.drawImg(g, (frameWidth - logo.getWidth()) / 2, (int) (frameHeight * 0.07), logo.getWidth(),
+                logo.getHeight());
     }
 
     public void drawBoard(Graphics g) {
-        BufferedImage board = chargeImg("images/board.png");
-        int boardWidth = frame.getWidth() / 4;
-        int boardHeight = frame.getWidth() / 4;
+        int frameWidth = frame.getWidth();
+        int frameHeight = frame.getHeight();
 
-        g.drawImage(board, (frame.getWidth() - boardWidth) / 2, (frame.getHeight() - boardHeight) / 2, boardWidth,
-                boardHeight, null);
+        int boardWidth = frameWidth / 4;
+        int boardHeight = frameWidth / 4;
+        board.drawImg(g, (frameWidth - boardWidth) / 2, (frameHeight - boardHeight) / 2, boardWidth,
+                boardHeight);
     }
 
     public void paintComponent(Graphics g) {
