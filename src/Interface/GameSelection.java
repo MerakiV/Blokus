@@ -12,21 +12,23 @@ import java.io.InputStream;
 
 public class GameSelection extends JComponent {
     public JFrame frame;
-    BufferedImage backGround, logo, red, blue, green, yellow;
+    Image backGround, logo, red, blue, green, yellow, board;
     JComboBox selectP1, selectP2, selectC1P1, selectC2P1, selectC1P2, selectC2P2;
     HoverButton PlayButton;
     BackButton back;
+    int height, width;
 
     JLabel selectColor, player1, player2;
 
     public GameSelection(JFrame f) throws IOException {
         frame = f;
-        backGround = chargeImg("images/boarder.png");
-        logo = chargeImg("images/LogoBlokus.png");
-        red = chargeImg("tiles/redBloc.png");
-        blue = chargeImg("tiles/blueBloc.png");
-        green = chargeImg("tiles/greenBloc.png");
-        yellow = chargeImg("tiles/yellowBloc.png");
+        backGround = new Image(frame,"images/border.png");
+        logo = new Image(frame,"images/LogoBlokus.png");
+        red = new Image(frame,"tiles/RedBloc.png");
+        blue = new Image(frame,"tiles/BlueBloc.png");
+        green = new Image(frame,"tiles/GreenBloc.png");
+        yellow = new Image(frame,"tiles/YellowBloc.png");
+        board = new Image(frame,"images/board.png");
         initUIButton();
     }
 
@@ -42,7 +44,7 @@ public class GameSelection extends JComponent {
     }
 
     private void initUIButton() throws IOException {
-        BufferedImage[] colors = { red, blue, green, yellow };
+        Image[] colors = { red, blue, green, yellow };
         String[] players = { "Human", "AI Easy", "AI Medium", "AI Hard" };
 
         player1 = createLabel("Player 1");
@@ -58,35 +60,25 @@ public class GameSelection extends JComponent {
         // frame.getHeight() * 0.9);
     }
 
-    public BufferedImage chargeImg(String nom) {
-        BufferedImage img = null;
-        try { // on récupère l'image à l'adresse où on l’a mise…
-            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(nom);
-            img = ImageIO.read(in);
-            System.out.println("chargement des images ok");
-            // fin chargement des images.
-        } catch (Exception e) {
-            System.out.println("erreur dans le chargement des images:" + e);
-        }
-        return img;
-    }
-
     public void drawButtons(Graphics g) {
 
     }
 
     public void drawBg(Graphics g) {
-        g.drawImage(backGround, 0, 0, frame.getWidth(), frame.getHeight(), null);
-        g.drawImage(logo, (frame.getWidth() - logo.getWidth(null)) / 2, (int) (frame.getHeight() * 0.07), null);
+        height = frame.getHeight();
+        width = frame.getWidth();
+
+        backGround.drawImg(g,0, 0, width,height);
+        logo.drawImg(g, (int)(width * 0.375) ,(int)(height * 0.05), (int)(width * 0.25), (int)(height * 0.25));
     }
 
     public void drawBoard(Graphics g) {
-        BufferedImage board = chargeImg("images/board.png");
+        height = frame.getHeight();
+        width = frame.getWidth();
         int boardWidth = frame.getWidth() / 4;
         int boardHeight = frame.getWidth() / 4;
 
-        g.drawImage(board, (frame.getWidth() - boardWidth) / 2, (frame.getHeight() - boardHeight) / 2, boardWidth,
-                boardHeight, null);
+        board.drawImg(g,(width - boardWidth) / 2, (height - boardHeight) / 2, boardWidth, boardHeight);
     }
 
     public void paintComponent(Graphics g) {

@@ -26,7 +26,7 @@ public class TutorialInterface extends JComponent {
         String lg = "images/LogoBlokus.png";
         backGround = new Image(frame, bg);
         logo = new Image(frame, lg);
-        this.back = new BackButton("back", (int) (width*0.05), (int) (height*0.08));
+        this.back = new BackButton("Back", (int) (width*0.05), (int) (height*0.08));
         add(this.back);
 
         //this.tuto = new Tutorial();
