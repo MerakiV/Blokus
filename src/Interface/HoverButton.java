@@ -32,7 +32,7 @@ public class HoverButton extends JPanel{
         this.normalImage = this.img[0];
         this.rolloverImage = this.img[1];
         this.currentImage = normalImage;
-        this.setBounds(x, y, this.img[0].getWidth(null), this.img[0].getHeight(null));
+        this.setBounds(x-202, y, this.img[0].getWidth(null), this.img[0].getHeight(null));
         System.out.println(x+ " " +y);
         this.addMouseListener(new MenuMouseAdapter(this, this.menuUI));
     }
@@ -66,7 +66,8 @@ public class HoverButton extends JPanel{
         // Hovered Image
         this.rolloverImage = this.img[1];
         this.currentImage = normalImage;
-        this.setBounds(x, y, normalImage.getWidth(null), normalImage.getHeight(null));
+//        this.setBounds(x, y, normalImage.getWidth(null), normalImage.getHeight(null));
+        setButtonBound(x,y);
         this.addMouseListener(new NGMouseAdapter(this, this.selectMenu));
     }
 
@@ -81,6 +82,9 @@ public class HoverButton extends JPanel{
         this.addMouseListener(new MenuMouseAdapter(this, this.tutoUI));
     }
 
+    public void setButtonBound(Integer x, Integer y){
+        this.setBounds(x-202, y, normalImage.getWidth(null), normalImage.getHeight(null));
+    }
     public void paint(Graphics g) {
         this.setOpaque(false);
         if (enabled) {
