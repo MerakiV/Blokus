@@ -12,14 +12,15 @@ import javax.swing.*;
 
 public class GameInterface implements Runnable {
     private JFrame frame;
-    //private GamePlay menu;
-    private MenuInterface menu;
+    // private GamePlay menu;
+    // private MenuInterface menu;
+    private GameSelection menu;
 
-    public static void start(){
+    public static void start() {
         SwingUtilities.invokeLater(new GameInterface());
     }
 
-    public void run(){
+    public void run() {
         frame = new JFrame("Blokus");
         frame.setName("Blokus");
         frame.setTitle("Blokus");
@@ -27,12 +28,14 @@ public class GameInterface implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setSize(1920, 1080);
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         frame.getContentPane().setBackground(Color.white);
         frame.setVisible(true);
 
         try {
-            //menu = new GamePlay(frame);
-            menu = new MenuInterface(frame);
+            // menu = new GamePlay(frame);
+            // menu = new MenuInterface(frame);
+            menu = new GameSelection(frame);
         } catch (IOException e) {
             e.printStackTrace();
         }

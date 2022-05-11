@@ -12,6 +12,7 @@ import java.io.InputStream;
 
 public class GameSelection extends JComponent {
     public JFrame frame;
+    JPanel panel;
     Image backGround, logo, red, blue, green, yellow, board;
     JComboBox selectP1, selectP2, selectC1P1, selectC2P1, selectC1P2, selectC2P2;
     HoverButton playButton;
@@ -22,6 +23,7 @@ public class GameSelection extends JComponent {
 
     public GameSelection(JFrame f) throws IOException {
         frame = f;
+        panel = new JPanel();
         backGround = new Image(frame, "images/border.png");
         board = new Image(frame, "images/board.png");
         logo = new Image(frame, "images/LogoBlokus.png");
@@ -56,9 +58,9 @@ public class GameSelection extends JComponent {
         selectC2P1 = createComboBox(colors);
         selectC1P2 = createComboBox(colors);
         selectC2P2 = createComboBox(colors);
-        playButton = new HoverButton(this, "Continue", (int) (frame.getWidth() * 0.91),
-                (int) (frame.getHeight() * 0.8));
-        add(playButton);
+        add(this.panel);
+        playButton = new HoverButton(this, "Play", (frame.getWidth() - 290) / 2, (int) (frame.getHeight() * 0.8));
+        add(this.playButton);
     }
 
     // TO DO : Position the button Properly
@@ -67,7 +69,7 @@ public class GameSelection extends JComponent {
         int frameHeight = frame.getHeight();
         int imageWidth = playButton.getCurrentImageWidth();
 
-        g.drawImage(this.playButton.getCurrentImage(), (frameWidth - imageWidth) / 2, (int) (frameHeight * 0.78), this);
+        g.drawImage(this.playButton.getCurrentImage(), (frameWidth - imageWidth) / 2, (int) (frameHeight * 0.8), this);
     }
 
     public void drawBg(Graphics g) {
@@ -87,6 +89,9 @@ public class GameSelection extends JComponent {
         int boardHeight = frameWidth / 4;
         board.drawImg(g, (frameWidth - boardWidth) / 2, (frameHeight - boardHeight) / 2, boardWidth,
                 boardHeight);
+
+        // panel.add(selectColor, (frameWidth - selectColor.getWidth()) / 2, (int)
+        // (frameHeight * 0.4));
     }
 
     public void paintComponent(Graphics g) {
