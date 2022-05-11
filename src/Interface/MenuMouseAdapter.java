@@ -21,7 +21,7 @@ public class MenuMouseAdapter implements MouseListener {
         menuUi = m;
     }
 
-    BlokusMouseAdapter(HoverButton b, TutorialInterface g) {
+    MenuMouseAdapter(HoverButton b, TutorialInterface g) {
         current = b;
         tutoUi = g;
     }

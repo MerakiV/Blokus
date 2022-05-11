@@ -10,7 +10,7 @@ import java.io.InputStream;
 public class TutorialInterface extends JComponent {
     Image backGround;
     Image logo;
-    BackButton back;
+    HoverButton back;
     public JFrame frame;
     public MenuInterface menuUi;
     //Tutorial tuto;
