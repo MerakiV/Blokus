@@ -41,7 +41,7 @@ public class Game2P extends Game{
     }
 
     public void nextTurn(){
-        //pushInPastStack(); // TBI incomplete
+        pushToPast();
         if(currentPlayer == p1.pcol1){
             currentPlayer = p2.pcol1;
             currentPlayer2P = p2;
@@ -58,6 +58,7 @@ public class Game2P extends Game{
             currentPlayer = p1.pcol1;
             currentPlayer2P = p1;
         }
+        history.future.clear();
     }
 
 
