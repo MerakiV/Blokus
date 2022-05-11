@@ -50,7 +50,7 @@ public class MenuInterface extends JComponent {
     public void paintComponent(Graphics g) {
         height = frame.getHeight();
         width = frame.getWidth();
-        backGround.drawImg(g,0, 0, width-50,height-50);
+        backGround.drawImg(g,0, 0, width,height);
         drawButtons(g);
     }
 

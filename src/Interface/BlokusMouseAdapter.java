@@ -11,6 +11,7 @@ public class BlokusMouseAdapter implements MouseListener {
     MenuInterface menuUi;
     GamePlay game;
     TutorialInterface tuto;
+    GameSelection gameSelec;
 
     BlokusMouseAdapter(HoverButton b, MenuInterface m) {
         current = b;
@@ -32,6 +33,17 @@ public class BlokusMouseAdapter implements MouseListener {
                 ex.printStackTrace();
             }
             menuUi.frame.getContentPane().add(tuto, BorderLayout.CENTER);
+            menuUi.frame.getContentPane().invalidate();
+            menuUi.frame.getContentPane().validate();
+        }
+        else if(current.name == "NG"){
+            menuUi.frame.getContentPane().remove(menuUi);
+            try {
+                gameSelec = new GameSelection(menuUi.frame);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            menuUi.frame.getContentPane().add(gameSelec, BorderLayout.CENTER);
             menuUi.frame.getContentPane().invalidate();
             menuUi.frame.getContentPane().validate();
         }
