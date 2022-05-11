@@ -80,7 +80,7 @@ public class Shape {
 	}
 
 	public Shape rotate90() {
-		boolean [][] tab = new boolean[Nlin][Ncol];
+		boolean [][] tab = new boolean[Ncol][Nlin];
 
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
