@@ -13,8 +13,8 @@ import javax.swing.*;
 public class GameInterface implements Runnable {
     private JFrame frame;
     // private GamePlay menu;
-    // private MenuInterface menu;
-    private GameSelection menu;
+    private MenuInterface menu;
+    // private GameSelection menu;
 
     public static void start() {
         SwingUtilities.invokeLater(new GameInterface());
@@ -34,8 +34,8 @@ public class GameInterface implements Runnable {
 
         try {
             // menu = new GamePlay(frame);
-            // menu = new MenuInterface(frame);
-            menu = new GameSelection(frame);
+            menu = new MenuInterface(frame);
+            // menu = new GameSelection(frame);
         } catch (IOException e) {
             e.printStackTrace();
         }
