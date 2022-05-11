@@ -1,4 +1,4 @@
-package Structures;
+import Structures.PieceReader;
 
 import java.util.Arrays;
 
