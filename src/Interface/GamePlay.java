@@ -7,19 +7,12 @@ import java.io.IOException;
 public class GamePlay extends JComponent {
     // Background images
     Image backGround;
-    String bg;
     Image logo;
-    String lo;
     Image board;
-    String tableau;
     Image redBackground;
-    String red;
     Image yellowBackground;
-    String yellow;
     Image greenBackground;
-    String green;
     Image blueBackground;
-    String blue;
     public HoverButton menu;
     public HoverButton hint;
     public HoverButton vertical;
@@ -34,21 +27,14 @@ public class GamePlay extends JComponent {
     public JFrame frame;
 
     public GamePlay(JFrame f) throws IOException{
-        bg = "images/border.png";
-        lo = "images/logo.png";
-        tableau = "images/board.png";
-        red = "images/redBackground.png";
-        yellow = "images/yellowBackground.png";
-        green = "images/greenBackground.png";
-        blue = "images/blueBackground.png";
         frame = f;
-        backGround = new Image(frame, bg);
-        logo = new Image(frame, lo);
-        board = new Image(frame, tableau);
-        redBackground = new Image(frame, red);
-        yellowBackground = new Image(frame, yellow);
-        greenBackground = new Image(frame, green);
-        blueBackground = new Image(frame, blue);
+        backGround = new Image(frame, "images/border.png");
+        logo = new Image(frame, "images/logo.png");
+        board = new Image(frame, "images/board.png");
+        redBackground = new Image(frame, "images/redBackground.png");
+        yellowBackground = new Image(frame, "images/yellowBackground.png");
+        greenBackground = new Image(frame, "images/greenBackground.png");
+        blueBackground = new Image(frame, "images/blueBackground.png");
         initialiseButtons();
     }
 
@@ -57,11 +43,17 @@ public class GamePlay extends JComponent {
         width = frame.getWidth();
 
         menu = new HoverButton(this, "Menu", (int) (width * 0.91), (int)(height * 0.08));
+        add(this.menu);
         hint = new HoverButton(this, "Hints", (int)(width * 0.05), (int)(height * 0.08));
-        vertical = new HoverButton(this, "Vertical", 1300, 900);
-        horizontal = new HoverButton(this, "Horizontal", 1200, 900);
-        clockwise = new HoverButton(this, "Clockwise", 1100, 160);
-        counterclockwise= new HoverButton(this, "CounterClockwise", 1000, 160);
+        add(this.hint);
+        vertical = new HoverButton(this, "Vertical", (int) (width * 0.65) - 50, (int)(height * 0.83));
+        add(this.vertical);
+        horizontal = new HoverButton(this, "Horizontal", (int) (width * 0.35) - 50, (int)(height * 0.83));
+        add(this.horizontal);
+        clockwise = new HoverButton(this, "Clockwise", (int) (width * 0.55) - 50, (int)(height * 0.83));
+        add(this.clockwise);
+        counterclockwise= new HoverButton(this, "CounterClockwise", (int) (width * 0.45)- 50, (int)(height * 0.83));
+        add(this.counterclockwise);
     }
 
     public void paintComponent(Graphics g){

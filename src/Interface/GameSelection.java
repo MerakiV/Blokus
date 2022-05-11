@@ -12,10 +12,11 @@ import java.io.InputStream;
 
 public class GameSelection extends JComponent {
     public JFrame frame;
-    Image backGround, board, logo, red, blue, green, yellow;
+    Image backGround, logo, red, blue, green, yellow, board;
     JComboBox selectP1, selectP2, selectC1P1, selectC2P1, selectC1P2, selectC2P2;
     HoverButton playButton;
     BackButton back;
+    int height, width;
 
     JLabel selectColor, player1, player2;
 
@@ -60,6 +61,7 @@ public class GameSelection extends JComponent {
         add(playButton);
     }
 
+    // TO DO : Position the button Properly
     public void drawButtons(Graphics g) {
         int frameWidth = frame.getWidth();
         int frameHeight = frame.getHeight();

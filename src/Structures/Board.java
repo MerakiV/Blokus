@@ -17,7 +17,7 @@ public class Board {
     //        the second represents the orientation of the corner (same as before).
     ArrayList<ArrayList<HashSet<Tile>>> avaliableCorners;
 
-    Board(Color tlColor, Color trColor, Color brColor, Color blColor) {
+    public Board(Color tlColor, Color trColor, Color brColor, Color blColor) {
         grid = new Color[size][size];
         for (int i=0; i<size; i++) {
             for (int j=0; j<size; j++) {
