@@ -32,7 +32,7 @@ public class HoverButton extends JPanel{
         this.currentImage = normalImage;
         this.setBounds(x, y, this.img[0].getWidth(null), this.img[0].getHeight(null));
         System.out.println(x+ " " +y);
-        this.addMouseListener(new BlokusMouseAdapter(this, this.menuUI));
+        this.addMouseListener(new MenuMouseAdapter(this, this.menuUI));
     }
 
     public HoverButton(GamePlay gameMenu ,String name, int x, int y) throws IOException {
@@ -44,10 +44,10 @@ public class HoverButton extends JPanel{
         Image newNormal = this.img[0].getScaledInstance(newS, newS, Image.SCALE_DEFAULT);
         this.normalImage = newNormal;
         // Hovered Image
-        this.rolloverImage = this.img[1];
+        this.rolloverImage = newNormal.getScaledInstance((int)(newS*1.1), (int) (newS * 1.1), Image.SCALE_DEFAULT);
         this.currentImage = normalImage;
         this.setBounds(x, y, newS, newS);
-        this.addMouseListener(new BlokusMouseAdapter(this, this.gameMenu));
+        this.addMouseListener(new GameMouseAdapter(this, this.gameMenu));
     }
 
     public void paint(Graphics g) {
@@ -87,4 +87,7 @@ public class HoverButton extends JPanel{
     }
 
 
+    public int getCurrentImageHeight() {
+        return currentImage.getHeight(null);
+    }
 }

@@ -37,6 +37,6 @@ public class GameInterface implements Runnable {
             e.printStackTrace();
         }
         frame.getContentPane().add(menu, BorderLayout.CENTER);
-            }
+    }
 
 }

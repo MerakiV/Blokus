@@ -5,20 +5,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
-public class BlokusMouseAdapter implements MouseListener {
+public class MenuMouseAdapter implements MouseListener {
 
     HoverButton current;
     MenuInterface menuUi;
-    GamePlay game;
     TutorialInterface tuto;
+    GameSelection gameSetting;
 
-    BlokusMouseAdapter(HoverButton b, MenuInterface m) {
+    MenuMouseAdapter(HoverButton b, MenuInterface m) {
         current = b;
         menuUi = m;
-    }
-    BlokusMouseAdapter(HoverButton b, GamePlay g) {
-        current = b;
-        game = g;
     }
 
     @Override
@@ -34,6 +30,13 @@ public class BlokusMouseAdapter implements MouseListener {
             menuUi.frame.getContentPane().add(tuto, BorderLayout.CENTER);
             menuUi.frame.getContentPane().invalidate();
             menuUi.frame.getContentPane().validate();
+        } else if (current.name == "NG"){
+            menuUi.frame.getContentPane().remove(menuUi);
+            try {
+                gameSetting = new GameSelection(menuUi.frame);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
