@@ -3,8 +3,11 @@ package Structures;
 import Players.Player;
 import Players.Player2P;
 
+import java.util.List;
+
 public abstract class Game {
     Board board;
+    List<Player> players;
     Player currentPlayer;
     Color currentColor;
 
@@ -16,6 +19,8 @@ public abstract class Game {
     public Player getCurrentPlayer(){return currentPlayer;}
 
     public Color getCurrentColor(){return currentColor;}
+
+    public List<Player> getPlayerList(){return players;}
 
     public Board getBoard(){return board;}
 

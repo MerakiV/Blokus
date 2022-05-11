@@ -1,7 +1,10 @@
 package Structures;
 
+import Players.Player;
 import Players.Player2P;
 import Players.PlayerHuman2P;
+
+import java.util.ArrayList;
 
 public class Game2P extends Game{
     public Player2P p1,p2;
@@ -22,6 +25,14 @@ public class Game2P extends Game{
         //temp human v human only
         p1 = new PlayerHuman2P(set.p1c1, set.p1c2);
         p2 = new PlayerHuman2P(set.p2c1, set.p2c2);
+
+        //put players in player list
+        players = new ArrayList<Player>();
+        players.add(p1.pcol1);
+        players.add(p2.pcol1);
+        players.add(p1.pcol2);
+        players.add(p2.pcol2);
+
 
         //set p1 as current player
         currentPlayer2P = p1;
