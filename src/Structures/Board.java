@@ -53,6 +53,16 @@ public class Board {
         return grid[i][j];
     }
 
+    // Returns the index of the corner associated to this color, or -1 if there is none.
+    public int getCorner(Color col) {
+        for (int i=0; i<4; i++) {
+            if (col==cornerColors[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public boolean canPut(Piece p, int color, int x, int y) {
         Shape s = p.getShape();
         // If the position is not on the grid :
