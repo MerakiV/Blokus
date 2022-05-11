@@ -12,7 +12,7 @@ import javax.swing.*;
 
 public class GameInterface implements Runnable {
     private JFrame frame;
-//    private GamePlay menu;
+    //private GamePlay menu;
     private MenuInterface menu;
 
     public static void start(){
@@ -31,7 +31,7 @@ public class GameInterface implements Runnable {
         frame.setVisible(true);
 
         try {
-//            menu = new GamePlay(frame);
+            //menu = new GamePlay(frame);
             menu = new MenuInterface(frame);
         } catch (IOException e) {
             e.printStackTrace();

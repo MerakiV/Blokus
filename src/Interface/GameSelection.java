@@ -56,12 +56,17 @@ public class GameSelection extends JComponent {
         selectC2P1 = createComboBox(colors);
         selectC1P2 = createComboBox(colors);
         selectC2P2 = createComboBox(colors);
-        // PlayButton = new HoverButton(this, "Play", frame.getWidth() / 2,
-        // frame.getHeight() * 0.9);
+        // TO DO : create image for Play
+        PlayButton = new HoverButton(this, "Continue", frame.getWidth() / 2, (int)(frame.getHeight() * 0.9));
+        add(this.PlayButton);
     }
 
+    // TO DO : Position the button Properly
     public void drawButtons(Graphics g) {
-
+        height = frame.getHeight();
+        width = frame.getWidth();
+        int iconSize = PlayButton.getCurrentImageWidth()/2;
+        g.drawImage(this.PlayButton.getCurrentImage(), (int) (width * 0.55) - iconSize, (int)(height * 0.83), this);
     }
 
     public void drawBg(Graphics g) {
