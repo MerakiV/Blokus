@@ -8,6 +8,8 @@ public abstract class Game {
     Player currentPlayer;
     Color currentColor;
 
+    History history;
+
     //to be implemented
     public boolean canBePlaced(Piece p){return true;}
 
@@ -17,5 +19,23 @@ public abstract class Game {
 
     public Board getBoard(){return board;}
 
+    public void undo(){
+        GameState previous = history.undo();
+        board = previous.board;
+        currentPlayer = previous.player;
+    }
+
+    public void redo(){
+
+        GameState next = history.redo();
+        board = next.board;
+        currentPlayer = next.player;
+    }
+
+    public void PushInPastStack(){
+    }
+
     public abstract void nextTurn();
+
+
 }

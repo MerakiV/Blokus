@@ -15,7 +15,7 @@ public class Board {
     // For every color and every direction, a set of all potential corners avaliable for putting a new piece
     // Note : the first index relates to the color of the pieces (and its position in cornerColors)
     //        the second represents the orientation of the corner (same as before).
-    ArrayList<ArrayList<HashSet<Tile>>> avaliableCorners;
+    ArrayList<ArrayList<HashSet<Tile>>> availableCorners;
 
     public Board(Color tlColor, Color trColor, Color brColor, Color blColor) {
         grid = new Color[size][size];
@@ -31,18 +31,18 @@ public class Board {
         cornerColors[2] = brColor;
         cornerColors[3] = blColor;
 
-        avaliableCorners = new ArrayList<>(4);
+        availableCorners = new ArrayList<>(4);
         for (int i=0; i<4; i++) {
-            avaliableCorners.add(new ArrayList<>(4));
+            availableCorners.add(new ArrayList<>(4));
             for (int j=0; j<4; j++) {
-                avaliableCorners.get(i).add(new HashSet<>());
+                availableCorners.get(i).add(new HashSet<>());
             }
         }
 
-        avaliableCorners.get(0).get(0).add(new Tile(0,      0     ));
-        avaliableCorners.get(1).get(1).add(new Tile(0,      size-1));
-        avaliableCorners.get(2).get(2).add(new Tile(size-1, 0     ));
-        avaliableCorners.get(3).get(3).add(new Tile(size-1, size-1));
+        availableCorners.get(0).get(0).add(new Tile(0,      0     ));
+        availableCorners.get(1).get(1).add(new Tile(0,      size-1));
+        availableCorners.get(2).get(2).add(new Tile(size-1, 0     ));
+        availableCorners.get(3).get(3).add(new Tile(size-1, size-1));
     }
 
     // Returns the color on the given indexes, or WHITE if it's out of bounds.
@@ -77,7 +77,7 @@ public class Board {
 
                     t = new Tile(x+i, y+j);
                     for (int k=0; foundCorner || k<4; k++) {
-                        foundCorner = foundCorner || avaliableCorners.get(color).get(k).contains(t);
+                        foundCorner = foundCorner || availableCorners.get(color).get(k).contains(t);
                     }
                 }
             }
@@ -100,21 +100,21 @@ public class Board {
                     for (int k=0; k<4; k++) {
                         for (int l=0; l<4; l++) {
                             // Removes the tiles this piece is occupying if it's an avaliable corner for any color.
-                            avaliableCorners.get(k).get(l).remove(t);
+                            availableCorners.get(k).get(l).remove(t);
                         }
                     }
 
                     if (x+i>0      && y+j>0      && s.isEmpty(i-1, j) && s.isEmpty(i, j-1) && s.isEmpty(i-1, j-1) && grid[x+i-1][y+j-1]==Color.WHITE) {
-                        avaliableCorners.get(color).get(0).add(new Tile(x+i-1, y+j-1));
+                        availableCorners.get(color).get(0).add(new Tile(x+i-1, y+j-1));
                     }
                     if (x+i>0      && y+j<size-1 && s.isEmpty(i-1, j) && s.isEmpty(i, j+1) && s.isEmpty(i-1, j+1) && grid[x+i-1][y+j+1]==Color.WHITE) {
-                        avaliableCorners.get(color).get(1).add(new Tile(x+i-1, y+j+1));
+                        availableCorners.get(color).get(1).add(new Tile(x+i-1, y+j+1));
                     }
                     if (x+i<size-1 && y+j<size-1 && s.isEmpty(i+1, j) && s.isEmpty(i, j+1) && s.isEmpty(i+1, j+1) && grid[x+i+1][y+j+1]==Color.WHITE) {
-                        avaliableCorners.get(color).get(0).add(new Tile(x+i+1, y+j+1));
+                        availableCorners.get(color).get(0).add(new Tile(x+i+1, y+j+1));
                     }
                     if (x+i<size-1 && y+j>0      && s.isEmpty(i+1, j) && s.isEmpty(i, j-1) && s.isEmpty(i+1, j-1) && grid[x+i+1][y+j-1]==Color.WHITE) {
-                        avaliableCorners.get(color).get(3).add(new Tile(x+i+1, y+j-1));
+                        availableCorners.get(color).get(3).add(new Tile(x+i+1, y+j-1));
                     }
                 }
             }
@@ -158,7 +158,7 @@ public class Board {
                             t = new Tile(i,j);
                             b = false;
                             for (int k=0; !b && k<4; k++) {
-                                b = b || avaliableCorners.get(seeFor).get(k).contains(t);
+                                b = b || availableCorners.get(seeFor).get(k).contains(t);
                             }
                             if (b) {
                                 System.out.print("x");
