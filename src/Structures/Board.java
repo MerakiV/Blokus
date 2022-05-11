@@ -25,6 +25,7 @@ public class Board {
             }
         }
 
+        cornerColors = new Color[4];
         cornerColors[0] = tlColor;
         cornerColors[1] = trColor;
         cornerColors[2] = brColor;
