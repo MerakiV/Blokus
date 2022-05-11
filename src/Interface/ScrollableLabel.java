@@ -25,12 +25,12 @@ public class ScrollableLabel extends JLabel implements Scrollable {
     }
 
     public boolean getScrollableTracksViewportHeight() {
-        return false;
+        return true;
 
     }
 
     public boolean getScrollableTracksViewportWidth() {
-        return false;
+        return true;
 
     }
 

@@ -17,8 +17,10 @@ public class TutorialInterface extends JComponent {
     int height;
     int width;
     ImageIcon ii;
+    java.awt.Image img;
     JScrollPane jsp;
-
+    ScrollableLabel sc;
+    JPanel panel;
 
     public TutorialInterface(JFrame f, MenuInterface m) throws IOException {
         System.out.println("Tuto");
@@ -31,15 +33,23 @@ public class TutorialInterface extends JComponent {
         this.back = new HoverButton(this,"Back", (int) (frame.getWidth()*0.05), (int) (frame.getHeight()*0.08));
         add(this.back);
 
-        JPanel panel=new JPanel();//创建一个普通面板
+        panel=new JPanel();//创建一个普通面板
         panel.setBounds((frame.getWidth()/2) - ( (int) (frame.getWidth()*0.6)/2),(frame.getHeight()/2) - ( (int) (frame.getHeight()*0.6)/2),(int) (frame.getWidth()*0.6),(int) (frame.getHeight()*0.6));//设置普通面板位置和大小，不能省略
-        panel.setLayout(new BorderLayout());//让JTextArea平铺整个JPanel
+        panel.setLayout(new BorderLayout());
         ii = new ImageIcon("resources/images/tuto.png");
 
-        panel.add(new ScrollableLabel(ii));
+        sc = new ScrollableLabel(ii);
+
+//        int widthTuto = (int) (frame.getWidth()*0.6), heightTuto = -1;
+//        img = ii.getImage();
+//        img = img.getScaledInstance(widthTuto, heightTuto, java.awt.Image.SCALE_DEFAULT);
+//        ii.setImage(img);
+//        sc.setIcon(ii);
+//        panel.add(sc);
+
+
         jsp = new JScrollPane();
         jsp.getViewport().add(panel);
-//        jsp.setSize(800,600);
         jsp.setBounds((frame.getWidth()/2) - ( (int) (frame.getWidth()*0.6)/2),(frame.getHeight()/2) - ( (int) (frame.getHeight()*0.6)/2),(int) (frame.getWidth()*0.6),(int) (frame.getHeight()*0.6));
         Container contentPane = frame.getContentPane();
         contentPane.add(jsp);
@@ -54,6 +64,13 @@ public class TutorialInterface extends JComponent {
         backGround.drawImg(g,0, 0, width,height);
         logo.drawImg(g,(width/2)- (logo.getWidth()/2), 15, logo.getWidth(), logo.getHeight() );
         g.drawImage(this.back.getCurrentImage(), (int) (width*0.05), (int) (height*0.08), this);
+        //for tuto img adaptive
+        int widthTuto = (int) (frame.getWidth()*0.6), heightTuto = -1;
+        img = ii.getImage();
+        img = img.getScaledInstance(widthTuto, heightTuto, java.awt.Image.SCALE_DEFAULT);
+        ii.setImage(img);
+        sc.setIcon(ii);
+        panel.add(sc, BorderLayout.NORTH);
 
         jsp.setBounds((frame.getWidth()/2) - ( (int) (frame.getWidth()*0.6)/2),(frame.getHeight()/2) - ( (int) (frame.getHeight()*0.6)/2),(int) (frame.getWidth()*0.6),(int) (frame.getHeight()*0.6));
 
