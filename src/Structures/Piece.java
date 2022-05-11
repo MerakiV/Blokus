@@ -72,7 +72,7 @@ public class Piece {
 		fv = disp & (1 << 2);
 		fh = disp & (1 << 3);
 
-		newbit = (((fv^(fh >> 1)) == 0) ? ((r+1)%4) : ((r-1)%4));
+		newbit = (((fv^(fh >> 1)) == 0) ? ((r+1)%4) : ((r+3)%4));
 
 		disp = newbit | fv | fh;
 	}
@@ -83,7 +83,7 @@ public class Piece {
 		fv = disp & (1 << 2);
 		fh = disp & (1 << 3);
 
-		newbit = (((fv^(fh >> 1)) == 0) ? ((r-1)%4) : ((r+1)%4));
+		newbit = (((fv^(fh >> 1)) == 0) ? ((r+3)%4) : ((r+1)%4));
 
 		disp = newbit | fv | fh;
 	}
@@ -96,6 +96,11 @@ public class Piece {
 	}
 
 	public void printPiece() {
+		getShape().printShape();
+		System.out.println();
+	}
+
+	public void printPieceFull() {
 		Shape s;
 		int i = 0;
 		System.out.println("--All possible shapes :");

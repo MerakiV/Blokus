@@ -43,10 +43,18 @@ public class MenuInterface extends JComponent {
         add(this.exit);
     }
 
-    public void drawButtons(Graphics g){
+    private void resetBound(Integer x, Integer y){
+        this.newGame.setButtonBound(x, (int)(y * 0.35));
+        this.conti.setButtonBound(x, (int)(y * 0.45));
+        this.tutorial.setButtonBound(x, (int)(y * 0.55));
+        this.exit.setButtonBound(x, (int)(y * 0.65));
+    }
+
+    public void drawButtons(Graphics g) throws IOException {
         x = frame.getWidth()/2;
         y = frame.getHeight();
         int widthImage = this.newGame.getCurrentImageWidth() / 2;
+        resetBound(x, y);
         g.drawImage(this.newGame.getCurrentImage(), x- widthImage, (int)(y * 0.35), this);
         g.drawImage(this.conti.getCurrentImage(), x- widthImage, (int)(y * 0.45), this);
         g.drawImage(this.tutorial.getCurrentImage(), x- widthImage, (int)(y * 0.55), this);
@@ -59,7 +67,11 @@ public class MenuInterface extends JComponent {
         backGround.drawImg(g,0, 0, width,height);
         whiteBack.drawImg(g,(int)(width * 0.01), (int)(height * 0.01), (int)(width * 0.98), (int)(height * 0.98));
         logo.drawImg(g, (int)(width * 0.375) ,(int)(height * 0.05), (int)(width * 0.25), (int)(height * 0.25));
-        drawButtons(g);
+        try {
+            drawButtons(g);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

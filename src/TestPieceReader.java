@@ -1,6 +1,4 @@
-package Structures;
-
-import java.util.Arrays;
+import Structures.*;
 
 public class TestPieceReader {
 
@@ -10,8 +8,8 @@ public class TestPieceReader {
 
         pr.printPiecesList();
 
-        //PieceType pt = PieceType.ONE;
-        //System.out.println(pt);
+        PieceType pt = PieceType.ONE;
+        System.out.println(pt);
     }
 
 

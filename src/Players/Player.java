@@ -1,12 +1,45 @@
 package Players;
 
-import Structures.Board;
+import Structures.Color;
 import Structures.Piece;
+import Structures.PieceType;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Player {
-    protected int score;
-    protected ArrayList<Piece> pieces;
+    Color col;
+    List<Piece> pieces;
+    boolean isAI;
+
+    public Color getColor(){return col;}
+
+    public List<Piece> getPieces(){return pieces;}
+
+    public void printPlayer(){
+        System.out.println("Color : "+col.toString());
+
+        System.out.println("List of pieces:");
+
+        for (Piece p : pieces) {
+            System.out.println(p.getName());
+        }
+    }
+
+    /*
+    Takes piece from player's current list of pieces according to PieceType given in parameter.
+    If the piece is not in the list, returns null.
+     */
+    public Piece takePiece(PieceType pt){
+        Piece res;
+        for(Piece p : pieces){
+            if(p.getName().equals(pt)){
+                res = p;
+                pieces.remove(p);
+                return res;
+            }
+        }
+        System.out.println("Piece "+pt.toString()+" not found");
+        return null;
+    }
 
 }

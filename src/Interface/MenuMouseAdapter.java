@@ -9,12 +9,21 @@ public class MenuMouseAdapter implements MouseListener {
 
     HoverButton current;
     MenuInterface menuUi;
+    MenuInterface menu;
+    GamePlay game;
+    GameSelection selectMenu;
+    TutorialInterface tutoUi;
     TutorialInterface tuto;
     GameSelection gameSelec;
 
     MenuMouseAdapter(HoverButton b, MenuInterface m) {
         current = b;
         menuUi = m;
+    }
+
+    MenuMouseAdapter(HoverButton b, TutorialInterface g) {
+        current = b;
+        tutoUi = g;
     }
 
     @Override
@@ -40,6 +49,17 @@ public class MenuMouseAdapter implements MouseListener {
             menuUi.frame.getContentPane().add(gameSelec, BorderLayout.CENTER);
             menuUi.frame.getContentPane().invalidate();
             menuUi.frame.getContentPane().validate();
+        } else if (current.name == "Back" && tutoUi != null) {
+            System.out.println("Remove");
+            tutoUi.frame.getContentPane().removeAll();
+            try {
+                menu = new MenuInterface(tutoUi.frame);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            tutoUi.frame.getContentPane().add(menu, BorderLayout.CENTER);
+            tutoUi.frame.getContentPane().invalidate();
+            tutoUi.frame.getContentPane().validate();
         }
     }
 
@@ -56,13 +76,26 @@ public class MenuMouseAdapter implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         current.currentImage = current.rolloverImage;
-        menuUi.repaint();
+        if (current.name == "Back") {
+            if (tutoUi != null) {
+                tutoUi.repaint();
+            }
+        } else {
+            menuUi.repaint();
+        }
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         current.currentImage = current.normalImage;
-        menuUi.repaint();
+        if (current.name == "Back") {
+            if (tutoUi != null) {
+                tutoUi.repaint();
+            }
+        } else {
+            menuUi.repaint();
+        }
     }
 
 }

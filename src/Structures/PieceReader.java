@@ -7,7 +7,7 @@ import java.io.File;
 public class PieceReader {
     Piece piece;
     Shape shape;
-    Set<Piece> pieceList;
+    List<Piece> pieceList;
     PieceType pt;
     TileType tt;
     int Ncol;
@@ -36,9 +36,9 @@ public class PieceReader {
         readPieces();
     }
 
-    public void readPieces(){
+    void readPieces(){
 
-        pieceList = new HashSet<>();
+        pieceList = new ArrayList<>();
 
         /* Model of the file:
          *
@@ -72,7 +72,7 @@ public class PieceReader {
                 for (j = 2; j < tokenArgs.length - 1; j++) {
                     currentChar = tokenArgs[j].charAt(0);
                     if (currentChar == '#' || currentChar == 'X' || currentChar == '-') {
-                        for (k = 0; k < tokenArgs[j].length()-1; k++) {
+                        for (k = 0; k < tokenArgs[j].length(); k++) {
                             currentChar = tokenArgs[j].charAt(k);
                             if (currentChar == '#' || currentChar == 'X') {
                                 baseShape[j-2][k] = true;
@@ -107,17 +107,16 @@ public class PieceReader {
                 sc.nextLine(); //empty line
                 sc.nextLine(); //empty line
                 anchorFound = false;
-                System.out.println("Piece read successfully");
             }
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    public Set<Piece> getPiecesList(){
+    public List<Piece> getPiecesList(){
         return pieceList;
     }
-    public void setPiecesList(Set<Piece> p){ pieceList = p; }
+    public void setPiecesList(List<Piece> p){ pieceList = p; }
 
     public void printPiecesList(){
         Piece p;
@@ -127,7 +126,7 @@ public class PieceReader {
             p = value;
             System.out.println("----- Piece " + p.getName() + " : -----");
             System.out.println();
-            p.printPiece();
+            p.printPieceFull();
             System.out.println();
         }
     }
