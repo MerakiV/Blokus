@@ -1,10 +1,14 @@
 package Interface;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.io.InputStream;
+
+import java.awt.Image;
 
 
 public class BackButton extends JPanel implements MouseListener {
@@ -21,10 +25,10 @@ public class BackButton extends JPanel implements MouseListener {
     public String name = null;
     MenuInterface menu;
 
-    public BackButton(TutorialInterface tutoUI, String name, Integer x, Integer y) throws IOException {
+    public BackButton(String name, Integer x, Integer y) throws IOException {
         this.tutoUI = tutoUI;
-        this.name = name;//设置名称
-        this.img = this.tutoUI.menuUi.createButtonImg(name);
+        this.name = name;
+        this.img = createButtonImg(name);
         this.normalImage = this.img[0];
         this.rolloverImage = this.img[1];
         this.currentImage = normalImage;
@@ -32,11 +36,21 @@ public class BackButton extends JPanel implements MouseListener {
         this.addMouseListener(this);
     }
 
+    public Image[] createButtonImg(String name) throws IOException {
+        Image img1, img2;
+        InputStream in1 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/"+ name + "/normal.png");
+        img1 = ImageIO.read(in1);
+        InputStream in2 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/"+ name + "/mouseOver.png");
+        img2 = ImageIO.read(in2);
+        return new java.awt.Image[] {
+                img1, img2
+        };
+    }
+
     public void paint(Graphics g) {
         this.setOpaque(false); // 背景透明
         if (enabled){
-            g.drawImage(currentImage, this.getX(), this.getY(), this.getWidth(),
-                    this.getHeight(), this);
+            g.drawImage(currentImage, this.getX(), this.getY(), this.getWidth(), this.getHeight(), null);
         }
     }
 

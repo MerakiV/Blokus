@@ -3,15 +3,16 @@ package Interface;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import javafx.scene.effect.Blend;
+//import javafx.scene.effect.Blend;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class GameSelection extends JComponent {
     public JFrame frame;
-    Image backGround, logo, red, blue, green, yellow;
+    BufferedImage backGround, logo, red, blue, green, yellow;
     JComboBox selectP1, selectP2, selectC1P1, selectC2P1, selectC1P2, selectC2P2;
     HoverButton PlayButton;
     BackButton back;
@@ -41,7 +42,7 @@ public class GameSelection extends JComponent {
     }
 
     private void initUIButton() throws IOException {
-        Image[] colors = { red, blue, green, yellow };
+        BufferedImage[] colors = { red, blue, green, yellow };
         String[] players = { "Human", "AI Easy", "AI Medium", "AI Hard" };
 
         player1 = createLabel("Player 1");
@@ -57,8 +58,8 @@ public class GameSelection extends JComponent {
         // frame.getHeight() * 0.9);
     }
 
-    public Image chargeImg(String nom) {
-        Image img = null;
+    public BufferedImage chargeImg(String nom) {
+        BufferedImage img = null;
         try { // on récupère l'image à l'adresse où on l’a mise…
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(nom);
             img = ImageIO.read(in);
@@ -80,7 +81,7 @@ public class GameSelection extends JComponent {
     }
 
     public void drawBoard(Graphics g) {
-        Image board = chargeImg("images/board.png");
+        BufferedImage board = chargeImg("images/board.png");
         int boardWidth = frame.getWidth() / 4;
         int boardHeight = frame.getWidth() / 4;
 

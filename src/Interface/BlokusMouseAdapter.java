@@ -9,10 +9,16 @@ public class BlokusMouseAdapter implements MouseListener {
 
     HoverButton current;
     MenuInterface menuUi;
+    GamePlay game;
     TutorialInterface tuto;
+
     BlokusMouseAdapter(HoverButton b, MenuInterface m) {
         current = b;
         menuUi = m;
+    }
+    BlokusMouseAdapter(HoverButton b, GamePlay g) {
+        current = b;
+        game = g;
     }
 
     @Override

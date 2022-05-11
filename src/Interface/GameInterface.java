@@ -12,9 +12,8 @@ import javax.swing.*;
 
 public class GameInterface implements Runnable {
     private JFrame frame;
-    private GameGraphic gameGraphics;
-    private MenuInterface menu;
-
+    private GamePlay menu;
+    //private MenuInterface menu;
 
     public static void start(){
         SwingUtilities.invokeLater(new GameInterface());
@@ -27,20 +26,17 @@ public class GameInterface implements Runnable {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setSize(1280, 800);
+        frame.setSize(1920, 1080);
         frame.getContentPane().setBackground(Color.white);
         frame.setVisible(true);
 
         try {
-            menu = new MenuInterface(frame);
+            menu = new GamePlay(frame);
+            //menu = new MenuInterface(frame);
         } catch (IOException e) {
             e.printStackTrace();
         }
         frame.getContentPane().add(menu, BorderLayout.CENTER);
-
-//        gameGraphics = new GameGraphic();
-//        frame.getContentPane().add(gameGraphics, BorderLayout.CENTER);
-
-    }
+            }
 
 }
