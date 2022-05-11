@@ -13,6 +13,7 @@ import javax.swing.*;
 public class HoverButton extends JPanel{
     private MenuInterface menuUI;
     private GamePlay gameMenu;
+    private TutorialInterface tutoUI;
 
     private Image[] img;
     public Image normalImage;
@@ -48,6 +49,17 @@ public class HoverButton extends JPanel{
         this.currentImage = normalImage;
         this.setBounds(x, y, newS, newS);
         this.addMouseListener(new BlokusMouseAdapter(this, this.gameMenu));
+    }
+
+    public HoverButton(TutorialInterface tutoUI, String name, int x, int y) throws IOException {
+        this.tutoUI = tutoUI;
+        this.name = name;
+        this.img = createButtonImg(name);
+        this.normalImage = this.img[0];
+        this.rolloverImage = this.img[1];
+        this.currentImage = normalImage;
+        this.setBounds(x, y, this.img[0].getWidth(null), this.img[0].getHeight(null));
+        this.addMouseListener(new BlokusMouseAdapter(this, this.tutoUI));
     }
 
     public void paint(Graphics g) {
