@@ -58,11 +58,7 @@ public class HoverButton extends JPanel{
         this.name = name;
         this.img = createButtonImg(name);
         // Original Image
-        // int newS = (int) (selectMenu.frame.getWidth() * 0.3);
-        // Image newNormal = this.img[0].getScaledInstance(newS, newS,
-        normalImage = this.img[0];
-        // Image.SCALE_DEFAULT);
-        // this.normalImage = newNormal;
+        this.normalImage = this.img[0];
         // Hovered Image
         this.rolloverImage = this.img[1];
         this.currentImage = normalImage;

@@ -49,7 +49,7 @@ public class MenuMouseAdapter implements MouseListener {
             menuUi.frame.getContentPane().add(gameSelec, BorderLayout.CENTER);
             menuUi.frame.getContentPane().invalidate();
             menuUi.frame.getContentPane().validate();
-        }else if(current.name == "Back" && tutoUi != null){
+        } else if (current.name == "Back" && tutoUi != null) {
             System.out.println("Remove");
             tutoUi.frame.getContentPane().removeAll();
             try {
@@ -76,11 +76,11 @@ public class MenuMouseAdapter implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         current.currentImage = current.rolloverImage;
-        if(current.name == "Back"){
-            if(tutoUi != null) {
+        if (current.name == "Back") {
+            if (tutoUi != null) {
                 tutoUi.repaint();
             }
-        }else{
+        } else {
             menuUi.repaint();
         }
 
@@ -89,11 +89,11 @@ public class MenuMouseAdapter implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         current.currentImage = current.normalImage;
-        if(current.name == "Back"){
-            if(tutoUi != null) {
+        if (current.name == "Back") {
+            if (tutoUi != null) {
                 tutoUi.repaint();
             }
-        }else {
+        } else {
             menuUi.repaint();
         }
     }

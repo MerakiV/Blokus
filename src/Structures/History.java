@@ -2,8 +2,6 @@ package Structures;
 
 import java.util.Stack;
 
-// TBI : another class for saving that takes a history and a game
-
 public class History {
     Stack<GameState> past, future;
 
@@ -16,7 +14,7 @@ public class History {
         return !past.empty();
     }
 
-    GameState undo() {
+    public GameState undo() {
         if (canUndo()) {
             GameState gs = past.pop();
             future.push(gs);
@@ -30,7 +28,7 @@ public class History {
         return !future.empty();
     }
 
-    GameState redo() {
+    public GameState redo() {
         if (canRedo()) {
             GameState gs = future.pop();
             past.push(gs);
@@ -40,8 +38,6 @@ public class History {
         }
     }
 
-    public void pushInPastStack(GameState gs){
-        past.push(gs);
-    }
-
+    public void pushToPast(GameState gs){past.push(gs);}
+    public void pushToFuture(GameState gs){future.push(gs);}
 }
