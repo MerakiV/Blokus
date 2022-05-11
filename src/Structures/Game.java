@@ -5,7 +5,9 @@ import Players.Player2P;
 
 import java.util.List;
 
-public abstract class Game {
+import java.io.Serializable;
+
+public abstract class Game implements Serializable {
     Board board;
     List<Player> players;
     Player currentPlayer;

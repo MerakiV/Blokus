@@ -2,8 +2,6 @@ package Structures;
 
 import java.util.Stack;
 
-// TBI : another class for saving that takes a history and a game
-
 public class History {
     Stack<GameState> past, future;
 
