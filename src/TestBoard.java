@@ -32,18 +32,21 @@ class TestBoard {
             line = sc.nextLine();
             arg = line.split(" ");
             switch(arg[0]) {
+                case "help":
                 case "h":
-                    System.out.println("h : prints this help");
-                    System.out.println("b : prints board");
-                    System.out.println("b <x> : prints board with player x' avaliable corners");
-                    System.out.println("pp : prints current piece");
-                    System.out.println("gp : generates a new current piece");
-                    System.out.println("rp : rotates current piece 90° clockwise");
-                    System.out.println("fvp : flips current piece vertically");
-                    System.out.println("fhp : flips current piece horizontally");
-                    System.out.println("p <player> <x> <y> : tries to put the current piece for the given player ([0,4[) at coordinates (x,y)");
-                    System.out.println("q : quits");
+                    System.out.println("help             : prints this help");
+                    System.out.println("board            : prints board");
+                    System.out.println("board <x>        : prints board with player x' avaliable corners");
+                    System.out.println("printp           : prints current piece");
+                    System.out.println("genp             : generates a new current piece");
+                    System.out.println("rotatep          : rotates current piece 90° clockwise");
+                    System.out.println("flipvp           : flips current piece vertically");
+                    System.out.println("fliphp           : flips current piece horizontally");
+                    System.out.println("put <pl> <x> <y> : tries to put the current piece for the given player ([0,4[) at coordinates (x,y)");
+                    System.out.println("fullcheck <pl>   : tries to put the current piece on ever tile and prints where it can");
+                    System.out.println("quit             : quits");
                     break;
+                case "board":
                 case "b":
                     if (arg.length>1) {
                         bo.printBoard(Integer.decode(arg[1]));
@@ -51,21 +54,27 @@ class TestBoard {
                         bo.printBoard(-1);
                     }
                     break;
+                case "printp":
                 case "pp":
                     cp.printPiece();
                     break;
+                case "genp":
                 case "gp":
                     cp = lp.get(r.nextInt(lp.size()));
                     break;
+                case "rotatep":
                 case "rp":
                     cp.rotateClockwise();
                     break;
+                case "flipvp":
                 case "fvp":
                     cp.flipV();
                     break;
+                case "fliphp":
                 case "fhp":
                     cp.flipH();
                     break;
+                case "put":
                 case "p":
                     pl = Integer.decode(arg[1]);
                     x  = Integer.decode(arg[2]);
@@ -76,6 +85,18 @@ class TestBoard {
                         System.out.println("Couldn't put.");
                     }
                     break;
+                case "fullcheck":
+                case "fc":
+                    pl = ((arg.length>1) ? (Integer.decode(arg[1])) : 0);
+                    for (x=0; x<20; x++) {
+                        for (y=0; y<20; y++) {
+                            if (bo.canPut(cp, pl, x, y)) {
+                                System.out.println("Can put current piece on ("+x+","+y+")");
+                            }
+                        }
+                    }
+                    break;
+                case "quit":
                 case "q":
                     cont = false;
                     break;
