@@ -99,8 +99,10 @@ public class Board {
     }
 
     // Warning : unchecked. Puts the piece on the board without checking if it's a valid move.
-    public void put(Piece p, int color, int x, int y) {
+    public void put(Piece p, int color, int ax, int ay) {
         Shape s = p.getShape();
+        int x = ax - s.anchorX;
+        int y = ay - s.anchorY;
         Tile t;
 
         for (int i=0; i<s.getLines(); i++) {
@@ -134,9 +136,9 @@ public class Board {
     }
 
     // Checks if a piece of a given color can be put. If so, puts it and eturns true. Returns false if not.
-    public boolean checkAndPut(Piece p, int color, int x, int y) {
-        if (canPut(p, color, x, y)) {
-            put(p, color, x, y);
+    public boolean checkAndPut(Piece p, int color, int ax, int ay) {
+        if (canPut(p, color, ax, ay)) {
+            put(p, color, ax, ay);
             return true;
         }
         return false;
