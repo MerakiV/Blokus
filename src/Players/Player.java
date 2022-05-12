@@ -34,7 +34,7 @@ public abstract class Player {
         for(Piece p : pieces){
             if(p.getName().equals(pt)){
                 res = p;
-                pieces.remove(p);
+                //pieces.remove(p);
                 return res;
             }
         }
@@ -42,4 +42,16 @@ public abstract class Player {
         return null;
     }
 
+    public void removePiece(PieceType pt){
+        boolean found = false;
+        for(Piece p : pieces){
+            if(p.getName().equals(pt)){
+                found = true;
+                pieces.remove(p);
+            }
+        }
+        if(!found){
+            System.out.println("Piece "+pt.toString()+" not found");
+        }
+    }
 }

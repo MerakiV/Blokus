@@ -15,9 +15,16 @@ public abstract class Game implements Serializable {
 
     History history;
 
-    public boolean canBePlaced(Piece p, Color c, int x, int y){
+    public boolean put(Piece p, Color c, int x, int y){
         int i = board.getCorner(c);
-        return board.canPut(p,i,x,y);
+        if(board.canPut(p, i, x, y)){
+            board.put(p, i, x, y);
+            currentPlayer.removePiece(p.getName());
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public Player getCurrentPlayer(){return currentPlayer;}
