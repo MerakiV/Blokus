@@ -3,8 +3,6 @@ package Interface;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import javafx.scene.layout.Background;
-
 import java.awt.*;
 
 import java.io.IOException;
@@ -18,26 +16,22 @@ public class GameSelection extends JComponent {
     HoverButton playButton, backButton;
     int height, width;
 
-    JLabel selectColor, player1, player2;
+    DrawString selectColor, player1, player2;
 
     public GameSelection(JFrame f) throws IOException {
         frame = f;
         width = frame.getWidth();
         height = frame.getHeight();
         panel = new JPanel();
+        //add(panel);
         backGround = new Image(frame, "images/border.png");
         board = new Image(frame, "images/board.png");
         logo = new Image(frame, "images/LogoBlokus.png");
-        red = new Image(frame, "tiles/redBloc.png");
-        blue = new Image(frame, "tiles/blueBloc.png");
-        green = new Image(frame, "tiles/greenBloc.png");
-        yellow = new Image(frame, "tiles/yellowBloc.png");
+        red = new Image(frame, "tiles/RedBloc.png");
+        blue = new Image(frame, "tiles/BlueBloc.png");
+        green = new Image(frame, "tiles/GreenBloc.png");
+        yellow = new Image(frame, "tiles/YellowBloc.png");
         initUIButton();
-    }
-
-    private JLabel createLabel(String s) {
-        JLabel lab = new JLabel(s);
-        return lab;
     }
 
     private JComboBox createComboBox(Object[] items) {
@@ -50,15 +44,14 @@ public class GameSelection extends JComponent {
         Image[] colors = { red, blue, green, yellow };
         String[] players = { "Human", "AI Easy", "AI Medium", "AI Hard" };
 
-        player1 = createLabel("Player 1");
-        player2 = createLabel("Player 2");
-        selectColor = createLabel("press the squares to select your color.");
+        // TODO : fix combo boxes, not showing when added to frame
         selectP1 = createComboBox(players);
         selectP2 = createComboBox(players);
         selectC1P1 = createComboBox(colors);
         selectC2P1 = createComboBox(colors);
         selectC1P2 = createComboBox(colors);
         selectC2P2 = createComboBox(colors);
+        
         backButton = new HoverButton(this, "Back", (int) (width * 0.05), (int) (height * 0.08));
         add(this.backButton);
         playButton = new HoverButton(this, "Play", (width - 270) / 2, (int) (height * 0.8));
@@ -75,6 +68,11 @@ public class GameSelection extends JComponent {
         resetBound(width, height);
         g.drawImage(this.backButton.getCurrentImage(), (int) (width * 0.05), (int) (height * 0.08), null);
         g.drawImage(this.playButton.getCurrentImage(), (width - imageWidth) / 2, (int) (height * 0.8), this);
+
+        // TODO : fix DrawString, not drawing string on the frame
+        selectColor = new DrawString(g, "press the squares to select your color.", 100, 100);
+        add(selectColor);
+
     }
 
     public void drawBg(Graphics g) {
@@ -88,9 +86,6 @@ public class GameSelection extends JComponent {
         int boardHeight = width / 4;
         board.drawImg(g, (width - boardWidth) / 2, (height - boardHeight) / 2, boardWidth,
                 boardHeight);
-
-        // panel.add(selectColor, (frameWidth - selectColor.getWidth()) / 2, (int)
-        // (frameHeight * 0.4));
     }
 
     public void paintComponent(Graphics g) {

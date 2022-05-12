@@ -21,11 +21,11 @@ public class Image {
         try { //on récupère l'image à l'adresse où on l’a mise…
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(nom);
             img = ImageIO.read(in);
+            System.out.println("chargement des images ok");
             //fin chargement des images.
         } catch (Exception e) {
             System.out.println("erreur dans le chargement des images:" + e);
         }
-        System.out.println("chargement des images ok");
         return img;
     }
 
