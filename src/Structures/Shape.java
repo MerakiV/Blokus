@@ -95,7 +95,7 @@ public class Shape {
 	public boolean equals(Object o) {
 		Shape s2 = (Shape) o;
 
-		if (Nlin!=s2.getLines() || Ncol!=s2.getColumns()) {
+		if (Nlin!=s2.getLines() || Ncol!=s2.getColumns() || anchorX!=s2.anchorX || anchorY!=s2.anchorY) {
 			return false;
 		}
 

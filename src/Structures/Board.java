@@ -41,8 +41,8 @@ public class Board {
 
         availableCorners.get(0).get(0).add(new Tile(0,      0     ));
         availableCorners.get(1).get(1).add(new Tile(0,      size-1));
-        availableCorners.get(2).get(2).add(new Tile(size-1, 0     ));
-        availableCorners.get(3).get(3).add(new Tile(size-1, size-1));
+        availableCorners.get(2).get(2).add(new Tile(size-1, size-1));
+        availableCorners.get(3).get(3).add(new Tile(size-1, 0     ));
     }
 
     // Returns the color on the given indexes, or WHITE if it's out of bounds.
@@ -63,10 +63,12 @@ public class Board {
         return -1;
     }
 
-    public boolean canPut(Piece p, int color, int x, int y) {
+    public boolean canPut(Piece p, int color, int ax, int ay) {
         Shape s = p.getShape();
+        int x = ax - s.anchorX;
+        int y = ay - s.anchorY;
         // If the position is not on the grid :
-        if (x<0 || y<0 || x+s.getLines()>=size || y+s.getColumns()>=size) {
+        if (x<0 || y<0 || x+s.getLines()>size || y+s.getColumns()>size) {
             return false;
         }
 
@@ -86,7 +88,7 @@ public class Board {
                     if (getColor(x+i  , y+j-1)==cornerColors[color]) { return false; }
 
                     t = new Tile(x+i, y+j);
-                    for (int k=0; foundCorner || k<4; k++) {
+                    for (int k=0; !foundCorner && k<4; k++) {
                         foundCorner = foundCorner || availableCorners.get(color).get(k).contains(t);
                     }
                 }
