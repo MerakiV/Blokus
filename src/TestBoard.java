@@ -13,7 +13,7 @@ class TestBoard {
         System.out.println("Note : this console is very NOT robust. Be careful what you type.");
         Boolean cont = true;
 
-        Integer x, y, pl;
+        Integer x, y, pl, index;
         String line;
         String [] arg;
         Scanner sc = new Scanner(System.in);
@@ -25,7 +25,8 @@ class TestBoard {
         PieceReader pr = null;
         try { pr = new PieceReader(); } catch(Exception e) { System.out.println(e.toString()); System.exit(0); }
         List<Piece> lp = pr.getPiecesList();
-        Piece cp = lp.get(r.nextInt(lp.size()));
+        index = 0;
+        Piece cp = lp.get(index);
 
         System.out.print("[TestBoard] ");
         while(sc.hasNext() && cont) {
@@ -38,7 +39,8 @@ class TestBoard {
                     System.out.println("board            : prints board");
                     System.out.println("board <x>        : prints board with player x' avaliable corners");
                     System.out.println("printp           : prints current piece");
-                    System.out.println("genp             : generates a new current piece");
+                    System.out.println("nextp            : generates a new current piece (next in the list)");
+                    System.out.println("genp             : generates a new current piece (random)");
                     System.out.println("rotatep          : rotates current piece 90° clockwise");
                     System.out.println("flipvp           : flips current piece vertically");
                     System.out.println("fliphp           : flips current piece horizontally");
@@ -60,7 +62,12 @@ class TestBoard {
                     break;
                 case "genp":
                 case "gp":
-                    cp = lp.get(r.nextInt(lp.size()));
+                    index = r.nextInt(lp.size());
+                    cp = lp.get(index);
+                case "nextp":
+                case "np":
+                    index = index + 1 % lp.size();
+                    cp = lp.get(index);
                     break;
                 case "rotatep":
                 case "rp":
