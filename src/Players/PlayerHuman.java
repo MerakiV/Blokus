@@ -15,6 +15,7 @@ public class PlayerHuman extends Player {
     public PlayerHuman(Color c){
         isAI = false;
         col = c;
+        score = 0;
         //create list of pieces from PieceReader
         PieceReader pRead = null;
         try {

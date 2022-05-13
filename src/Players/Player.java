@@ -10,10 +10,13 @@ public abstract class Player {
     Color col;
     List<Piece> pieces;
     boolean isAI;
+    int score;
 
     public Color getColor(){return col;}
 
     public List<Piece> getPieces(){return pieces;}
+
+    public int getScore(){return score;}
 
     public void printPlayer(){
         System.out.println("Color : "+col.toString());
