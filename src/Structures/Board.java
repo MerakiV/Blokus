@@ -106,7 +106,7 @@ public class Board {
         Tile t;
 
         for (int i=0; i<s.getLines(); i++) {
-            for (int j=0; j<s.getLines(); j++) {
+            for (int j=0; j<s.getColumns(); j++) {
                 if (!s.isEmpty(i, j)) {
                     grid[x+i][y+j] = cornerColors[color];
 
