@@ -1,17 +1,14 @@
 package Interface;
 
-import java.awt.Graphics;
 import java.awt.Image;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class DropDown extends JPanel {
     private MenuInterface menuUI;
-    private GamePlay gameMenu;
+    private GamePlayInterface gameMenu;
 
     private Image[] img;
     public Image normalImage;

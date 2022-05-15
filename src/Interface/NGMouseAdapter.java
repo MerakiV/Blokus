@@ -10,7 +10,7 @@ public class NGMouseAdapter implements MouseListener {
     HoverButton current;
     GameSelection selectMenu;
     MenuInterface menu;
-    GamePlay gamePlay;
+    GamePlayInterface gamePlayInterface;
 
     NGMouseAdapter(HoverButton b, GameSelection g) {
         current = b;
@@ -33,11 +33,11 @@ public class NGMouseAdapter implements MouseListener {
         } else if (current.name == "Play") {
             selectMenu.frame.getContentPane().remove(selectMenu);
             try {
-                gamePlay = new GamePlay(selectMenu.frame);
+                gamePlayInterface = new GamePlayInterface(selectMenu.frame);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            selectMenu.frame.getContentPane().add(gamePlay, BorderLayout.CENTER);
+            selectMenu.frame.getContentPane().add(gamePlayInterface, BorderLayout.CENTER);
             selectMenu.frame.getContentPane().invalidate();
             selectMenu.frame.getContentPane().validate();
         }

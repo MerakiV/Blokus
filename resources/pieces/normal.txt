@@ -51,11 +51,6 @@ X#
 -#
 FOUR_STAIRS;
 
-1
-5
-##X##
-FIVE_LINE;
-
 2
 4
 #---
@@ -130,3 +125,7 @@ FIVE_DUCK;
 -#-
 FIVE_CROSS;
 
+1
+5
+##X##
+FIVE_LINE;

@@ -186,4 +186,8 @@ public class Board {
             System.out.print("\n");
         }
     }
+
+    public void addColor(int x, int y){
+        grid[x][y] = Color.BLUE;
+    }
 }

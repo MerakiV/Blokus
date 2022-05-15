@@ -36,7 +36,7 @@ public class PieceReader {
         readPieces();
     }
 
-    void readPieces(){
+    public void readPieces(){
 
         pieceList = new ArrayList<>();
 

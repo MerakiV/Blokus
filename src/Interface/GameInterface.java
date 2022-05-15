@@ -6,35 +6,33 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class GameInterface implements Runnable {
     private JFrame frame;
-    // private GamePlay menu;
-    private MenuInterface menu;
+    private GamePlayInterface menu;
+    //private MenuInterface menu;
     // private GameSelection menu;
 
-    public static void start() {
+    public static void start(){
         SwingUtilities.invokeLater(new GameInterface());
     }
 
-    public void run() {
+    public void run(){
         frame = new JFrame("Blokus");
         frame.setName("Blokus");
         frame.setTitle("Blokus");
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setSize(1920, 1080);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setSize(1344, 756);
         frame.getContentPane().setBackground(Color.white);
         frame.setVisible(true);
 
         try {
-            // menu = new GamePlay(frame);
-            menu = new MenuInterface(frame);
+            menu = new GamePlayInterface(frame);
+            //menu.setLayout(new BorderLayout());
+            //menu = new MenuInterface(frame);
             // menu = new GameSelection(frame);
         } catch (IOException e) {
             e.printStackTrace();

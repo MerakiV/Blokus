@@ -4,14 +4,14 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MenuMouseAdapter implements MouseListener {
 
     HoverButton current;
     MenuInterface menuUi;
     MenuInterface menu;
-    GamePlay game;
-    GameSelection selectMenu;
+    GamePlayInterface game;
     TutorialInterface tutoUi;
     TutorialInterface tuto;
     GameSelection gameSelec;
@@ -29,7 +29,7 @@ public class MenuMouseAdapter implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("Name:" + current.name);
-        if (current.name == "Tutorial") {
+        if (Objects.equals(current.name, "Tutorial")) {
             menuUi.frame.getContentPane().remove(menuUi);
             try {
                 tuto = new TutorialInterface(menuUi.frame, menuUi);
@@ -39,7 +39,7 @@ public class MenuMouseAdapter implements MouseListener {
             menuUi.frame.getContentPane().add(tuto, BorderLayout.CENTER);
             menuUi.frame.getContentPane().invalidate();
             menuUi.frame.getContentPane().validate();
-        } else if (current.name == "NG") {
+        } else if (Objects.equals(current.name, "NG")) {
             menuUi.frame.getContentPane().remove(menuUi);
             try {
                 gameSelec = new GameSelection(menuUi.frame);
@@ -49,7 +49,18 @@ public class MenuMouseAdapter implements MouseListener {
             menuUi.frame.getContentPane().add(gameSelec, BorderLayout.CENTER);
             menuUi.frame.getContentPane().invalidate();
             menuUi.frame.getContentPane().validate();
-        } else if (current.name == "Back" && tutoUi != null) {
+        } // TODO : change Continue to match history if a game has already been saved
+        else if (Objects.equals(current.name, "Continue")) {
+            menuUi.frame.getContentPane().remove(menuUi);
+            try {
+                game = new GamePlayInterface(menuUi.frame);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            menuUi.frame.getContentPane().add(game, BorderLayout.CENTER);
+            menuUi.frame.getContentPane().invalidate();
+            menuUi.frame.getContentPane().validate();
+        } else if (Objects.equals(current.name, "Back") && tutoUi != null) {
             System.out.println("Remove");
             tutoUi.frame.getContentPane().removeAll();
             try {
@@ -60,6 +71,8 @@ public class MenuMouseAdapter implements MouseListener {
             tutoUi.frame.getContentPane().add(menu, BorderLayout.CENTER);
             tutoUi.frame.getContentPane().invalidate();
             tutoUi.frame.getContentPane().validate();
+        } else if (Objects.equals(current.name, "Exit")){
+            System.exit(0);
         }
     }
 
@@ -76,7 +89,7 @@ public class MenuMouseAdapter implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         current.currentImage = current.rolloverImage;
-        if (current.name == "Back") {
+        if (Objects.equals(current.name, "Back")) {
             if (tutoUi != null) {
                 tutoUi.repaint();
             }
@@ -89,7 +102,7 @@ public class MenuMouseAdapter implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         current.currentImage = current.normalImage;
-        if (current.name == "Back") {
+        if (Objects.equals(current.name, "Back")) {
             if (tutoUi != null) {
                 tutoUi.repaint();
             }

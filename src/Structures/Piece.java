@@ -40,7 +40,7 @@ public class Piece {
 		}
 	}
 
-	Shape getShape() {
+	public Shape getShape() {
 		return shapeList.get(dispositionList[disp]);
 	}
 

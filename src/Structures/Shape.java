@@ -5,8 +5,8 @@ import java.util.ArrayList;
 //to do: change Shape names too (and enums?)
 
 public class Shape {
-	int Nlin, Ncol;
-	boolean [][] shape; //values only 0 or 1
+	public int Nlin, Ncol;
+	public boolean [][] shape; //values only 0 or 1
 	int anchorX, anchorY;
 	TileType name;
 
@@ -49,7 +49,7 @@ public class Shape {
 		return shape;
 	}
 
-	boolean isEmpty(int i, int j) {
+	public boolean isEmpty(int i, int j) {
 		return (i<0 || i>=Nlin || j<0 || j>=Ncol || !shape[i][j]);
 	}
 

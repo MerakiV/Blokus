@@ -25,6 +25,7 @@ public abstract class Player {
 
         for (Piece p : pieces) {
             System.out.println(p.getName());
+            p.printPiece();
         }
     }
 

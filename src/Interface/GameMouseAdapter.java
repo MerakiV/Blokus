@@ -8,9 +8,10 @@ import java.io.IOException;
 public class GameMouseAdapter implements MouseListener {
 
     HoverButton current;
-    GamePlay game;
+    GamePlayInterface game;
+    PauseMenu pause;
 
-    GameMouseAdapter(HoverButton b, GamePlay g) {
+    GameMouseAdapter(HoverButton b, GamePlayInterface g) {
         current = b;
         game = g;
     }
@@ -18,6 +19,18 @@ public class GameMouseAdapter implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("Name:"+current.name);
+        if (current.name == "Menu"){
+            game.frame.getContentPane().remove(game);
+            try {
+                pause = new PauseMenu(game.frame);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            game.frame.getContentPane().add(pause, BorderLayout.CENTER);
+            game.frame.getContentPane().invalidate();
+            game.frame.getContentPane().validate();
+        }
+
     }
 
     @Override
