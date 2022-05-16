@@ -11,7 +11,7 @@ import java.io.InputStream;
 public class GameSelection extends JComponent {
     public JFrame frame;
     JPanel panel;
-    Image backGround, logo, red, blue, green, yellow, board;
+    Image backGround, logo, red, blue, green, yellow, blank, board;
     JComboBox selectP1, selectP2, selectC1P1, selectC2P1, selectC1P2, selectC2P2;
     HoverButton playButton, backButton;
     int height, width;
@@ -23,10 +23,11 @@ public class GameSelection extends JComponent {
         width = frame.getWidth();
         height = frame.getHeight();
         panel = new JPanel();
-        //add(panel);
+        // add(panel);
         backGround = new Image(frame, "images/border.png");
         board = new Image(frame, "images/board.png");
         logo = new Image(frame, "images/LogoBlokus.png");
+        blank = new Image(frame, "tiles/GreyBloc.png");
         red = new Image(frame, "tiles/RedBloc.png");
         blue = new Image(frame, "tiles/BlueBloc.png");
         green = new Image(frame, "tiles/GreenBloc.png");
@@ -51,7 +52,7 @@ public class GameSelection extends JComponent {
         selectC2P1 = createComboBox(colors);
         selectC1P2 = createComboBox(colors);
         selectC2P2 = createComboBox(colors);
-        
+
         backButton = new HoverButton(this, "Back", (int) (width * 0.05), (int) (height * 0.08));
         add(this.backButton);
         playButton = new HoverButton(this, "Play", (width - 270) / 2, (int) (height * 0.8));
