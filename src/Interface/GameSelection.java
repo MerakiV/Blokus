@@ -14,7 +14,8 @@ public class GameSelection extends JComponent {
     JPanel panel;
     Image backGround, logo, red, blue, green, yellow, blank, board;
     HoverButton playButton, backButton;
-    ColorSelect selectP1, selectP2, selectC1P1, selectC2P1, selectC1P2, selectC2P2;
+    JComboBox selectP1, selectP2;
+    ColorSelect selectC1P1, selectC2P1, selectC1P2, selectC2P2;
     int height, width, boardHeight, boardWidth, colorWidth;
 
     DrawString selectColor, player1, player2;
@@ -59,6 +60,41 @@ public class GameSelection extends JComponent {
         selectC2P2 = new ColorSelect(this, "C2P2", (width + boardWidth) / 2 - colorWidth,
                 (height + boardHeight) / 2 - colorWidth);
         add(this.selectC2P2);
+
+        // Combo boxes
+        selectP1 = new JComboBox(players);
+        selectP1.setBounds((width - 300) / 4, (int) (height * 0.3), 130, 25);
+        add(selectP1);
+
+        // Listeners for combo boxes (to modify)
+
+        selectP1.addActionListener(e -> {
+            JComboBox comboBox = (JComboBox) e.getSource();
+            String p1 = (String) comboBox.getSelectedItem();
+            // TBI: modify when more AI difficulty made
+            if (p1 == "Human") {
+                gs2p.setP1Human();
+            } else {
+                gs2p.setP1AI(0);
+            }
+            System.out.println("Player 1 set to " + p1);
+        });
+
+        selectP2 = new JComboBox(players);
+        selectP2.setBounds((int) ((width - 300) / 1.2), (int) (height * 0.3), 90, 20);
+        add(selectP2);
+
+        selectP2.addActionListener(e -> {
+            JComboBox comboBox = (JComboBox) e.getSource();
+            String p2 = (String) comboBox.getSelectedItem();
+            // TBI: modify when more AI difficulty made
+            if (p2 == "Human") {
+                gs2p.setP2Human();
+            } else {
+                gs2p.setP2AI(0);
+            }
+            System.out.println("Player 2 set to " + p2);
+        });
 
         backButton = new HoverButton(this, "Back", (int) (width * 0.05), (int) (height * 0.08));
         add(this.backButton);

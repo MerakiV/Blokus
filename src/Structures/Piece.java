@@ -9,9 +9,11 @@ public class Piece {
 	int [] dispositionList;
 	List<Shape> shapeList;
 	PieceType name; //name of the piece
+	int value; //number of squares that compose a piece
 
 	public Piece(Shape base) {
 		disp = 0;
+		value = 0;
 		dispositionList = new int[16];
 		shapeList = new ArrayList<>();
 
@@ -93,6 +95,14 @@ public class Piece {
 	}
 	public PieceType getName(){
 		 return name;
+	}
+
+	public void setValue(int v){
+		value = v;
+	}
+
+	public int getValue(){
+		return value;
 	}
 
 	public void printPiece() {

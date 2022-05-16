@@ -3,16 +3,16 @@ package Structures;
 public class Tile {
     int x, y;
 
-    Tile(int xx, int yy) {
+    public Tile(int xx, int yy) {
         x = xx;
         y = yy;
     }
 
-    int getX() {
+    public int getX() {
         return x;
     }
 
-    int getY() {
+    public int getY() {
         return y;
     }
 
