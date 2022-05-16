@@ -9,6 +9,7 @@ public class Shape {
 	boolean [][] shape; //values only 0 or 1
 	int anchorX, anchorY;
 	TileType name;
+	int value;
 
     // Note : 0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast
     ArrayList<ArrayList<Tile>> avaliableCorners;
@@ -23,8 +24,10 @@ public class Shape {
 		for (int i=0; i<4; i++) {
 			avaliableCorners.add(new ArrayList<>(3));
 		}
+		value = 0;
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
+				if (!isEmpty(i, j)) { value++; }
 				if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i-1, j-1)); }
 				if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(1).add(new Tile(i-1, j+1)); }
 				if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(2).add(new Tile(i+1, j+1)); }
@@ -39,6 +42,10 @@ public class Shape {
 
 	int getColumns() {
 		return Ncol;
+	}
+
+	int getValue() {
+		return value;
 	}
 
 	public void setShape(boolean [][] s){
