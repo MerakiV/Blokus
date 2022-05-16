@@ -36,7 +36,7 @@ public class PieceReader {
         readPieces();
     }
 
-    void readPieces(){
+    public void readPieces(){
 
         pieceList = new ArrayList<>();
 
@@ -60,6 +60,10 @@ public class PieceReader {
 
         try {
             nbPieces = Integer.parseInt(sc.nextLine());
+            if(nbPieces < 21){
+                System.out.println("The number of pieces is incorrect");
+                System.exit(1);
+            }
             sc.nextLine(); //empty line
 
             sc.useDelimiter(";");

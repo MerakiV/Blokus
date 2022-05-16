@@ -1,12 +1,14 @@
 package Interface;
 
+import Structures.GameSettings2P;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class GameSelection extends JComponent {
     public JFrame frame;
@@ -17,6 +19,8 @@ public class GameSelection extends JComponent {
     int height, width;
 
     DrawString selectColor, player1, player2;
+
+    GameSettings2P gs2p; //TBI: connect with the game/game2P classes
 
     public GameSelection(JFrame f) throws IOException {
         frame = f;
@@ -32,6 +36,17 @@ public class GameSelection extends JComponent {
         green = new Image(frame, "tiles/GreenBloc.png");
         yellow = new Image(frame, "tiles/YellowBloc.png");
         initUIButton();
+        gs2p = new GameSettings2P();
+        try {
+            //create the font to use
+            Font font = Font.createFont(Font.TRUETYPE_FONT, new File("resources/font/ABeeZee-Regular.otf"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            //register the font
+            ge.registerFont(font);
+        } catch (IOException|FontFormatException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private JComboBox createComboBox(Object[] items) {
@@ -44,9 +59,43 @@ public class GameSelection extends JComponent {
         Image[] colors = { red, blue, green, yellow };
         String[] players = { "Human", "AI Easy", "AI Medium", "AI Hard" };
 
-        // TODO : fix combo boxes, not showing when added to frame
-        selectP1 = createComboBox(players);
-        selectP2 = createComboBox(players);
+        // Combo boxes
+        selectP1 = new JComboBox(players);
+        selectP1.setBounds((width - 300) / 4, (int) (height * 0.3), 130 , 25);
+        add(selectP1);
+
+        //Listeners for combo boxes (to modify)
+
+        selectP1.addActionListener(e -> {
+            JComboBox comboBox = (JComboBox) e.getSource();
+            String p1 = (String)comboBox.getSelectedItem();
+            //TBI: modify when more AI difficulty made
+            if(p1=="Human"){
+                gs2p.setP1Human();
+            }
+            else{
+                gs2p.setP1AI();
+            }
+            System.out.println("Player 1 set to " + p1);
+        });
+
+        selectP2 = new JComboBox(players);
+        selectP2.setBounds((int) ((width - 300) / 1.2), (int) (height * 0.3),90,20);
+        add(selectP2);
+
+        selectP2.addActionListener(e -> {
+            JComboBox comboBox = (JComboBox) e.getSource();
+            String p2 = (String)comboBox.getSelectedItem();
+            //TBI: modify when more AI difficulty made
+            if(p2=="Human"){
+                gs2p.setP2Human();
+            }
+            else{
+                gs2p.setP2AI();
+            }
+            System.out.println("Player 2 set to " + p2);
+        });
+
         selectC1P1 = createComboBox(colors);
         selectC2P1 = createComboBox(colors);
         selectC1P2 = createComboBox(colors);
@@ -69,9 +118,17 @@ public class GameSelection extends JComponent {
         g.drawImage(this.backButton.getCurrentImage(), (int) (width * 0.05), (int) (height * 0.08), null);
         g.drawImage(this.playButton.getCurrentImage(), (width - imageWidth) / 2, (int) (height * 0.8), this);
 
-        // TODO : fix DrawString, not drawing string on the frame
-        selectColor = new DrawString(g, "press the squares to select your color.", 100, 100);
-        add(selectColor);
+        /* TODO : - resize font when window is resized
+         - Put the font loading is another class (should be executed when the game window is started) */
+
+        // TEXT
+
+        selectColor = new DrawString(g, "Press the squares to select your color.", (width - 365) / 2, (int) (height * 0.25), 20f);
+        selectColor.paint(g);
+        player1 = new DrawString(g, "Player 1", width / 6, (int) (height * 0.25), 40f);
+        player1.paint(g);
+        player2 = new DrawString(g, "Player 2", (int)(width / 1.38), (int) (height * 0.25), 40f);
+        player2.paint(g);
 
     }
 
@@ -97,5 +154,4 @@ public class GameSelection extends JComponent {
         drawButtons(g);
 
     }
-
 }
