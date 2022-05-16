@@ -14,6 +14,8 @@ public class PieceReader {
     int Nlin;
     int anchorX;
     int anchorY;
+
+    int value = 0;
     boolean [][] baseShape;
 
     boolean anchorFound = false;
@@ -70,9 +72,9 @@ public class PieceReader {
             while (i < nbPieces){
                 token = sc.next();
                 tokenArgs = token.split("\n");
-                Nlin = Character.getNumericValue(tokenArgs[0].charAt(0)); //TBI string
-                Ncol = Character.getNumericValue(tokenArgs[1].charAt(0)); //TBI string
-                baseShape = new boolean[Nlin][Ncol]; //everything is initialized to 0
+                Nlin = Character.getNumericValue(tokenArgs[0].charAt(0));
+                Ncol = Character.getNumericValue(tokenArgs[1].charAt(0));
+                baseShape = new boolean[Nlin][Ncol]; //everything is initialized to false
                 for (j = 2; j < tokenArgs.length - 1; j++) {
                     currentChar = tokenArgs[j].charAt(0);
                     if (currentChar == '#' || currentChar == 'X' || currentChar == '-') {
@@ -80,6 +82,7 @@ public class PieceReader {
                             currentChar = tokenArgs[j].charAt(k);
                             if (currentChar == '#' || currentChar == 'X') {
                                 baseShape[j-2][k] = true;
+                                value++;
                                 if (currentChar == 'X') {
                                     if (anchorFound) {
                                         System.out.println("Error, the piece named " +tokenArgs[j + 1]+" has several anchors.");
@@ -104,13 +107,15 @@ public class PieceReader {
 
                 piece = new Piece(shape);
                 piece.setName(pt.valueOf(tokenArgs[j]));
+                piece.setValue(value);
 
                 pieceList.add(piece);
 
                 i++;
-                sc.nextLine(); //empty line
-                sc.nextLine(); //empty line
+                sc.nextLine();
+                sc.nextLine();
                 anchorFound = false;
+                value = 0;
             }
         } catch (Exception e) {
             System.out.println(e);
