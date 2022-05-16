@@ -2,6 +2,7 @@ package Structures;
 
 import Players.Player;
 import Players.Player2P;
+import Players.PlayerAIRandom2P;
 import Players.PlayerHuman2P;
 
 import java.util.ArrayList;
@@ -16,15 +17,11 @@ public class Game2P extends Game{
         board = new Board(set.p1c1, set.p2c1, set.p1c2, set.p2c2);
 
         //TBI : create players
-        /* once AI is implemented
-        if(set.p1Human) p1 = new PlayerHuman2P();
-        else //p1 = new PlayerAI(); -> need to fix
-        if(set.p2Human) p2 = new PlayerHuman2P();
-        else //p2 = new PlayerAI(); -> need to fix
-        */
-        //temp human v human only
-        p1 = new PlayerHuman2P(set.p1c1, set.p1c2);
-        p2 = new PlayerHuman2P(set.p2c1, set.p2c2);
+        //AI random for now
+        if(set.p1Human) p1 = new PlayerHuman2P(set.p1c1, set.p1c2);
+        else p1 = new PlayerAIRandom2P(set.p1c1, set.p1c2);
+        if(set.p2Human) p2 = new PlayerHuman2P(set.p2c1, set.p2c2);
+        else p2 = new PlayerAIRandom2P(set.p2c1, set.p2c2);
 
         //put players in player list
         players = new ArrayList<Player>();
@@ -38,6 +35,9 @@ public class Game2P extends Game{
         currentPlayer2P = p1;
         currentPlayer = p1.pcol1;
         currentColor = p1.pcol1.getColor();
+
+        //init history
+        history = new History();
     }
 
     public void nextTurn(){
@@ -58,6 +58,7 @@ public class Game2P extends Game{
             currentPlayer = p1.pcol1;
             currentPlayer2P = p1;
         }
+        currentColor = currentPlayer.getColor();
         history.future.clear();
     }
 

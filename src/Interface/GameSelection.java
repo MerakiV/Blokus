@@ -75,7 +75,7 @@ public class GameSelection extends JComponent {
                 gs2p.setP1Human();
             }
             else{
-                gs2p.setP1AI();
+                gs2p.setP1AI(0);
             }
             System.out.println("Player 1 set to " + p1);
         });
@@ -92,7 +92,7 @@ public class GameSelection extends JComponent {
                 gs2p.setP2Human();
             }
             else{
-                gs2p.setP2AI();
+                gs2p.setP2AI(0);
             }
             System.out.println("Player 2 set to " + p2);
         });

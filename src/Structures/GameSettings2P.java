@@ -10,6 +10,8 @@ import java.awt.desktop.SystemEventListener;
 public class GameSettings2P {
     public boolean p1Human;
     public boolean p2Human;
+    public int p1AIdiff;
+    public int p2AIdiff;
     public Color p1c1, p1c2, p2c1, p2c2;
 
     public GameSettings2P(){
@@ -19,9 +21,9 @@ public class GameSettings2P {
     }
 
     public void setP1Human(){p1Human = true;}
-    public void setP1AI(){p1Human = false;}
+    public void setP1AI(int diff){p1Human = false; p1AIdiff = diff;}
     public void setP2Human(){p2Human = true;}
-    public void setP2AI(){p2Human = false;}
+    public void setP2AI(int diff){p2Human = false; p2AIdiff = diff;}
 
     public void setP1Color1(Color c){p1c1 = c;}
     public void setP1Color2(Color c){p1c2 = c;}
