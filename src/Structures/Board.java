@@ -69,6 +69,7 @@ public class Board {
         int y = ay - s.anchorY;
         // If the position is not on the grid :
         if (x<0 || y<0 || x+s.getLines()>size || y+s.getColumns()>size) {
+            System.out.println("Not In Grid : " + x + " " + y);
             return false;
         }
 
@@ -94,7 +95,6 @@ public class Board {
                 }
             }
         }
-
         return foundCorner;
     }
 
@@ -187,7 +187,4 @@ public class Board {
         }
     }
 
-    public void addColor(int x, int y){
-        grid[x][y] = Color.BLUE;
-    }
 }

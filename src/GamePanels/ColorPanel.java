@@ -1,14 +1,17 @@
 package GamePanels;
 
+import Interface.GameMouseAdapter;
 import Interface.GamePlayInterface;
 import Players.Player;
 import Structures.Color;
+import Structures.PieceType;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Objects;
 
 public class ColorPanel extends JPanel{
@@ -17,11 +20,14 @@ public class ColorPanel extends JPanel{
     BufferedImage colorPanelImage;
 
     int widthFrame, heightFrame, boardSize;
-    Dimension size, piecePanelSize;
+    Dimension size;
+    public Dimension piecePanelSize;
 
     // Color Panel Variables
-    Color color;
+    public Color color;
     Player player;
+
+    public Hashtable<Integer, PieceType> pieceTable;
 
     public ColorPanel(GamePlayInterface g, Player p) throws IOException {
         gamePlayInterface = g;
@@ -31,6 +37,7 @@ public class ColorPanel extends JPanel{
         getColorSize();
         this.setLayout(new GridLayout(4,6));
         this.setBorder(BorderFactory.createLineBorder(java.awt.Color.black));
+        this.addMouseListener(new ColorMouseAdapter(gamePlayInterface));
         getPieces();
     }
 
@@ -58,9 +65,7 @@ public class ColorPanel extends JPanel{
         heightFrame = gamePlayInterface.frame.getHeight();
         boardSize = gamePlayInterface.boardSize;
         size= gamePlayInterface.colorPanelSize;
-        System.out.println("Color Panel : Size " + size);
         piecePanelSize = new Dimension(Math.min(size.height/4, size.width/6), Math.min(size.height/4, size.width/6) );
-        System.out.println("Color Panel : PiecePanelSize " + piecePanelSize);
     }
 
     private void getPieces(){
@@ -69,6 +74,8 @@ public class ColorPanel extends JPanel{
             piece.setPreferredSize(piecePanelSize);
             this.add(piece);
             piece.setBorder(BorderFactory.createLineBorder(java.awt.Color.black));
+            piece.addMouseListener(new PieceMouseAdapter(gamePlayInterface));
+            //pieceTable.put(i,player.getPieces().get(i).getName());
         }
     }
 

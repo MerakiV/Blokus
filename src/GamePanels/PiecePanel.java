@@ -15,6 +15,7 @@ public class PiecePanel extends JPanel {
 
     int pieceSize, pieceWidth,pieceHeight;
     Dimension tileSize;
+    Image resizedImage;
 
     final static boolean shouldFill = true;
     GridBagConstraints gridBagConstraints;
@@ -36,7 +37,7 @@ public class PiecePanel extends JPanel {
         for (int i = 0; i < pieceWidth; i++){
             for (int j = 0; j < pieceHeight; j++){
                 if (! piece.getShape().isEmpty(i,j)){
-                    Image resizedImage = getImage();
+                    resizedImage = getImage();
                     JLabel label = new JLabel(new ImageIcon(resizedImage));
                     label.setPreferredSize(tileSize);
                     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;

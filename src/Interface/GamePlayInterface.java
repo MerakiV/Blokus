@@ -3,6 +3,7 @@ package Interface;
 import GamePanels.BoardPanel;
 import GamePanels.ColorPanel;
 import Players.Player;
+import Structures.Color;
 import Structures.*;
 
 import javax.swing.*;
@@ -19,12 +20,9 @@ public class GamePlayInterface extends JPanel {
     // Buttons
     public HoverButton menu, hint, vertical,horizontal, clockwise, counterclockwise;
 
-    int widthFrame;
-    int heightFrame;
-    public int boardSize;
-    int tileSize;
-    int height;
-    int width;
+    public int boardSize,tileSize,height,width,widthFrame,heightFrame;
+    int topLeftX, topLeftY, topRightX, topRightY,bottomLeftX, bottomLeftY, bottomRightX, bottomRightY, boardX, boardY;
+
     Dimension size;
     public Dimension colorPanelSize;
 
@@ -43,11 +41,17 @@ public class GamePlayInterface extends JPanel {
     // Color Panels
     ColorPanel topLeftPanel, bottomLeftPanel, topRightPanel, bottomRightPanel;
 
+    // Piece
+    public Piece currentPiece;
+    public Color currentColor;
+
     public GamePlayInterface(JFrame f) throws IOException {
         frame = f;
+        currentPiece = null;
         setSize();
         initialiseGame();
         this.setLayout(new FlowLayout());
+        this.addMouseListener(new GameMouseAdapter(this));
         boardPanel = new BoardPanel(this);
         this.add(boardPanel);
         initialiseColorPanels();
@@ -67,9 +71,6 @@ public class GamePlayInterface extends JPanel {
 
         // Board
         board = game.getBoard();
-        // TODO : remove these test lines once implemented actual game
-        board.addColor(3,3);
-        board.addColor(19,18);
         System.out.println("Finished InitialiseGame");
     }
 
@@ -88,10 +89,20 @@ public class GamePlayInterface extends JPanel {
     private void setSize(){
         widthFrame = frame.getWidth();
         heightFrame = frame.getHeight();
-        boardSize = (int) (Math.min(heightFrame, widthFrame) * 0.63);
+        boardSize = (int) (Math.min(heightFrame, widthFrame) * 0.6);
         size = new Dimension(boardSize, boardSize);
         tileSize = boardSize/20;
         colorPanelSize = new Dimension((int) (boardSize * 0.72), boardSize / 2); // Changes the size of components in the colorPanel
+        topLeftX = (int) (widthFrame * 0.06) - 10;
+        topLeftY = (int) (heightFrame * 0.2);
+        topRightX = (int)(0.94 * widthFrame - boardSize * 0.72) - 10;
+        topRightY = (int) (heightFrame * 0.2);
+        bottomLeftX = (int) (widthFrame * 0.06) - 10;
+        bottomLeftY = (int)(heightFrame * 0.2 + boardSize/2);
+        bottomRightX = (int)(0.94 * widthFrame - boardSize * 0.72) - 10;
+        bottomRightY = (int)(heightFrame * 0.2 + boardSize/2);
+        boardX = (widthFrame - size.width) / 2;
+        boardY = (int) (heightFrame * 0.2);
     }
 
     private void initialiseColorPanels() throws IOException {
@@ -109,6 +120,7 @@ public class GamePlayInterface extends JPanel {
         this.add(bottomRightPanel);
     }
 
+    // TODO : icons to SVG
     private void initialiseButtons() throws IOException{
         height = frame.getHeight();
         width = frame.getWidth();
@@ -130,11 +142,11 @@ public class GamePlayInterface extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        boardPanel.setBounds((widthFrame - size.width) / 2, (int) (heightFrame * 0.2), size.width, size.height);
-        topLeftPanel.setBounds((int) (widthFrame * 0.06) - 10, (int) (heightFrame * 0.2), (int) (boardSize * 0.72), boardSize / 2);
-        bottomLeftPanel.setBounds((int) (widthFrame * 0.06) - 10, (int) (int)(heightFrame * 0.2 + boardSize/2), (int) (boardSize * 0.72), boardSize / 2);
-        topRightPanel.setBounds((int)(0.94 * widthFrame - boardSize * 0.72) - 10, (int) (heightFrame * 0.2), (int) (boardSize * 0.72), boardSize / 2);
-        bottomRightPanel.setBounds((int)(0.94 * widthFrame - boardSize * 0.72) - 10, (int)(heightFrame * 0.2 + boardSize/2), (int) (boardSize * 0.72), boardSize / 2);
+        boardPanel.setLocation(boardX, boardY);
+        topLeftPanel.setBounds(topLeftX, topLeftY, colorPanelSize.width, colorPanelSize.height);
+        bottomLeftPanel.setBounds(bottomLeftX,  bottomLeftY, colorPanelSize.width, colorPanelSize.height);
+        topRightPanel.setBounds(topRightX, topRightY,  colorPanelSize.width, colorPanelSize.height);
+        bottomRightPanel.setBounds(bottomRightX, bottomRightY, colorPanelSize.width, colorPanelSize.height);
         // Sizes
         height = frame.getHeight();
         width = frame.getWidth();

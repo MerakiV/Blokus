@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Shape {
 	public int Nlin, Ncol;
 	public boolean [][] shape; //values only 0 or 1
-	int anchorX, anchorY;
+	public int anchorX, anchorY;
 	TileType name;
 
     // Note : 0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast
