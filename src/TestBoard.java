@@ -64,22 +64,28 @@ class TestBoard {
                 case "gp":
                     index = r.nextInt(lp.size());
                     cp = lp.get(index);
+                    cp.printPiece();
+                    break;
                 case "nextp":
                 case "np":
-                    index = index + 1 % lp.size();
+                    index = (index + 1) % lp.size();
                     cp = lp.get(index);
+                    cp.printPiece();
                     break;
                 case "rotatep":
                 case "rp":
                     cp.rotateClockwise();
+                    cp.printPiece();
                     break;
                 case "flipvp":
                 case "fvp":
                     cp.flipV();
+                    cp.printPiece();
                     break;
                 case "fliphp":
                 case "fhp":
                     cp.flipH();
+                    cp.printPiece();
                     break;
                 case "put":
                 case "p":
