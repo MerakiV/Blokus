@@ -155,6 +155,20 @@ public class Board {
         return false;
     }
 
+    // Homonymes functions that directly take colors as their arguments.
+    public boolean canPut(Piece p, Color col, int ax, int ay) {
+        int c = getCorner(col);
+        return ((c==-1) ? canPut(p, c, ax, ay) : false);
+    }
+    public void put(Piece p, Color col, int ax, int ay) {
+        int c = getCorner(col);
+        if (c!=-1) { put(p, c, ax, ay); }
+    }
+    public boolean checkAndPut(Piece p, Color col, int ax, int ay) {
+        int c = getCorner(col);
+        return ((c!=-1) ? checkAndPut(p, col, ax, ay) : false);
+    }
+
     // Prints the grid on standard output.
     // if seefor!=-1, shows the avaliable corners for this player to put a piece.
     public void printBoard(int seeFor) {
