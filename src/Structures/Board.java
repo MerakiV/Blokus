@@ -127,16 +127,16 @@ public class Board implements Cloneable {
                         }
                     }
 
-                    if (x+i>0      && y+j>0      && s.isEmpty(i-1, j) && s.isEmpty(i, j-1) && s.isEmpty(i-1, j-1) && grid[x+i-1][y+j-1]==Color.WHITE) {
+                    if (x+i>0      && y+j>0      && s.isEmpty(i-1, j) && s.isEmpty(i, j-1) && s.isEmpty(i-1, j-1) && grid[x+i-1][y+j-1]==Color.WHITE && getColor(x+i-2, y+j-1)==Color.WHITE && getColor(x+i-1, y+j-2)==Color.WHITE) {
                         availableCorners.get(color).get(0).add(new Tile(x+i-1, y+j-1));
                     }
-                    if (x+i>0      && y+j<size-1 && s.isEmpty(i-1, j) && s.isEmpty(i, j+1) && s.isEmpty(i-1, j+1) && grid[x+i-1][y+j+1]==Color.WHITE) {
+                    if (x+i>0      && y+j<size-1 && s.isEmpty(i-1, j) && s.isEmpty(i, j+1) && s.isEmpty(i-1, j+1) && grid[x+i-1][y+j+1]==Color.WHITE && getColor(x+i-2, y+j+1)==Color.WHITE && getColor(x+i-1, y+j+2)==Color.WHITE) {
                         availableCorners.get(color).get(1).add(new Tile(x+i-1, y+j+1));
                     }
-                    if (x+i<size-1 && y+j<size-1 && s.isEmpty(i+1, j) && s.isEmpty(i, j+1) && s.isEmpty(i+1, j+1) && grid[x+i+1][y+j+1]==Color.WHITE) {
+                    if (x+i<size-1 && y+j<size-1 && s.isEmpty(i+1, j) && s.isEmpty(i, j+1) && s.isEmpty(i+1, j+1) && grid[x+i+1][y+j+1]==Color.WHITE && getColor(x+i+2, y+j+1)==Color.WHITE && getColor(x+i+1, y+j+2)==Color.WHITE) {
                         availableCorners.get(color).get(0).add(new Tile(x+i+1, y+j+1));
                     }
-                    if (x+i<size-1 && y+j>0      && s.isEmpty(i+1, j) && s.isEmpty(i, j-1) && s.isEmpty(i+1, j-1) && grid[x+i+1][y+j-1]==Color.WHITE) {
+                    if (x+i<size-1 && y+j>0      && s.isEmpty(i+1, j) && s.isEmpty(i, j-1) && s.isEmpty(i+1, j-1) && grid[x+i+1][y+j-1]==Color.WHITE && getColor(x+i+2, y+j-1)==Color.WHITE && getColor(x+i+1, y+j-2)==Color.WHITE) {
                         availableCorners.get(color).get(3).add(new Tile(x+i+1, y+j-1));
                     }
                 }
