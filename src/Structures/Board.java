@@ -3,7 +3,7 @@ package Structures;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class Board {
+public class Board implements Cloneable {
     public static final int size = 20;
     // Contents of the board
     Color [][] grid;
@@ -74,8 +74,7 @@ public class Board {
         return count;
     }
 
-    public boolean canPut(Piece p, int color, int ax, int ay) {
-        Shape s = p.getShape();
+    public boolean canPut(Shape s, int color, int ax, int ay) {
         int x = ax - s.anchorX;
         int y = ay - s.anchorY;
         // If the position is not on the grid :
@@ -110,8 +109,7 @@ public class Board {
     }
 
     // Warning : unchecked. Puts the piece on the board without checking if it's a valid move.
-    public void put(Piece p, int color, int ax, int ay) {
-        Shape s = p.getShape();
+    public void put(Shape s, int color, int ax, int ay) {
         int x = ax - s.anchorX;
         int y = ay - s.anchorY;
         Tile t;
@@ -147,27 +145,31 @@ public class Board {
     }
 
     // Checks if a piece of a given color can be put. If so, puts it and eturns true. Returns false if not.
-    public boolean checkAndPut(Piece p, int color, int ax, int ay) {
-        if (canPut(p, color, ax, ay)) {
-            put(p, color, ax, ay);
+    public boolean checkAndPut(Shape s, int color, int ax, int ay) {
+        if (canPut(s, color, ax, ay)) {
+            put(s, color, ax, ay);
             return true;
         }
         return false;
     }
 
     // Homonymes functions that directly take colors as their arguments.
-    public boolean canPut(Piece p, Color col, int ax, int ay) {
+    public boolean canPut(Shape s, Color col, int ax, int ay) {
         int c = getCorner(col);
-        return ((c==-1) ? canPut(p, c, ax, ay) : false);
-    }
-    public void put(Piece p, Color col, int ax, int ay) {
+        return ((c==-1) ? canPut(s, c, ax, ay) : false); }
+    public void put(Shape s, Color col, int ax, int ay) {
         int c = getCorner(col);
-        if (c!=-1) { put(p, c, ax, ay); }
-    }
-    public boolean checkAndPut(Piece p, Color col, int ax, int ay) {
+        if (c!=-1) { put(s, c, ax, ay); } }
+    public boolean checkAndPut(Shape s, Color col, int ax, int ay) {
         int c = getCorner(col);
-        return ((c!=-1) ? checkAndPut(p, col, ax, ay) : false);
-    }
+        return ((c!=-1) ? checkAndPut(s, c, ax, ay) : false); }
+    // Homonymes functions that take pieces and not shapes as their arguments.
+    public boolean canPut(Piece p, Color col, int ax, int ay) { return canPut(p.getShape(), col, ax, ay); }
+    public void put(Piece p, Color col, int ax, int ay) { put(p.getShape(), col, ax, ay); }
+    public boolean checkAndPut(Piece p, Color col, int ax, int ay) { return checkAndPut(p.getShape(), col, ax, ay); }
+    public boolean canPut(Piece p, int color, int ax, int ay) { return canPut(p.getShape(), color, ax, ay); }
+    public void put(Piece p, int color, int ax, int ay) { put(p.getShape(), color, ax, ay); }
+    public boolean checkAndPut(Piece p, int color, int ax, int ay) { return checkAndPut(p.getShape(), color, ax, ay); }
 
     // Prints the grid on standard output.
     // if seefor!=-1, shows the avaliable corners for this player to put a piece.
@@ -210,5 +212,27 @@ public class Board {
             }
             System.out.print("\n");
         }
+    }
+
+    @Override
+    public Board clone() {
+        Board b2 = new Board(cornerColors[0], cornerColors[1], cornerColors[2], cornerColors[3]);
+        int i,j;
+
+        for (i=0; i<size; i++) {
+            for (j=0; j<size; j++) {
+                b2.grid[i][j] = grid[i][j];
+            }
+        }
+
+        b2.availableCorners = new ArrayList<>(4);
+        for (i=0; i<availableCorners.size(); i++) {
+            b2.availableCorners.add(new ArrayList<>(4));
+            for (j=0; j<availableCorners.get(i).size(); j++) {
+                b2.availableCorners.get(i).add( (HashSet<Tile>) availableCorners.get(i).get(j).clone());
+            }
+        }
+
+        return b2;
     }
 }
