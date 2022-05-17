@@ -63,6 +63,17 @@ public class Board {
         return -1;
     }
 
+    // Returns the number of avaliable corners for a given color
+    public int numberOfCorners(Color col) {
+        int ncol = getCorner(col);
+        if (ncol==-1) { return 0; }
+        int count = 0;
+        for (int k = 0; k<4; k++) {
+            count+= availableCorners.get(k).get(ncol).size();
+        }
+        return count;
+    }
+
     public boolean canPut(Piece p, int color, int ax, int ay) {
         Shape s = p.getShape();
         int x = ax - s.anchorX;
