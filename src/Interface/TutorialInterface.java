@@ -40,13 +40,6 @@ public class TutorialInterface extends JComponent {
 
         sc = new ScrollableLabel(ii);
 
-//        int widthTuto = (int) (frame.getWidth()*0.6), heightTuto = -1;
-//        img = ii.getImage();
-//        img = img.getScaledInstance(widthTuto, heightTuto, java.awt.Image.SCALE_DEFAULT);
-//        ii.setImage(img);
-//        sc.setIcon(ii);
-//        panel.add(sc);
-
 
         jsp = new JScrollPane();
         jsp.getViewport().add(panel);
