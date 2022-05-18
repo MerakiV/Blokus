@@ -49,7 +49,7 @@ public class ControllerAIMinMax {
 
         while (it1.hasNext()) {
             pi = it1.next();
-            it2 = pi.getShapeList();
+            it2 = pi.getShapeList().iterator();
             while (it2.hasNext()) {
                 sh = it2.next();
                 for (k=0; k<4; k++) {
