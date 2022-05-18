@@ -38,24 +38,30 @@ public class Game2P extends Game{
         currentPlayer2P = p1;
         currentPlayer = p1.pcol1;
         currentColor = p1.pcol1.getColor();
+
+        history = new History();
     }
 
     public void nextTurn(){
         pushToPast();
         if(currentPlayer == p1.pcol1){
             currentPlayer = p2.pcol1;
+            currentColor = p2.pcol1.getColor();
             currentPlayer2P = p2;
         }
         else if(currentPlayer == p1.pcol2){
             currentPlayer = p2.pcol2;
+            currentColor = p2.pcol2.getColor();
             currentPlayer2P = p2;
         }
         else if(currentPlayer == p2.pcol1){
             currentPlayer = p1.pcol2;
+            currentColor = p1.pcol2.getColor();
             currentPlayer2P = p1;
         }
         else{ //currentPlayer == p2.col2
             currentPlayer = p1.pcol1;
+            currentColor = p1.pcol1.getColor();
             currentPlayer2P = p1;
         }
         history.future.clear();

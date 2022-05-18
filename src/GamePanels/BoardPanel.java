@@ -1,5 +1,6 @@
 package GamePanels;
 
+import Controller.ControllerGamePlay;
 import Interface.GamePlayInterface;
 import Structures.Board;
 
@@ -13,6 +14,7 @@ import java.util.Hashtable;
 public class BoardPanel extends JPanel{
     public JFrame frame;
     GamePlayInterface gamePlayInterface;
+    ControllerGamePlay controller;
     JLabel label;
 
     int widthFrame;
@@ -20,26 +22,18 @@ public class BoardPanel extends JPanel{
     public int boardSize;
     int tileSize;
     Dimension size;
-
-    // Board Variables
-    Board board;
-
     Hashtable<String, JLabel> labels;
 
-    public BoardPanel(GamePlayInterface g) {
+    public BoardPanel(GamePlayInterface g, ControllerGamePlay c) {
+        controller = c;
         gamePlayInterface = g;
         frame = g.frame;
-        initialiseBoard();
         setSize();
         this.setLayout(new GridLayout(20,20));
         this.setBounds(0, 0, tileSize*20,tileSize*20);
         labels = new Hashtable<>();
         //this.addMouseListener(new BoardMouseAdapter(gamePlayInterface));
         addBoardTiles();
-    }
-
-    private void initialiseBoard(){
-        board = gamePlayInterface.board;
     }
 
     private void addBoardTiles(){
@@ -50,7 +44,7 @@ public class BoardPanel extends JPanel{
                 label = new JLabel(iconImage);
                 label.setSize(tileSize,tileSize);
                 label.setName(x + " " + y);
-                label.addMouseListener(new BoardMouseAdapter(gamePlayInterface, label));
+                label.addMouseListener(new BoardMouseAdapter(controller, gamePlayInterface, label));
                 add(label);
                 labels.put(label.getName(), label);
             }
@@ -73,7 +67,7 @@ public class BoardPanel extends JPanel{
 
     private String getPath(int i, int j){
         //System.out.println(board.getColor(i,j));
-        switch(board.getColor(i,j)){
+        switch(controller.game.getBoard().getColor(i,j)){
             case RED:
                 return "tiles/RedBloc.png";
             case YELLOW:

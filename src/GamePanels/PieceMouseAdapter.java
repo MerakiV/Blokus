@@ -10,21 +10,37 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class PieceMouseAdapter implements MouseListener {
-    GamePlayInterface gamePlayInterface;
     PiecePanel piecePanel;
 
     ControllerGamePlay controller;
-    public PieceMouseAdapter(GamePlayInterface g){
-        gamePlayInterface = g;
+    public PieceMouseAdapter(ControllerGamePlay c){
+        controller = c;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         piecePanel = (PiecePanel) e.getSource();
-        System.out.println("Piece Type : " + piecePanel.piece.getName().name());
-        controller.piece = piecePanel.piece;
-        controller.color = piecePanel.colorPanel.color;
-        System.out.println(controller.piece.getName().name());
+        if (piecePanel.colorPanel.color == controller.currentColor){
+            if (controller.piecePanel == null){
+                controller.piecePanel = piecePanel;
+            } else {
+                int col = controller.game.getBoard().getCorner(controller.piecePanel.colorPanel.color);
+                if (controller.game.getPlayerList().get(col).getPieces().contains(controller.piecePanel.piece)){
+                    controller.piecePanel.isClicked = false;
+                    controller.piecePanel.repaint();
+                }
+            }
+            piecePanel.isClicked = true;
+            System.out.println("Piece Type : " + piecePanel.piece.getName().name());
+            controller.piece = piecePanel.piece;
+            controller.color = piecePanel.colorPanel.color;
+            controller.piecePanel = piecePanel;
+            System.out.println(controller.piece.getName().name());
+            piecePanel.repaint();
+        }
+        else {
+            System.out.println("it's " +controller.currentColor +"'s turn to play,  not " + piecePanel.colorPanel.color);
+        }
     }
 
     @Override

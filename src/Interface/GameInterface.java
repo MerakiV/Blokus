@@ -1,5 +1,10 @@
 package Interface;
 
+import Controller.ControllerGamePlay;
+import Structures.Game;
+import Structures.Game2P;
+import Structures.GameSettings2P;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +16,7 @@ import javax.swing.*;
 public class GameInterface implements Runnable {
     private JFrame frame;
     private GamePlayInterface menu;
+    public Game game;
     //private MenuInterface menu;
     // private GameSelection menu;
 
@@ -28,9 +34,14 @@ public class GameInterface implements Runnable {
         frame.setSize(1344, 756);
         frame.getContentPane().setBackground(Color.white);
         frame.setVisible(true);
+        frame.setFocusable(true);
 
         try {
-            menu = new GamePlayInterface(frame);
+            // TODO : initialise game in controller
+            initialiseGame();
+            ControllerGamePlay controller = new ControllerGamePlay();
+            frame.addKeyListener(new KeyBoardAdapter(controller));
+            menu = new GamePlayInterface(frame, controller);
             //menu.setLayout(new BorderLayout());
             //menu = new MenuInterface(frame);
             // menu = new GameSelection(frame);
@@ -38,6 +49,24 @@ public class GameInterface implements Runnable {
             e.printStackTrace();
         }
         frame.getContentPane().add(menu, BorderLayout.CENTER);
+    }
+
+    private void initialiseGame(){
+        // Game Settings + Create Game
+        setUpGameSettings();
+        System.out.println("Finished InitialiseGame");
+    }
+
+    // TODO : to change once game settings completed
+    public void setUpGameSettings(){
+        GameSettings2P gameSettings2P = new GameSettings2P();
+        gameSettings2P.setP1Color1(Structures.Color.YELLOW);
+        gameSettings2P.setP1Color2(Structures.Color.RED);
+        gameSettings2P.setP2Color1(Structures.Color.GREEN);
+        gameSettings2P.setP2Color2(Structures.Color.BLUE);
+        System.out.println("Finished Color");
+        game = new Game2P(gameSettings2P);
+        System.out.println("Finished SetUpGameSettings");
     }
 
 }

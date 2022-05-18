@@ -20,6 +20,8 @@ public class PiecePanel extends JPanel {
     final static boolean shouldFill = true;
     GridBagConstraints gridBagConstraints;
 
+    boolean isClicked = false;
+
     public PiecePanel(ColorPanel c, Piece p){
         colorPanel = c;
         piece = p;
@@ -52,6 +54,7 @@ public class PiecePanel extends JPanel {
         }
     }
 
+
     public void setTileSize() {
         pieceWidth = piece.getShape().Nlin;
         pieceHeight = piece.getShape().Ncol;
@@ -60,19 +63,36 @@ public class PiecePanel extends JPanel {
     }
 
     private String getPath(){
-        switch(colorPanel.player.getColor()){
-            case RED:
-                return "tiles/RedBloc.png";
-            case YELLOW:
-                return "tiles/YellowBloc.png";
-            case GREEN:
-                return "tiles/GreenBloc.png";
-            case BLUE:
-                return "tiles/BlueBloc.png";
-            case WHITE:
-                return "tiles/boardTile.png";
+        int col = colorPanel.controller.game.getBoard().getCorner(colorPanel.color);
+        if (colorPanel.controller.game.getPlayerList().get(col).getPieces().contains(piece)){
+            switch(colorPanel.player.getColor()){
+                case RED:
+                    return "tiles/RedBloc.png";
+                case YELLOW:
+                    return "tiles/YellowBloc.png";
+                case GREEN:
+                    return "tiles/GreenBloc.png";
+                case BLUE:
+                    return "tiles/BlueBloc.png";
+                case WHITE:
+                    return "tiles/boardTile.png";
+            }
         }
-        return null;
+        if (isClicked){
+            switch(colorPanel.player.getColor()){
+                case RED:
+                    return "tiles/RedHighlight.png";
+                case YELLOW:
+                    return "tiles/YellowHighlight.png";
+                case GREEN:
+                    return "tiles/GreenHighlight.png";
+                case BLUE:
+                    return "tiles/BlueHighlight.png";
+                case WHITE:
+                    return "tiles/boardTile.png";
+            }
+        }
+        return "tiles/GreyBloc.png";
     }
 
     private Image getImage() {
@@ -92,6 +112,11 @@ public class PiecePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(colorPanel.colorPanelImage, 0, 0, this.getWidth() , this.getHeight(), this);
+        Image image = getImage();
+        g.drawImage(image, 0, 0, this.getWidth() , this.getHeight(), this);
+        if (!isClicked){
+            g.drawImage(colorPanel.colorPanelImage, 0, 0, this.getWidth() , this.getHeight(), this);
+        }
+
     }
 }

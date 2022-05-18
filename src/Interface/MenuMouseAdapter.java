@@ -1,5 +1,10 @@
 package Interface;
 
+import Controller.ControllerGamePlay;
+import Structures.Game;
+import Structures.Game2P;
+import Structures.GameSettings2P;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -15,6 +20,8 @@ public class MenuMouseAdapter implements MouseListener {
     TutorialInterface tutoUi;
     TutorialInterface tuto;
     GameSelection gameSelec;
+
+    Game g;
 
     MenuMouseAdapter(HoverButton b, MenuInterface m) {
         current = b;
@@ -53,7 +60,7 @@ public class MenuMouseAdapter implements MouseListener {
         else if (Objects.equals(current.name, "Continue")) {
             menuUi.frame.getContentPane().remove(menuUi);
             try {
-                game = new GamePlayInterface(menuUi.frame);
+                game = new GamePlayInterface(menuUi.frame, new ControllerGamePlay());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

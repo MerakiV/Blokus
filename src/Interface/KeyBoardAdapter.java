@@ -1,13 +1,15 @@
 package Interface;
 
+import Controller.ControllerGamePlay;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class KeyBoardAdapter extends KeyAdapter {
 
-    EventController controller;
+    ControllerGamePlay controller;
 
-    KeyBoardAdapter(EventController c) {
+    KeyBoardAdapter(ControllerGamePlay c) {
         controller = c;
     }
 

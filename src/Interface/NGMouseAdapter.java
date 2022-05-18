@@ -1,5 +1,7 @@
 package Interface;
 
+import Controller.ControllerGamePlay;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -33,7 +35,7 @@ public class NGMouseAdapter implements MouseListener {
         } else if (current.name == "Play") {
             selectMenu.frame.getContentPane().remove(selectMenu);
             try {
-                gamePlayInterface = new GamePlayInterface(selectMenu.frame);
+                gamePlayInterface = new GamePlayInterface(selectMenu.frame, new ControllerGamePlay());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

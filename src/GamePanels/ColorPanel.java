@@ -1,5 +1,6 @@
 package GamePanels;
 
+import Controller.ControllerGamePlay;
 import Interface.GameMouseAdapter;
 import Interface.GamePlayInterface;
 import Players.Player;
@@ -27,10 +28,13 @@ public class ColorPanel extends JPanel{
     public Color color;
     Player player;
 
+    ControllerGamePlay controller;
+
     public Hashtable<Integer, PieceType> pieceTable;
 
-    public ColorPanel(GamePlayInterface g, Player p) throws IOException {
+    public ColorPanel(GamePlayInterface g, ControllerGamePlay c, Player p) throws IOException {
         gamePlayInterface = g;
+        controller = c;
         player = p;
         frame = g.frame;
         initialiseColorPanel();
@@ -70,12 +74,12 @@ public class ColorPanel extends JPanel{
 
     private void getPieces(){
         for (int i = 0; i < player.getPieces().size(); i++){
+            // TODO : controller
             PiecePanel piece = new PiecePanel(this, player.getPieces().get(i));
             piece.setPreferredSize(piecePanelSize);
             this.add(piece);
             piece.setBorder(BorderFactory.createLineBorder(java.awt.Color.black));
-            piece.addMouseListener(new PieceMouseAdapter(gamePlayInterface));
-            //pieceTable.put(i,player.getPieces().get(i).getName());
+            piece.addMouseListener(new PieceMouseAdapter(controller));
         }
     }
 

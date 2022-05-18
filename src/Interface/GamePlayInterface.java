@@ -1,5 +1,6 @@
 package Interface;
 
+import Controller.ControllerGamePlay;
 import GamePanels.BoardPanel;
 import GamePanels.ColorPanel;
 import Players.Player;
@@ -25,34 +26,21 @@ public class GamePlayInterface extends JPanel {
 
     Dimension size;
     public Dimension colorPanelSize;
-
-    // Game Variables
-    public Game game;
-    GameSettings2P gameSettings2P;
-
-    // Board Variables
-    public Board board;
     public BoardPanel boardPanel;
-
-    // Player List
-    List<Player> players;
-    public Player currentPlayer;
 
     // Color Panels
     ColorPanel topLeftPanel, bottomLeftPanel, topRightPanel, bottomRightPanel;
 
-    // Piece
-    public Piece currentPiece;
-    public Color currentColor;
+    // Controller
+    ControllerGamePlay controller;
 
-    public GamePlayInterface(JFrame f) throws IOException {
+    public GamePlayInterface(JFrame f, ControllerGamePlay c) throws IOException {
+        controller = c;
         frame = f;
-        currentPiece = null;
         setSize();
-        initialiseGame();
         this.setLayout(new FlowLayout());
         this.addMouseListener(new GameMouseAdapter(this));
-        boardPanel = new BoardPanel(this);
+        boardPanel = new BoardPanel(this, controller);
         this.add(boardPanel);
         initialiseColorPanels();
         initialiseButtons();
@@ -61,30 +49,6 @@ public class GamePlayInterface extends JPanel {
         System.out.println("Finished GamePlayInterface");
     }
 
-    private void initialiseGame(){
-        // Game Settings + Create Game
-        setUpGameSettings();
-
-        // Players
-        players = game.getPlayerList();
-        currentPlayer = game.getCurrentPlayer();
-
-        // Board
-        board = game.getBoard();
-        System.out.println("Finished InitialiseGame");
-    }
-
-    // TODO : to change once game settings completed
-    public void setUpGameSettings(){
-        gameSettings2P = new GameSettings2P();
-        gameSettings2P.setP1Color1(Structures.Color.YELLOW);
-        gameSettings2P.setP1Color2(Structures.Color.RED);
-        gameSettings2P.setP2Color1(Structures.Color.GREEN);
-        gameSettings2P.setP2Color2(Structures.Color.BLUE);
-        System.out.println("Finished Color");
-        game = new Game2P(gameSettings2P);
-        System.out.println("Finished SetUpGameSettings");
-    }
 
     private void setSize(){
         widthFrame = frame.getWidth();
@@ -106,16 +70,16 @@ public class GamePlayInterface extends JPanel {
     }
 
     private void initialiseColorPanels() throws IOException {
-        topLeftPanel = new ColorPanel(this, players.get(0));
+        topLeftPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(0));
         topLeftPanel.setPreferredSize(colorPanelSize);
         this.add(topLeftPanel);
-        bottomLeftPanel = new ColorPanel(this, players.get(2));
+        bottomLeftPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(2));
         bottomLeftPanel.setPreferredSize(colorPanelSize);
         this.add(bottomLeftPanel);
-        topRightPanel = new ColorPanel(this, players.get(1));
+        topRightPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(1));
         topRightPanel.setPreferredSize(colorPanelSize);
         this.add(topRightPanel);
-        bottomRightPanel = new ColorPanel(this, players.get(3));
+        bottomRightPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(3));
         bottomRightPanel.setPreferredSize(colorPanelSize);
         this.add(bottomRightPanel);
     }
