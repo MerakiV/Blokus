@@ -49,15 +49,18 @@ public abstract class Player {
     }
 
     public void removePiece(PieceType pt){
+        Piece pr = null;
         boolean found = false;
         for(Piece p : pieces){
             if(p.getName().equals(pt)){
                 found = true;
-                pieces.remove(p);
+                pr = p;
             }
         }
         if(!found){
             System.out.println("Piece "+pt.toString()+" not found");
+        } else{
+            pieces.remove(pr);
         }
     }
 
