@@ -9,96 +9,71 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class ColorSelect extends JPanel {
+import Structures.Color;
+
+public class ColorSelect extends HoverButton {
     private GameSelection selectMenu;
 
-    private Image blank, hover, red, blue, green, yellow, currentImage;
-    private Image[] items;
-    private String name;
-
-    private boolean enabled = true;
+    private Image blank, blankHover, red, redHover, blue, blueHover, green, greenHover, yellow, yellowHover;
 
     public ColorSelect(GameSelection selectMenu, String name, int x, int y) throws IOException {
-        this.selectMenu = selectMenu;
-        this.name = name;
+        super(selectMenu, name, x, y);
         chargeImages();
-        this.currentImage = blank;
-        this.setBounds(x, y, this.blank.getWidth(null), this.blank.getHeight(null));
-        System.out.println(x + " " + y);
-        this.addMouseListener(new NGMouseAdapter(this, this.selectMenu));
     }
 
     public void chargeImages() throws IOException {
-        InputStream inBlank = ClassLoader.getSystemClassLoader().getResourceAsStream("tiles/GreyBloc.png");
-        blank = ImageIO.read(inBlank);
-        InputStream inHover = ClassLoader.getSystemClassLoader().getResourceAsStream("tiles/YellowHighlight.png");
-        hover = ImageIO.read(inHover);
-        InputStream inRed = ClassLoader.getSystemClassLoader().getResourceAsStream("tiles/RedBloc.png");
-        red = ImageIO.read(inRed);
-        InputStream inBlue = ClassLoader.getSystemClassLoader().getResourceAsStream("tiles/BlueBloc.png");
-        blue = ImageIO.read(inBlue);
-        InputStream inGreen = ClassLoader.getSystemClassLoader().getResourceAsStream("tiles/GreenBloc.png");
-        green = ImageIO.read(inGreen);
-        InputStream inYellow = ClassLoader.getSystemClassLoader().getResourceAsStream("tiles/YellowBloc.png");
-        yellow = ImageIO.read(inYellow);
+        blank = normalImage;
+        blankHover = rolloverImage;
+
+        red = charge("RedBloc");
+        redHover = charge("RedHighlight");
+
+        blue = charge("BlueBloc");
+        blueHover = charge("BlueHighlight");
+
+        green = charge("GreenBloc");
+        greenHover = charge("GreenHighlight");
+
+        yellow = charge("YellowBloc");
+        yellowHover = charge("YellowHighlight");
     }
 
-    public void setButtonBound(Integer x, Integer y) {
-        this.setBounds(x, y, currentImage.getWidth(null), currentImage.getHeight(null));
+    public Image charge(String imageName) throws IOException {
+        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("tiles/" + imageName + ".png");
+        Image img = ImageIO.read(in);
+        return img;
     }
 
-    public void paint(Graphics g) {
-        this.setOpaque(false);
-        if (enabled) {
-            g.drawImage(currentImage, this.getX(), this.getY(), this.getWidth(),
-                    this.getHeight(), this);
-        }
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public void changeCurrentImage(String color) {
+    public void changeCurrentImage(Color color) {
         switch (color) {
-            case "red":
-                this.currentImage = red;
+            case RED:
+                normalImage = red;
+                rolloverImage = redHover;
+                currentImage = normalImage;
                 break;
-            case "blue":
-                this.currentImage = blue;
+            case BLUE:
+                normalImage = blue;
+                rolloverImage = blueHover;
+                currentImage = normalImage;
                 break;
-            case "green":
-                this.currentImage = green;
+            case GREEN:
+                normalImage = green;
+                rolloverImage = greenHover;
+                currentImage = normalImage;
                 break;
-            case "yellow":
-                this.currentImage = yellow;
+            case YELLOW:
+                normalImage = yellow;
+                rolloverImage = yellowHover;
+                currentImage = normalImage;
                 break;
-            case "blank":
-                this.currentImage = blank;
-                break;
-            case "hover":
-                this.currentImage = hover;
+            case WHITE:
+                normalImage = blank;
+                rolloverImage = blankHover;
+                currentImage = normalImage;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid color");
         }
 
     }
-
-    public Image getCurrentImage() {
-        return currentImage;
-    }
-
-    public Integer getCurrentImageWidth() {
-        return currentImage.getWidth(null);
-    }
-
-    public int getCurrentImageHeight() {
-        return currentImage.getHeight(null);
-    }
-
 }

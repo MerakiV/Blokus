@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
+import Structures.Color;
+
 public class NGMouseAdapter implements MouseListener {
 
     HoverButton hover;
@@ -12,7 +14,6 @@ public class NGMouseAdapter implements MouseListener {
     GameSelection selectMenu;
     MenuInterface menu;
     GamePlay gamePlay;
-    boolean colorPicked;
 
     NGMouseAdapter(HoverButton b, GameSelection g) {
         hover = b;
@@ -28,37 +29,69 @@ public class NGMouseAdapter implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         if (hover != null) {
             System.out.println("Name:" + hover.name);
-            if (hover.name == "Back") {
-                selectMenu.frame.getContentPane().remove(selectMenu);
-                try {
-                    menu = new MenuInterface(selectMenu.frame);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                selectMenu.frame.getContentPane().add(menu, BorderLayout.CENTER);
-                selectMenu.frame.getContentPane().invalidate();
-                selectMenu.frame.getContentPane().validate();
-            } else if (hover.name == "Play") {
-                selectMenu.frame.getContentPane().remove(selectMenu);
-                try {
-                    gamePlay = new GamePlay(selectMenu.frame);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                selectMenu.frame.getContentPane().add(gamePlay, BorderLayout.CENTER);
-                selectMenu.frame.getContentPane().invalidate();
-                selectMenu.frame.getContentPane().validate();
+            switch (hover.name) {
+                case "Back":
+                    selectMenu.frame.getContentPane().remove(selectMenu);
+                    try {
+                        menu = new MenuInterface(selectMenu.frame);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    selectMenu.frame.getContentPane().add(menu, BorderLayout.CENTER);
+                    selectMenu.frame.getContentPane().invalidate();
+                    selectMenu.frame.getContentPane().validate();
+                    break;
+                case "Play":
+                    selectMenu.frame.getContentPane().remove(selectMenu);
+                    try {
+                        gamePlay = new GamePlay(selectMenu.frame);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    selectMenu.frame.getContentPane().add(gamePlay, BorderLayout.CENTER);
+                    selectMenu.frame.getContentPane().invalidate();
+                    selectMenu.frame.getContentPane().validate();
+                    break;
+                case "C1P1":
+                    selectMenu.showColorPicker(1);
+                    selectMenu.repaint();
+                    break;
+                case "C1P2":
+                    selectMenu.showColorPicker(2);
+                    selectMenu.repaint();
+                    break;
+                case "C2P1":
+                    selectMenu.showColorPicker(3);
+                    selectMenu.repaint();
+                    break;
+                case "C2P2":
+                    selectMenu.showColorPicker(4);
+                    selectMenu.repaint();
+                    break;
+                case "RedButton":
+                    selectMenu.setColor(Color.RED);
+                    selectMenu.showColorPicker(0);
+                    selectMenu.repaint();
+                    break;
+                case "GreenButton":
+                    selectMenu.setColor(Color.GREEN);
+                    selectMenu.showColorPicker(0);
+                    selectMenu.repaint();
+                    break;
+                case "BlueButton":
+                    selectMenu.setColor(Color.BLUE);
+                    selectMenu.showColorPicker(0);
+                    selectMenu.repaint();
+                    break;
+                case "YellowButton":
+                    selectMenu.setColor(Color.YELLOW);
+                    selectMenu.showColorPicker(0);
+                    selectMenu.repaint();
+                    break;
+                default:
+                    throw new RuntimeException("Unknown button: " + hover.name);
             }
         }
-        if (drop != null) {
-            if (!colorPicked) {
-                colorPicked = true;
-                drop.changeCurrentImage("red");
-            }
-            selectMenu.repaint();
-
-        }
-
     }
 
     @Override
@@ -78,11 +111,6 @@ public class NGMouseAdapter implements MouseListener {
         if (hover != null) {
             hover.currentImage = hover.rolloverImage;
         }
-        if (drop != null) {
-            if (!colorPicked) {
-                drop.changeCurrentImage("hover");
-            }
-        }
         selectMenu.repaint();
     }
 
@@ -90,11 +118,6 @@ public class NGMouseAdapter implements MouseListener {
     public void mouseExited(MouseEvent e) {
         if (hover != null) {
             hover.currentImage = hover.normalImage;
-        }
-        if (drop != null) {
-            if (!colorPicked) {
-                drop.changeCurrentImage("blank");
-            }
         }
         selectMenu.repaint();
     }
