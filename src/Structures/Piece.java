@@ -46,6 +46,10 @@ public class Piece {
 		return shapeList.get(dispositionList[disp]);
 	}
 
+	public List<Shape> getShapeList(){
+		return shapeList;
+	}
+
 	public void flipV() {
 		int r, fv, fh, newbit;
 		r  = disp & ((1 << 0) | (1 << 1));
