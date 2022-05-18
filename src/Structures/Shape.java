@@ -1,6 +1,7 @@
 package Structures;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //to do: change Shape names too (and enums?)
 
@@ -132,5 +133,19 @@ public class Shape {
 			}
 			System.out.print("\n");
 		}
+	}
+
+	@Override
+	/*
+	Hashes each line of the shape array and puts the hashcodes into an array of int and then hashes that array.
+	 */
+	public int hashCode(){
+		int [] lineHash = new int[Nlin];
+		int hash ;
+		for(int i = 0 ; i < Nlin ; i++) {
+			lineHash[i] = Arrays.hashCode(shape[i]);
+		}
+		hash = Arrays.hashCode(lineHash);
+		return hash;
 	}
 }

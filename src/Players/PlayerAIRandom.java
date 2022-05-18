@@ -1,8 +1,5 @@
 package Players;
-import Structures.Board;
-import Structures.Color;
-import Structures.Piece;
-import Structures.Tile;
+import Structures.*;
 
 import java.util.*;
 
@@ -17,6 +14,12 @@ public class PlayerAIRandom extends PlayerAI {
         col = c;
     }
 
+    public PlayerAIRandom(Color c, long s) {
+        seed = s;
+        this.generator = new Random(s);
+        difficultyLevel = 0;
+        col = c;
+    }
 
     // This constructor will allow to do reproductible tests
     /*public PlayerAIRandom(long seed) {
@@ -27,7 +30,7 @@ public class PlayerAIRandom extends PlayerAI {
     @Override
     public void playPiece(Board b) {
         int x,y;
-        Set<Piece> tried = new HashSet<>();
+        List<Shape> tried = new ArrayList<>();
         List<Tile> possiblePut;
         int colorCode = b.getCorner(this.col);
         boolean notPlaced = true;
@@ -35,11 +38,13 @@ public class PlayerAIRandom extends PlayerAI {
             possiblePut = new ArrayList<>();
             int idx = this.generator.nextInt(pieces.size());
             Piece play = pieces.get(idx);
-            while(tried.contains(play)){
+            play.setDisp(generator.nextInt(16));
+            while(tried.contains(play.getShape())){
                 idx = this.generator.nextInt(pieces.size());
                 play = pieces.get(idx);
+                play.setDisp(generator.nextInt(16));
             }
-            tried.add(play);
+            tried.add(play.getShape());
             //test for can put
             for (x=0; x<20; x++) {
                 for (y=0; y<20; y++) {
