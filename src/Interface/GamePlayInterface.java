@@ -27,7 +27,7 @@ public class GamePlayInterface extends JPanel {
     public Dimension colorPanelSize;
 
     // Game Variables
-    Game game;
+    public Game game;
     GameSettings2P gameSettings2P;
 
     // Board Variables

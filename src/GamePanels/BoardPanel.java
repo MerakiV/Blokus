@@ -43,13 +43,13 @@ public class BoardPanel extends JPanel{
     }
 
     private void addBoardTiles(){
-        for (int i = 0; i < 20 ; i++){
-            for (int j = 0; j < 20 ; j++){
-                Image resizedImage = getImage(i,j);
+        for (int y = 0; y < 20 ; y++){
+            for (int x = 0; x < 20 ; x++){
+                Image resizedImage = getImage(y,x);
                 ImageIcon iconImage = new ImageIcon(resizedImage);
                 label = new JLabel(iconImage);
                 label.setSize(tileSize,tileSize);
-                label.setName(j + " " + i);
+                label.setName(x + " " + y);
                 label.addMouseListener(new BoardMouseAdapter(gamePlayInterface, label));
                 add(label);
                 labels.put(label.getName(), label);

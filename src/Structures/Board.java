@@ -63,13 +63,23 @@ public class Board {
         return -1;
     }
 
+    // Returns the number of avaliable corners for a given color
+    public int numberOfCorners(Color col) {
+        int ncol = getCorner(col);
+        if (ncol==-1) { return 0; }
+        int count = 0;
+        for (int k = 0; k<4; k++) {
+            count+= availableCorners.get(k).get(ncol).size();
+        }
+        return count;
+    }
+
     public boolean canPut(Piece p, int color, int ax, int ay) {
         Shape s = p.getShape();
         int x = ax - s.anchorX;
         int y = ay - s.anchorY;
         // If the position is not on the grid :
         if (x<0 || y<0 || x+s.getLines()>size || y+s.getColumns()>size) {
-            System.out.println("Not In Grid : " + x + " " + y);
             return false;
         }
 
@@ -95,6 +105,7 @@ public class Board {
                 }
             }
         }
+
         return foundCorner;
     }
 
@@ -106,7 +117,7 @@ public class Board {
         Tile t;
 
         for (int i=0; i<s.getLines(); i++) {
-            for (int j=0; j<s.getLines(); j++) {
+            for (int j=0; j<s.getColumns(); j++) {
                 if (!s.isEmpty(i, j)) {
                     grid[x+i][y+j] = cornerColors[color];
 
@@ -142,6 +153,20 @@ public class Board {
             return true;
         }
         return false;
+    }
+
+    // Homonymes functions that directly take colors as their arguments.
+    public boolean canPut(Piece p, Color col, int ax, int ay) {
+        int c = getCorner(col);
+        return ((c==-1) ? canPut(p, c, ax, ay) : false);
+    }
+    public void put(Piece p, Color col, int ax, int ay) {
+        int c = getCorner(col);
+        if (c!=-1) { put(p, c, ax, ay); }
+    }
+    public boolean checkAndPut(Piece p, Color col, int ax, int ay) {
+        int c = getCorner(col);
+        return ((c!=-1) ? checkAndPut(p, col, ax, ay) : false);
     }
 
     // Prints the grid on standard output.
@@ -186,5 +211,4 @@ public class Board {
             System.out.print("\n");
         }
     }
-
 }
