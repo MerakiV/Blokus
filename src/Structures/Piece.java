@@ -42,8 +42,12 @@ public class Piece {
 		}
 	}
 
-	Shape getShape() {
+	public Shape getShape() {
 		return shapeList.get(dispositionList[disp]);
+	}
+
+	public List<Shape> getShapeList(){
+		return shapeList;
 	}
 
 	public void flipV() {
@@ -103,6 +107,10 @@ public class Piece {
 
 	public int getValue(){
 		return value;
+	}
+
+	public void setDisp(int disp) {
+		this.disp = disp;
 	}
 
 	public void printPiece() {
