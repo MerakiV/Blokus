@@ -42,15 +42,20 @@ public class NGMouseAdapter implements MouseListener {
                     selectMenu.frame.getContentPane().validate();
                     break;
                 case "Play":
-                    selectMenu.frame.getContentPane().remove(selectMenu);
-                    try {
-                        gamePlay = new GamePlay(selectMenu.frame);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                    if (selectMenu.validColors()) {
+                        selectMenu.frame.getContentPane().remove(selectMenu);
+                        try {
+                            gamePlay = new GamePlay(selectMenu.frame);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                        selectMenu.frame.getContentPane().add(gamePlay, BorderLayout.CENTER);
+                        selectMenu.frame.getContentPane().invalidate();
+                        selectMenu.frame.getContentPane().validate();
+                    } else {
+                        selectMenu.errorPlay();
+                        selectMenu.repaint();
                     }
-                    selectMenu.frame.getContentPane().add(gamePlay, BorderLayout.CENTER);
-                    selectMenu.frame.getContentPane().invalidate();
-                    selectMenu.frame.getContentPane().validate();
                     break;
                 case "C1P1":
                     selectMenu.showColorPicker(1);

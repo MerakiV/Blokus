@@ -17,29 +17,29 @@ create game object on play button press (GameSettings2P, Game2P)
 
 */
 
-public class DrawString extends JPanel{
+public class DrawString extends JPanel {
     String text;
     int x;
     int y;
-    float fontsize;
+    int fontSize;
     Graphics g;
     Graphics2D g2d;
 
     Font font;
 
-
-    public DrawString(Graphics g, String t, int x, int y, float f) {
+    public DrawString(Graphics g, String t, int x, int y, int f) {
         text = t;
         this.x = x;
         this.y = y;
         this.g = g;
-        this.fontsize = f;
-        font = new Font("ABeeZee-Regular", Font.PLAIN, 20);
+        this.fontSize = f;
+        font = new Font("ABeeZee-Regular", Font.PLAIN, fontSize);
     }
 
     public void paint(Graphics g) {
         g2d = (Graphics2D) g;
-        //g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        // g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+        // RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2d.setFont(font);
         g2d.setColor(Color.BLACK);
         g2d.drawString(text, x, y);
