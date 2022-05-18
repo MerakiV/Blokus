@@ -69,9 +69,16 @@ public class Board implements Cloneable {
         if (ncol==-1) { return 0; }
         int count = 0;
         for (int k = 0; k<4; k++) {
-            count+= availableCorners.get(k).get(ncol).size();
+            count+= availableCorners.get(ncol).get(k).size();
         }
         return count;
+    }
+
+    public HashSet<Tile> getCorners(int ncol, int dir) {
+        return availableCorners.get(ncol).get(dir);
+    }
+    public HashSet<Tile> getCorners(Color col, int dir) {
+        return getCorners(getCorner(col), dir);
     }
 
     public boolean canPut(Shape s, int color, int ax, int ay) {

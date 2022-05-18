@@ -42,12 +42,24 @@ public class Shape {
 		return Ncol;
 	}
 
+	public int getAnchorX() {
+		return anchorX;
+	}
+
+	public int getAnchorY() {
+		return anchorY;
+	}
+
 	public void setShape(boolean [][] s){
 		shape = s;
 	}
 
 	boolean [][] getShape() {
 		return shape;
+	}
+
+	public ArrayList<Tile> getCornerList(int dir) {
+		return avaliableCorners.get(dir);
 	}
 
 	boolean isEmpty(int i, int j) {

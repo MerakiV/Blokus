@@ -48,6 +48,10 @@ public abstract class Player {
         return null;
     }
 
+    public void removePiece(Piece p){
+        removePiece(p.getName());
+    }
+
     public void removePiece(PieceType pt){
         Piece pr = null;
         boolean found = false;
