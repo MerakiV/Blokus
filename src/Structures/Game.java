@@ -7,7 +7,7 @@ import java.util.List;
 
 import java.io.Serializable;
 
-public abstract class Game implements Serializable {
+public abstract class Game implements Serializable, Cloneable {
     Board board;
     List<Player> players;
     Player currentPlayer;
@@ -15,11 +15,15 @@ public abstract class Game implements Serializable {
 
     History history;
 
-    public boolean put(Piece p, Color c, int x, int y){
+    public boolean put(Piece p, Color c, int x, int y) {
+        return put(p.getShape(), p.getName(), c, x, y);
+    }
+
+    public boolean put(Shape s, PieceType pt, Color c, int x, int y){
         int i = board.getCorner(c);
-        if(board.canPut(p, i, x, y)){
-            board.put(p, i, x, y);
-            currentPlayer.removePiece(p.getName());
+        if(board.canPut(s, i, x, y)){
+            board.put(s, i, x, y);
+            currentPlayer.removePiece(pt);
             return true;
         }
         else{
@@ -58,5 +62,10 @@ public abstract class Game implements Serializable {
     }
 
     public abstract void nextTurn();
+
+    @Override
+    public Game clone() {
+        return null;
+    }
 
 }
