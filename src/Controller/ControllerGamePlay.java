@@ -39,6 +39,15 @@ public class ControllerGamePlay implements EventController {
         originalImages = new ArrayList<>();
     }
 
+    public ControllerGamePlay(Game g){
+        game = g;
+        piece = null;
+        color = null;
+        currentPlayer = game.getCurrentPlayer();
+        currentColor = game.getCurrentColor();
+        originalImages = new ArrayList<>();
+    }
+
     private void initialiseGame(){
         // Game Settings + Create Game
         setUpGameSettings();
