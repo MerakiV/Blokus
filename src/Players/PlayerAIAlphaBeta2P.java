@@ -9,4 +9,12 @@ public class PlayerAIAlphaBeta2P extends Player2P {
         pcol2 = new PlayerAIAlphaBeta(col2);
     }
 
+    private PlayerAIAlphaBeta2P() {}; // empty constructor
+    @Override
+    public Object clone() {
+        PlayerAIAlphaBeta2P p2 = new PlayerAIAlphaBeta2P();
+        p2.cloneFields(this);
+        return p2;
+    }
+
 }

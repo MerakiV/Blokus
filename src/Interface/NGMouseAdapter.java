@@ -5,10 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
-import Controller.ControllerGamePlay;
 import Structures.Color;
-import Structures.Game2P;
-import Structures.Game;
 
 public class NGMouseAdapter implements MouseListener {
 
@@ -16,7 +13,7 @@ public class NGMouseAdapter implements MouseListener {
     ColorSelect drop;
     GameSelection selectMenu;
     MenuInterface menu;
-    GamePlayInterface gamePlay;
+    GamePlay gamePlay;
 
     NGMouseAdapter(HoverButton b, GameSelection g) {
         hover = b;
@@ -46,10 +43,9 @@ public class NGMouseAdapter implements MouseListener {
                     break;
                 case "Play":
                     if (selectMenu.validColors()) {
-                        Game g2p = selectMenu.getGame2P();
                         selectMenu.frame.getContentPane().remove(selectMenu);
                         try {
-                            gamePlay = new GamePlayInterface(selectMenu.frame, new ControllerGamePlay());
+                            gamePlay = new GamePlay(selectMenu.frame);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }

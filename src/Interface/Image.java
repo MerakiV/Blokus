@@ -20,7 +20,6 @@ public class Image {
         BufferedImage img = null;
         try { //on récupère l'image à l'adresse où on l’a mise…
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(nom);
-            assert in != null;
             img = ImageIO.read(in);
             System.out.println("chargement des images ok");
             //fin chargement des images.

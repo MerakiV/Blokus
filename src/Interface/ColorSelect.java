@@ -1,15 +1,18 @@
 package Interface;
 
+import java.awt.Graphics;
 import java.awt.Image;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 import Structures.Color;
 
 public class ColorSelect extends HoverButton {
+    private GameSelection selectMenu;
 
     private Image blank, blankHover, red, redHover, blue, blueHover, green, greenHover, yellow, yellowHover;
 

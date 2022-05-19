@@ -15,8 +15,11 @@ public class PlayerAIMinMax extends PlayerAI {
         return;
     }
 
+    private PlayerAIMinMax() {}; // empty constructor
     @Override
-    public Player clone(){
-        return null;
+    public Object clone() {
+        PlayerAIMinMax p2 = new PlayerAIMinMax();
+        p2.cloneFields(this);
+        return p2;
     }
 }

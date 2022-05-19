@@ -11,7 +11,7 @@ public class MenuMouseAdapter implements MouseListener {
     HoverButton current;
     MenuInterface menuUi;
     MenuInterface menu;
-    GamePlayInterface game;
+    GamePlay game;
     GameSelection selectMenu;
     TutorialInterface tutoUi;
     TutorialInterface tuto;
