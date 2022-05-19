@@ -22,6 +22,7 @@ public class KeyBoardAdapter extends KeyAdapter {
             case KeyEvent.VK_Z:
             case KeyEvent.VK_W:
                 controller.command("counterclockwise");
+                break;
             case KeyEvent.VK_UP:
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:

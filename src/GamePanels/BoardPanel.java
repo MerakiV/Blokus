@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class BoardPanel extends JPanel{
@@ -22,7 +23,10 @@ public class BoardPanel extends JPanel{
     public int boardSize;
     int tileSize;
     Dimension size;
-    Hashtable<String, JLabel> labels;
+    public Hashtable<String, JLabel> labels;
+    public ArrayList<Icon> originalImages;
+
+    public boolean orientated = false;
 
     public BoardPanel(GamePlayInterface g, ControllerGamePlay c) {
         controller = c;
@@ -32,8 +36,9 @@ public class BoardPanel extends JPanel{
         this.setLayout(new GridLayout(20,20));
         this.setBounds(0, 0, tileSize*20,tileSize*20);
         labels = new Hashtable<>();
-        //this.addMouseListener(new BoardMouseAdapter(gamePlayInterface));
+        originalImages = new ArrayList<>();
         addBoardTiles();
+        controller.boardPanel = this;
     }
 
     private void addBoardTiles(){

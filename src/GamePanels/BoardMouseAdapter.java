@@ -68,27 +68,40 @@ public class BoardMouseAdapter implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        controller.tile = tile;
         if (controller.piece != null){
-            Image image = getImage();
-            String[] split = tile.getName().split(" ");
-            int x = Integer.parseInt(split[0]);
-            int y = Integer.parseInt(split[1]);
-            boolean [][] shape = controller.piece.getShape().shape;
-            x -= controller.piece.getShape().anchorY ;
-            y -= controller.piece.getShape().anchorX;
-            if (x >=0 && x + controller.piece.getShape().Ncol - 1 <=19 && y >= 0 && y + controller.piece.getShape().Nlin - 1 <= 19){
-                for (int i=0; i<controller.piece.getShape().Nlin; i++) {
-                    int temp = x;
-                    for (int j=0; j<controller.piece.getShape().Ncol; j++) {
-                        originalImages.add(gamePlayInterface.boardPanel.labels.get(temp + " " + y).getIcon());
-                        if (shape[i][j]) {
-                            gamePlayInterface.boardPanel.labels.get(temp + " " + y).setIcon(new ImageIcon(image));
-                        }
-                        temp++;
-                    }
-                    y++;
-                }
+            paintImage();
+        }
+    }
+
+    public void paintImage(){
+        if (gamePlayInterface.boardPanel.orientated){
+            System.out.println("Not Equal");
+        }
+        Image image = getImage();
+        String[] split = tile.getName().split(" ");
+        int x = Integer.parseInt(split[0]);
+        int y = Integer.parseInt(split[1]);
+        boolean [][] shape = controller.piece.getShape().shape;
+        x -= controller.piece.getShape().anchorY ;
+        y -= controller.piece.getShape().anchorX;
+        if (x >=0 && x + controller.piece.getShape().Ncol - 1 <=19 && y >= 0 && y + controller.piece.getShape().Nlin - 1 <= 19){
+            if (!controller.originalImages.isEmpty()){
+                controller.originalImages.clear();
             }
+            for (int i=0; i<controller.piece.getShape().Nlin; i++) {
+                int temp = x;
+                for (int j=0; j<controller.piece.getShape().Ncol; j++) {
+                    originalImages.add(gamePlayInterface.boardPanel.labels.get(temp + " " + y).getIcon());
+                    if (shape[i][j]) {
+                        gamePlayInterface.boardPanel.labels.get(temp + " " + y).setIcon(new ImageIcon(image));
+                        gamePlayInterface.boardPanel.labels.get(temp + " " + y).repaint();
+                    }
+                    temp++;
+                }
+                y++;
+            }
+            gamePlayInterface.boardPanel.originalImages = originalImages;
         }
     }
 
@@ -125,29 +138,39 @@ public class BoardMouseAdapter implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         if (controller.piece != null && !clicked){
-            Image image = getImage();
-            String name =  tile.getName();
-            String[] split = name.split(" ");
-            int x = Integer.parseInt(split[0]);
-            int y = Integer.parseInt(split[1]);
-            boolean [][] shape = controller.piece.getShape().shape;
-            x -= controller.piece.getShape().anchorY ;
-            y -= controller.piece.getShape().anchorX;
-            if (x >=0 && x + controller.piece.getShape().Ncol - 1 <=19 && y >= 0 && y + controller.piece.getShape().Nlin - 1 <= 19){
-                int num = 0;
-                for (int i=0; i<controller.piece.getShape().Nlin; i++) {
-                    int temp = x;
-                    for (int j=0; j<controller.piece.getShape().Ncol; j++) {
-                        gamePlayInterface.boardPanel.labels.get(temp + " " + y).setIcon(originalImages.get(num));
-                        num++;
-                        temp++;
-                    }
-                    y++;
-                }
-            }
+            replaceOriginal();
         }
         originalImages.clear();
         clicked = false;
 
+    }
+
+    public void replaceOriginal(){
+        if (gamePlayInterface.boardPanel.orientated){
+            if (!controller.originalImages.isEmpty())
+            //System.out.println("Not Equal");
+                originalImages = controller.originalImages;
+            gamePlayInterface.boardPanel.orientated = false;
+        }
+        String name =  tile.getName();
+        String[] split = name.split(" ");
+        int x = Integer.parseInt(split[0]);
+        int y = Integer.parseInt(split[1]);
+        boolean [][] shape = controller.piece.getShape().shape;
+        x -= controller.piece.getShape().anchorY ;
+        y -= controller.piece.getShape().anchorX;
+        if (x >=0 && x + controller.piece.getShape().Ncol - 1 <=19 && y >= 0 && y + controller.piece.getShape().Nlin - 1 <= 19){
+            for (int i=0; i<controller.piece.getShape().Nlin; i++) {
+                int temp = x;
+                for (int j=0; j<controller.piece.getShape().Ncol; j++) {
+                    gamePlayInterface.boardPanel.labels.get(temp + " " + y).setIcon(originalImages.get(0));
+                    originalImages.remove(0);
+                    gamePlayInterface.boardPanel.labels.get(temp + " " + y).repaint();
+                    temp++;
+                }
+                y++;
+            }
+            gamePlayInterface.boardPanel.originalImages = originalImages;
+        }
     }
 }
