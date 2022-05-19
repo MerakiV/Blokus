@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 
 import Structures.Color;
+import Structures.Game2P;
 
 public class NGMouseAdapter implements MouseListener {
 
@@ -52,6 +53,8 @@ public class NGMouseAdapter implements MouseListener {
                         selectMenu.frame.getContentPane().add(gamePlay, BorderLayout.CENTER);
                         selectMenu.frame.getContentPane().invalidate();
                         selectMenu.frame.getContentPane().validate();
+                        Game2P g2p = selectMenu.getGame2P();
+                        // gamePlay.setGame2P(g2p);
                     } else {
                         selectMenu.errorPlay();
                         selectMenu.repaint();

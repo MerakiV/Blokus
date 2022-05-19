@@ -1,6 +1,7 @@
 package Interface;
 
 import Structures.Color;
+import Structures.Game2P;
 import Structures.GameSettings2P;
 
 import javax.swing.*;
@@ -114,13 +115,15 @@ public class GameSelection extends JComponent {
         colorPicker4.setVisible(false);
 
         // back and play buttons
-        backButton = new HoverButton(this, "Back", (int) (width * 0.05), (int) (height * 0.08));
+        backButton = new HoverButton(this, "Back", 0, 0);
         add(backButton);
-        playButton = new HoverButton(this, "Play", (width - 270) / 2, (int) (height * 0.8));
+        playButton = new HoverButton(this, "Play", 0, 0);
         add(playButton);
     }
 
-    private void resetBound(int width, int height) {
+    private void resetBound() {
+        height = frame.getHeight();
+        width = frame.getWidth();
         int offsetRight = (buttonSize * 3 + 10);
         int offsetBottom = (buttonSize * 2 + 10);
 
@@ -226,6 +229,11 @@ public class GameSelection extends JComponent {
         return currentPlayerPicking;
     }
 
+    public Game2P getGame2P() {
+        Game2P g2p = new Game2P(gs2p);
+        return g2p;
+    }
+
     public boolean validColors() {
         Color[] colors = new Color[4];
         colors[0] = gs2p.p1c1;
@@ -249,7 +257,7 @@ public class GameSelection extends JComponent {
 
     public void drawButtons(Graphics g) {
         // drawing buttons to pick a color for a player
-        resetBound(width, height);
+        resetBound();
         g.drawImage(backButton.getCurrentImage(), backButton.getX(), backButton.getY(), null);
         g.drawImage(playButton.getCurrentImage(), playButton.getX(), playButton.getY(), this);
 
@@ -339,6 +347,7 @@ public class GameSelection extends JComponent {
         drawBoard(g);
         drawButtons(g);
         drawText(g);
+        frame.setVisible(true);
 
         // printDebug();
     }
