@@ -6,9 +6,9 @@ import java.util.Arrays;
 //to do: change Shape names too (and enums?)
 
 public class Shape {
-	int Nlin, Ncol;
-	boolean [][] shape; //values only 0 or 1
-	int anchorX, anchorY;
+	public int Nlin, Ncol;
+	public boolean [][] shape; //values only 0 or 1
+	public int anchorX, anchorY;
 	TileType name;
 
     // Note : 0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast
@@ -34,11 +34,11 @@ public class Shape {
 		}
 	}
 
-	int getLines() {
+	public int getLines() {
 		return Nlin;
 	}
 
-	int getColumns() {
+	public int getColumns() {
 		return Ncol;
 	}
 
@@ -54,7 +54,7 @@ public class Shape {
 		shape = s;
 	}
 
-	boolean [][] getShape() {
+	public boolean [][] getShape() {
 		return shape;
 	}
 
@@ -62,7 +62,7 @@ public class Shape {
 		return avaliableCorners.get(dir);
 	}
 
-	boolean isEmpty(int i, int j) {
+	public boolean isEmpty(int i, int j) {
 		return (i<0 || i>=Nlin || j<0 || j>=Ncol || !shape[i][j]);
 	}
 
