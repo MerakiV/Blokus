@@ -1,31 +1,73 @@
 package Structures;
 
-public class Shape {
-	int Nlin, Ncol;
-	boolean [][] shape;
-	int anchorX, anchorY;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-	public Shape(int l, int c) {
+//to do: change Shape names too (and enums?)
+
+public class Shape {
+	public int Nlin, Ncol;
+	public boolean [][] shape; //values only 0 or 1
+	public int anchorX, anchorY;
+	TileType name;
+
+    // Note : 0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast
+    ArrayList<ArrayList<Tile>> avaliableCorners;
+
+	public Shape(int l, int c, int ax, int ay, boolean [][] s) {
 		Nlin = l;
 		Ncol = c;
-		shape = new boolean[l][c];
+		anchorX = ax;
+		anchorY = ay;
+		shape = s;
+		avaliableCorners = new ArrayList<>(4);
+		for (int i=0; i<4; i++) {
+			avaliableCorners.add(new ArrayList<>(3));
+		}
+		for (int i=0; i<Nlin; i++) {
+			for (int j=0; j<Ncol; j++) {
+				if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i-1, j-1)); }
+				if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(1).add(new Tile(i-1, j+1)); }
+				if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(2).add(new Tile(i+1, j+1)); }
+				if (isEmpty(i+1, j) && isEmpty(i, j-1) && isEmpty(i+1, j-1)) { avaliableCorners.get(3).add(new Tile(i+1, j-1)); }
+			}
+		}
 	}
 
-	int getLines() {
+	public int getLines() {
 		return Nlin;
 	}
 
-	int getColumns() {
+	public int getColumns() {
 		return Ncol;
 	}
 
-	boolean [][] getShape() {
+	public int getAnchorX() {
+		return anchorX;
+	}
+
+	public int getAnchorY() {
+		return anchorY;
+	}
+
+	public void setShape(boolean [][] s){
+		shape = s;
+	}
+
+	public boolean [][] getShape() {
 		return shape;
 	}
 
+	public ArrayList<Tile> getCornerList(int dir) {
+		return avaliableCorners.get(dir);
+	}
+
+	public boolean isEmpty(int i, int j) {
+		return (i<0 || i>=Nlin || j<0 || j>=Ncol || !shape[i][j]);
+	}
+
 	public Shape flipV() {
-		Shape s2 = new Shape(Nlin, Ncol);
-		boolean [][] tab = s2.getShape();
+		boolean [][] tab = new boolean[Nlin][Ncol];
 
 		for (int i=0; i<=Nlin/2; i++) {
 			for (int j=0; j<Ncol; j++) {
@@ -34,15 +76,11 @@ public class Shape {
 			}
 		}
 
-		s2.anchorX = s2.Nlin-anchorX-1;
-		s2.anchorY = anchorY;
-
-		return s2;
+		return new Shape(Nlin, Ncol, Nlin - anchorX - 1, anchorY, tab);
 	}
 
 	public Shape flipH() {
-		Shape s2 = new Shape(Nlin, Ncol);
-		boolean [][] tab = s2.getShape();
+		boolean [][] tab = new boolean[Nlin][Ncol];
 
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<=Ncol/2; j++) {
@@ -51,15 +89,11 @@ public class Shape {
 			}
 		}
 
-		s2.anchorX = anchorX;
-		s2.anchorY = s2.Ncol-anchorY-1;
-
-		return s2;
+		return new Shape(Nlin, Ncol, anchorX, Ncol - anchorY - 1, tab);
 	}
 
 	public Shape rotate90() {
-		Shape s2 = new Shape(Ncol, Nlin);
-		boolean [][] tab = s2.getShape();
+		boolean [][] tab = new boolean[Ncol][Nlin];
 
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
@@ -67,17 +101,14 @@ public class Shape {
 			}
 		}
 
-		s2.anchorX = anchorY;
-		s2.anchorY = s2.Nlin-anchorX-1;
-
-		return s2;
+		return new Shape(Ncol, Nlin, anchorY, Nlin - anchorX - 1, tab);
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		Shape s2 = (Shape) o;
 
-		if (Nlin!=s2.getLines() || Ncol!=s2.getColumns()) {
+		if (Nlin!=s2.getLines() || Ncol!=s2.getColumns() || anchorX!=s2.anchorX || anchorY!=s2.anchorY) {
 			return false;
 		}
 
@@ -93,16 +124,40 @@ public class Shape {
 		return true;
 	}
 
+	public void setName(TileType tt){
+		name = tt;
+	}
+	public TileType getName(){
+		return name;
+	}
+
 	public void printShape() {
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
 				if (shape[i][j]) {
-					System.out.print("#");
+					if(i == anchorX && j == anchorY)
+						System.out.print("X");
+					else
+						System.out.print("#");
 				} else {
 					System.out.print("-");
 				}
 			}
 			System.out.print("\n");
 		}
+	}
+
+	@Override
+	/*
+	Hashes each line of the shape array and puts the hashcodes into an array of int and then hashes that array.
+	 */
+	public int hashCode(){
+		int [] lineHash = new int[Nlin];
+		int hash ;
+		for(int i = 0 ; i < Nlin ; i++) {
+			lineHash[i] = Arrays.hashCode(shape[i]);
+		}
+		hash = Arrays.hashCode(lineHash);
+		return hash;
 	}
 }
