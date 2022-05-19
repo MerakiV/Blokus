@@ -19,7 +19,7 @@ public class ControllerAIMinMax {
         }
         else{
             int ret = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE );
-            PriorityQueue<Game> moves = moves(config, max); //children of the config object
+            PriorityQueue<Game> moves = moves(max); //children of the config object
             for(int i=0; i<=moves.size(); i++){
                 int x = AlgoMinMax(moves.poll(), !max, depth-1);
                 if(max ? x>ret : x<ret){
@@ -31,37 +31,60 @@ public class ControllerAIMinMax {
     }
 
     //enum algo
-    public PriorityQueue<Game> moves(Game g, boolean max) {
+    public PriorityQueue<Game> moves(boolean max) {
         PriorityQueue<Game> pq = new PriorityQueue<>(11, new ComparatorAIMinMax(this, max));
-        Game g2 = g.clone();
-        Board b = g.getBoard();
-        Iterator<Piece> it1 = g.getCurrentPlayer().getPieces().iterator();
+        Game g2 = (Game) config.clone();
+        Board b = config.getBoard();
+        Iterator<Piece> it1 = config.getCurrentPlayer().getPieces().iterator();
         Iterator<Shape> it2;
         Iterator<Tile> it3, it4;
         Piece pi;
         Shape sh;
         Tile t1, t2;
-        Color col = g.getCurrentColor();
+        Color col = config.getCurrentColor();
         int k, ax, ay;
 
         while (it1.hasNext()) {
             pi = it1.next();
+            System.out.println("--- Iterating on piece "+pi.getName()); // debug
             it2 = pi.getShapeList().iterator();
             while (it2.hasNext()) {
                 sh = it2.next();
+                System.out.println("------ Iterating on following shape :"); // debug
+                sh.printShape(); // debug
                 for (k=0; k<4; k++) {
+                    System.out.print("--------- Iterating on direction "); // debug
+                    switch(k) { // debug
+                        case 0: //0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast // debug
+                            System.out.println("northeast"); // debug
+                            break; // debug
+                        case 1:  // debug
+                            System.out.println("northwest"); // debug
+                            break; // debug
+                        case 2:  // debug
+                            System.out.println("southwest"); // debug
+                            break; // debug
+                        case 3:  // debug
+                            System.out.println("southeast"); // debug
+                            break; // debug
+                        default: // debug
+                            System.out.println("how did i get here ?"); // debug
+                    } // debug
                     it3 = sh.getCornerList(k).iterator();
                     while (it3.hasNext()) {
                         t1 = it3.next();
+                        System.out.println("------------ Iterating on shape corner ("+t1.getX()+","+t1.getY()+")"); // debug
                         it4 = b.getCorners(col, k).iterator();
                         while (it4.hasNext()) {
                             t2 = it4.next();
+                            System.out.println("--------------- Iterating on board corner ("+t2.getX()+","+t2.getY()+")"); // debug
                             ax = t2.getX() - t1.getX() + sh.getAnchorX();
                             ay = t2.getY() - t1.getY() + sh.getAnchorY();
                             // Automatically checking and then putting
                             if (g2.put(sh, pi.getName(), col, ax, ay)) {
+                                System.out.println("------------------ It matches !!!"); // debug
                                 pq.add(g2);
-                                g2 = g.clone();
+                                g2 = (Game) config.clone();
                             }
                         }
                     }
@@ -156,7 +179,7 @@ public class ControllerAIMinMax {
         List<Tile> lt;
         Tile t1, t2, t3;
         int k, ax, ay;
-        for(int ip= 0; ip <= lp.size(); ip++) {
+        for(int ip= 0; ip < lp.size(); ip++) {
             Piece p = lp.get(ip);
             List<Shape> ls = p.getShapeList();
             for(Shape s: ls) {
@@ -193,7 +216,7 @@ public class ControllerAIMinMax {
         Iterator<Tile> it1, it2;
         Tile t1, t2;
         int k, ax, ay;
-        for(int ip= 0; ip <= lp.size(); ip++) {
+        for(int ip= 0; ip < lp.size(); ip++) {
             Piece p = lp.get(ip);
             List<Shape> ls = p.getShapeList();
             for(Shape s: ls) {

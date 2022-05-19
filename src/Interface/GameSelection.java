@@ -1,7 +1,6 @@
 package Interface;
 
 import Structures.Color;
-import Structures.Game2P;
 import Structures.GameSettings2P;
 
 import javax.swing.*;
@@ -14,7 +13,7 @@ import java.io.IOException;
 public class GameSelection extends JComponent {
     public JFrame frame;
     JPanel panel;
-    Image backGround, logo, board, colorSelectbg;
+    Image backGround, logo, board;
     HoverButton playButton, backButton;
     ColorSelect selectC1P1, selectC2P1, selectC1P2, selectC2P2;
     ColorPicker colorPicker1, colorPicker2, colorPicker3, colorPicker4;
@@ -23,7 +22,7 @@ public class GameSelection extends JComponent {
     JComboBox selectP1, selectP2;
     int height, width, boardHeight, boardWidth, buttonSize;
 
-    DrawString selectColor, player11, player21, player12, player22, errorPlayText;
+    DrawString selectColor, player1, player2, errorPlayText;
 
     GameSettings2P gs2p; // TBI: connect with the game/game2P classes
 
@@ -35,7 +34,6 @@ public class GameSelection extends JComponent {
         backGround = new Image(frame, "images/border.png");
         board = new Image(frame, "images/board.png");
         logo = new Image(frame, "images/LogoBlokus.png");
-        colorSelectbg = new Image(frame, "images/colorSelectBackground.png");
         initUIButton();
         gs2p = new GameSettings2P();
         try {
@@ -56,7 +54,6 @@ public class GameSelection extends JComponent {
 
         // Combo boxes
         selectP1 = new JComboBox(players);
-        selectP1.setFont(new Font("ABeeZee-Regular", Font.PLAIN, 30));
         add(selectP1);
 
         // Listeners for combo boxes (to modify)
@@ -74,7 +71,6 @@ public class GameSelection extends JComponent {
         });
 
         selectP2 = new JComboBox(players);
-        selectP2.setFont(new Font("ABeeZee-Regular", Font.PLAIN, 30));
         add(selectP2);
 
         selectP2.addActionListener(e -> {
@@ -118,15 +114,13 @@ public class GameSelection extends JComponent {
         colorPicker4.setVisible(false);
 
         // back and play buttons
-        backButton = new HoverButton(this, "Back", 0, 0);
+        backButton = new HoverButton(this, "Back", (int) (width * 0.05), (int) (height * 0.08));
         add(backButton);
-        playButton = new HoverButton(this, "Play", 0, 0);
+        playButton = new HoverButton(this, "Play", (width - 270) / 2, (int) (height * 0.8));
         add(playButton);
     }
 
-    private void resetBound() {
-        height = frame.getHeight();
-        width = frame.getWidth();
+    private void resetBound(int width, int height) {
         int offsetRight = (buttonSize * 3 + 10);
         int offsetBottom = (buttonSize * 2 + 10);
 
@@ -147,12 +141,12 @@ public class GameSelection extends JComponent {
         colorPicker4.setButtonBound((width + boardWidth) / 2 - offsetRight - 25,
                 (height + boardHeight) / 2 - offsetBottom - 25);
 
-        int offsetPlayerY = selectC1P1.getY() + selectC1P1.getHeight() + 40;
-        int offsetPlayer1X = (width - boardWidth) / 2 * 7 / 9 - (width / 8) / 2;
+        int offsetPlayerY = selectC1P1.getY() + selectC1P1.getHeight();
+        int offsetPlayer1X = (width - boardWidth) / 2 * 2 / 3 - (width / 10) / 2;
         int offsetPlayer2X = (width + boardWidth) / 2;
-        offsetPlayer2X += (width - offsetPlayer2X) * 2 / 9 - (width / 8) / 2;
-        selectP1.setBounds(offsetPlayer1X, offsetPlayerY, width / 8, height / 17);
-        selectP2.setBounds(offsetPlayer2X, offsetPlayerY, width / 8, height / 17);
+        offsetPlayer2X += (width - offsetPlayer2X) / 3 - (width / 10) / 2;
+        selectP1.setBounds(offsetPlayer1X, offsetPlayerY + 30, width / 10, height / 20);
+        selectP2.setBounds(offsetPlayer2X, offsetPlayerY + 30, width / 10, height / 20);
     }
 
     public void showColorPicker(int i) {
@@ -164,7 +158,6 @@ public class GameSelection extends JComponent {
                 colorPicker2.setVisible(false);
                 colorPicker3.setVisible(false);
                 colorPicker4.setVisible(false);
-                break;
             case 1:
                 System.out.println("show color picker 1");
                 currentPlayerPicking = "C1P1";
@@ -233,11 +226,6 @@ public class GameSelection extends JComponent {
         return currentPlayerPicking;
     }
 
-    public Game2P getGame2P() {
-        Game2P g2p = new Game2P(gs2p);
-        return g2p;
-    }
-
     public boolean validColors() {
         Color[] colors = new Color[4];
         colors[0] = gs2p.p1c1;
@@ -261,7 +249,7 @@ public class GameSelection extends JComponent {
 
     public void drawButtons(Graphics g) {
         // drawing buttons to pick a color for a player
-        resetBound();
+        resetBound(width, height);
         g.drawImage(backButton.getCurrentImage(), backButton.getX(), backButton.getY(), null);
         g.drawImage(playButton.getCurrentImage(), playButton.getX(), playButton.getY(), this);
 
@@ -297,11 +285,6 @@ public class GameSelection extends JComponent {
         int greenY = p.getY("green");
         int yellowX = p.getX("yellow");
         int yellowY = p.getY("yellow");
-        int pickerX = yellowX - 10;
-        int pickerY = yellowY -10;
-        int pickerOffsetX = blueX - pickerX + p.getButtonSize() + 10;
-        int pickerOffsetY = blueY - pickerY + p.getButtonSize() + 10;
-        g.drawImage(colorSelectbg.image, pickerX, pickerY, pickerOffsetX, pickerOffsetY, null);
         g.drawImage(p.getCurrentImage("red"), redX, redY, null);
         g.drawImage(p.getCurrentImage("blue"), blueX, blueY, null);
         g.drawImage(p.getCurrentImage("green"), greenX, greenY, null);
@@ -320,20 +303,15 @@ public class GameSelection extends JComponent {
         selectColor = new DrawString(g, "Press the squares to select your color.", (width - 420) / 2,
                 (int) (height * 0.25), 24);
         selectColor.paint(g);
-        int offsetPlayerText1Y = selectC1P1.getY() + (selectC1P1.getHeight() + 30) / 2;
-        int offsetPlayerText2Y = selectC2P2.getY() + (selectC2P2.getHeight() + 30) / 2;
-        int offsetPlayerText1X = (width - boardWidth) / 2 * 7 / 9 - 147 / 2;
+        int offsetPlayerTextY = selectC1P1.getY() + (selectC1P1.getHeight() + 30) / 2;
+        int offsetPlayerText1X = (width - boardWidth) / 2 * 2 / 3 - 110 / 2;
         int offsetPlayerText2X = (width + boardWidth) / 2;
-        offsetPlayerText2X += (width - offsetPlayerText2X) * 2 / 9 - 147 / 2;
+        offsetPlayerText2X += (width - offsetPlayerText2X) / 3 - 110 / 2;
 
-        player11 = new DrawString(g, "Player 1", offsetPlayerText1X, offsetPlayerText1Y, 40);
-        player11.paint(g);
-        player21 = new DrawString(g, "Player 2", offsetPlayerText2X, offsetPlayerText1Y, 40);
-        player21.paint(g);
-        player12 = new DrawString(g, "Player 2", offsetPlayerText1X, offsetPlayerText2Y, 40);
-        player12.paint(g);
-        player22 = new DrawString(g, "Player 1", offsetPlayerText2X, offsetPlayerText2Y, 40);
-        player22.paint(g);
+        player1 = new DrawString(g, "Player 1", offsetPlayerText1X, offsetPlayerTextY, 30);
+        player1.paint(g);
+        player2 = new DrawString(g, "Player 2", offsetPlayerText2X, offsetPlayerTextY, 30);
+        player2.paint(g);
         if (errorPlay) {
             errorPlayText = new DrawString(g, "Each player must pick a unique color.", (width - 420) / 2,
                     playButton.getY() - 20, 24);
@@ -361,7 +339,6 @@ public class GameSelection extends JComponent {
         drawBoard(g);
         drawButtons(g);
         drawText(g);
-        frame.setVisible(true);
 
         // printDebug();
     }

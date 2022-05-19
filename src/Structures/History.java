@@ -17,6 +17,7 @@ public class History {
     public GameState undo() {
         if (canUndo()) {
             GameState gs = past.pop();
+            future.push(gs);
             return gs;
         } else {
             return null;
@@ -30,6 +31,7 @@ public class History {
     public GameState redo() {
         if (canRedo()) {
             GameState gs = future.pop();
+            past.push(gs);
             return gs;
         } else {
             return null;

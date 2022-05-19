@@ -6,9 +6,9 @@ import java.util.Arrays;
 //to do: change Shape names too (and enums?)
 
 public class Shape {
-	public int Nlin, Ncol;
-	public boolean [][] shape; //values only 0 or 1
-	public int anchorX, anchorY;
+	int Nlin, Ncol;
+	boolean [][] shape; //values only 0 or 1
+	int anchorX, anchorY;
 	TileType name;
 
     // Note : 0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast
@@ -26,19 +26,19 @@ public class Shape {
 		}
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
-				if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i-1, j-1)); }
-				if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(1).add(new Tile(i-1, j+1)); }
-				if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(2).add(new Tile(i+1, j+1)); }
-				if (isEmpty(i+1, j) && isEmpty(i, j-1) && isEmpty(i+1, j-1)) { avaliableCorners.get(3).add(new Tile(i+1, j-1)); }
+				if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i, j)); }
+				if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(1).add(new Tile(i, j)); }
+				if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(2).add(new Tile(i, j)); }
+				if (isEmpty(i+1, j) && isEmpty(i, j-1) && isEmpty(i+1, j-1)) { avaliableCorners.get(3).add(new Tile(i, j)); }
 			}
 		}
 	}
 
-	public int getLines() {
+	int getLines() {
 		return Nlin;
 	}
 
-	public int getColumns() {
+	int getColumns() {
 		return Ncol;
 	}
 
@@ -54,7 +54,7 @@ public class Shape {
 		shape = s;
 	}
 
-	public boolean [][] getShape() {
+	boolean [][] getShape() {
 		return shape;
 	}
 
@@ -62,7 +62,7 @@ public class Shape {
 		return avaliableCorners.get(dir);
 	}
 
-	public boolean isEmpty(int i, int j) {
+	boolean isEmpty(int i, int j) {
 		return (i<0 || i>=Nlin || j<0 || j>=Ncol || !shape[i][j]);
 	}
 
