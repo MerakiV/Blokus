@@ -22,6 +22,7 @@ public abstract class Game implements Serializable, Cloneable {
     public boolean put(Shape s, PieceType pt, Color c, int x, int y){
         int i = board.getCorner(c);
         if(board.canPut(s, i, x, y)){
+            pushToPast();
             board.put(s, i, x, y);
             currentPlayer.removePiece(pt);
             return true;
@@ -40,24 +41,26 @@ public abstract class Game implements Serializable, Cloneable {
     public Board getBoard(){return board;}
 
     public void undo(){
+        pushToFuture();
         GameState previous = history.undo();
         board = previous.board;
         currentPlayer = previous.player;
     }
 
     public void redo(){
+        pushToPast();
         GameState next = history.redo();
         board = next.board;
         currentPlayer = next.player;
     }
 
     void pushToPast(){
-        GameState gs = new GameState(board, currentPlayer);
+        GameState gs = new GameState(board.clone(), currentPlayer.clone());
         history.pushToPast(gs);
     }
 
     void pushToFuture(){
-        GameState gs = new GameState(board, currentPlayer);
+        GameState gs = new GameState(board.clone(), currentPlayer.clone());
         history.pushToFuture(gs);
     }
 

@@ -7,7 +7,7 @@ import Structures.Board;
 
 import java.util.List;
 
-public abstract class Player {
+public abstract class Player implements Cloneable {
     Color col;
     List<Piece> pieces;
     boolean isAI;
@@ -64,6 +64,7 @@ public abstract class Player {
         if(!found){
             System.out.println("Piece "+pt.toString()+" not found");
         } else{
+            score += pr.getValue();
             pieces.remove(pr);
         }
     }
@@ -73,4 +74,7 @@ public abstract class Player {
     * and adds the value of the piece to score.
     * */
     public abstract void playPiece(Board b);
+
+    @Override
+    abstract public Player clone();
 }

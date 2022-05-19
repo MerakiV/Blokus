@@ -14,4 +14,9 @@ public class PlayerAIMinMax extends PlayerAI {
     public void playPiece(Board b) {
         return;
     }
+
+    @Override
+    public Player clone(){
+        return null;
+    }
 }

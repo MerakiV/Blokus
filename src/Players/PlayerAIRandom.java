@@ -62,4 +62,15 @@ public class PlayerAIRandom extends PlayerAI {
             }
         }
     }
+
+    @Override
+    public Player clone(){
+        Player p2 = new PlayerAIRandom(this.col);
+        p2.score = this.score;
+        p2.pieces = new ArrayList<>();
+        for(Piece p : this.pieces){
+            p2.pieces.add(p);
+        }
+        return p2;
+    }
 }

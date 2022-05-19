@@ -5,6 +5,7 @@ import Structures.Color;
 import Structures.Piece;
 import Structures.PieceReader;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /*
@@ -31,5 +32,16 @@ public class PlayerHuman extends Player {
     @Override
     public void playPiece(Board b) {
         /* connect to interface */
+    }
+
+    @Override
+    public Player clone(){
+        Player p2 = new PlayerHuman(this.col);
+        p2.score = this.score;
+        p2.pieces = new ArrayList<>();
+        for(Piece p : this.pieces){
+            p2.pieces.add(p);
+        }
+        return p2;
     }
 }
