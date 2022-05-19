@@ -32,7 +32,7 @@ public class ControllerAIMinMax {
 
     //enum algo
     public PriorityQueue<Game> moves(Game g, boolean max) {
-        PriorityQueue<Game> pq = new PriorityQueue<>(11, new ComparatorAIMinMax(max));
+        PriorityQueue<Game> pq = new PriorityQueue<>(11, new ComparatorAIMinMax(this, max));
         Game g2 = g.clone();
         Board b = g.getBoard();
         Iterator<Piece> it1 = g.getCurrentPlayer().getPieces().iterator();
@@ -89,7 +89,7 @@ public class ControllerAIMinMax {
 
     }
 
-    public static int evaluation(Game config, boolean max){
+    public int evaluation(Game config, boolean max){
         //(our score - opponent score) + (our possible placements - opponent placements)
 
         Player p1c1 = config.getPlayerList().get(0);
@@ -185,10 +185,10 @@ public class ControllerAIMinMax {
         return listPlacements;
     }
 
-    int sumAllPlacements(Player p){
+    int sumAllPlacements(Player pl){
         int sum = 0;
-        List<Piece> lp = p.getPieces();
-        Color color = p.getColor();
+        List<Piece> lp = pl.getPieces();
+        Color color = pl.getColor();
         Board b = config.getBoard();
         Iterator<Tile> it1, it2;
         Tile t1, t2;
