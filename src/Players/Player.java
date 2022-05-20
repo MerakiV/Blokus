@@ -1,9 +1,6 @@
 package Players;
 
-import Structures.Color;
-import Structures.Piece;
-import Structures.PieceType;
-import Structures.Board;
+import Structures.*;
 
 import java.util.ArrayList;
 
@@ -18,6 +15,10 @@ public abstract class Player implements Cloneable {
     public ArrayList<Piece> getPieces(){return pieces;}
 
     public int getScore(){return score;}
+
+    public void updateScore(int add){
+        score+= add;
+    }
 
     public boolean isAI(){return isAI;}
 
@@ -72,7 +73,7 @@ public abstract class Player implements Cloneable {
     * Takes a piece from the player's list, places it on the board, removes it from the list,
     * and adds the value of the piece to score.
     * */
-    public abstract void playPiece(Board b);
+    public abstract void playPiece(Game g);
 
     // Must be overwritten in subclasses.
     @Override

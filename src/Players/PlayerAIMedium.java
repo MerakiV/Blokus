@@ -3,13 +3,16 @@ import Structures.*;
 
 import java.util.*;
 
-public class PlayerAIRandom extends PlayerAI {
+public class PlayerAIMedium extends PlayerAI {
     private final long seed;
     private final Random generator;
 
-    public PlayerAIRandom(Color c) {
+    int type;
+
+    public PlayerAIMedium(Color c, int t) {
         isAI = true;
         score = 0;
+        type = t;
         PieceReader pRead = null;
         try {
             pRead = new PieceReader();
@@ -21,11 +24,11 @@ public class PlayerAIRandom extends PlayerAI {
 
         seed = System.currentTimeMillis();
         this.generator = new Random(seed);
-        difficultyLevel = 0;
+        difficultyLevel = 1;
         col = c;
     }
 
-    public PlayerAIRandom(Color c, long s) {
+    public PlayerAIMedium(Color c, long s) {
         isAI = true;
         score = 0;
         PieceReader pRead = null;
@@ -39,32 +42,64 @@ public class PlayerAIRandom extends PlayerAI {
 
         seed = s;
         this.generator = new Random(s);
-        difficultyLevel = 0;
+        difficultyLevel = 1;
         col = c;
     }
 
-    // This constructor will allow to do reproductible tests
-    /*public PlayerAIRandom(long seed) {
-        this.seed = seed;
-        this.generator = new Random(seed);
-    }*/
-
     @Override
     public void playPiece(Game g) {
+        switch(type){
+            case 1:
+                PlayPieceByValue(g);
+                break;
+            /*case 2:
+                PlayPieceValueAndAvCorners(g);
+                break;*/
+        }
+    }
+
+    @Override
+    public Player clone() {
+        return null;
+    }
+
+    // Place pieces of the best value in a random order first
+    public void PlayPieceByValue(Game g){
         Board b = g.getBoard();
         int x,y;
         List<Shape> tried = new ArrayList<>();
         List<Tile> possiblePut;
         int colorCode = b.getCorner(this.col);
         boolean notPlaced = true;
+
+        //see label of last piece
+        String name = pieces.get(pieces.size()-1).getName().toString();
+        String pieceValue;
+        if(name.contains("FIVE")) pieceValue = "FIVE";
+        else if(name.contains("FOUR")) pieceValue = "FOUR";
+        else if(name.contains("THREE")) pieceValue = "THREE";
+        else if(name.contains("TWO")) pieceValue = "TWO";
+        else if(name.contains("ONE")) pieceValue = "ONE";
+        else return; //no remaining pieces
+
+        int pieceCount = 1; //count number of pieces of same value
+        for(int i = pieces.size()-2; i>=0; i--){
+            if(pieces.get(i).getName().toString().contains(pieceValue)) {
+                System.out.println(pieces.get(i).getName().toString());
+                pieceCount++;
+                System.out.println(pieceCount);
+            }
+        }
+
         while(notPlaced) {
+
             possiblePut = new ArrayList<>();
-            int idx = this.generator.nextInt(pieces.size());
-            Piece play = pieces.get(idx);
+            int idx = this.generator.nextInt(pieceCount);
+            Piece play = pieces.get(pieces.size()-1-idx);
             play.setDisp(generator.nextInt(16));
             while(tried.contains(play.getShape())){
-                idx = this.generator.nextInt(pieces.size());
-                play = pieces.get(idx);
+                idx = this.generator.nextInt(pieceCount);
+                play = pieces.get(pieces.size()-1-idx);
                 play.setDisp(generator.nextInt(16));
             }
             tried.add(play.getShape());
@@ -87,13 +122,6 @@ public class PlayerAIRandom extends PlayerAI {
         }
     }
 
-    private PlayerAIRandom(long s) {
-        seed = s;
-        this.generator = new Random(s); }
-    @Override
-    public Object clone() {
-        PlayerAIRandom p2 = new PlayerAIRandom(this.seed);
-        p2.cloneFields(this);
-        return p2;
-    }
+    /*public void PlayPieceValueAndAvCorners(g){
+    }*/
 }

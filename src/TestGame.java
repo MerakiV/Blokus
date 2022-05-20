@@ -9,7 +9,7 @@ public class TestGame {
         //manually set game settings
         GameSettings2P settings = new GameSettings2P();
         settings.setP1Human();
-        settings.setP2AI(0);
+        settings.setP2AI(1);
         settings.setP1Color1(Color.RED);
         settings.setP1Color2(Color.BLUE);
         settings.setP2Color1(Color.GREEN);
@@ -39,7 +39,7 @@ public class TestGame {
         while(cont) {
             if(g.getCurrentPlayer().isAI()){
                 System.out.println("AI is playing... ");
-                g.getCurrentPlayer().playPiece(bo);
+                g.getCurrentPlayer().playPiece(g);
                 bo.printBoard(-1);
                 g.nextTurn();
             }

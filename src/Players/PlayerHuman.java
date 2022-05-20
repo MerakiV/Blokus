@@ -2,12 +2,8 @@ package Players;
 
 import Structures.Board;
 import Structures.Color;
+import Structures.Game;
 import Structures.PieceReader;
-
-/*
-to do: initialize Set<Piece>
- */
-
 public class PlayerHuman extends Player {
 
     public PlayerHuman(Color c){
@@ -26,7 +22,7 @@ public class PlayerHuman extends Player {
     }
 
     @Override
-    public void playPiece(Board b) {
+    public void playPiece(Game g) {
         /* connect to interface */
     }
 
