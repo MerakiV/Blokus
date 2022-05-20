@@ -19,6 +19,10 @@ public abstract class Player implements Cloneable {
 
     public int getScore(){return score;}
 
+    public void updateScore(int add){
+        add+= score;
+    }
+
     public boolean isAI(){return isAI;}
 
     public void printPlayer(){
