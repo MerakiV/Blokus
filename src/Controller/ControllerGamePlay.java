@@ -268,4 +268,12 @@ public class ControllerGamePlay implements EventController {
         }
         return true;
     }
+
+    public void setBoardPanel(BoardPanel b){
+        if( b == null){
+            throw new RuntimeException("Panel null");
+        }
+        this.boardPanel = b;
+
+    }
 }

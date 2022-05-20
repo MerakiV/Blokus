@@ -46,10 +46,12 @@ public class NGMouseAdapter implements MouseListener {
                     break;
                 case "Play":
                     if (selectMenu.validColors()) {
-                        Game g2p = selectMenu.getGame2P();
+                        Game g2p = selectMenu.getGame();
+                        ControllerGamePlay controller = new ControllerGamePlay(g2p);
+                        selectMenu.frame.addKeyListener(new KeyBoardAdapter(controller));
                         selectMenu.frame.getContentPane().remove(selectMenu);
                         try {
-                            gamePlay = new GamePlayInterface(selectMenu.frame, new ControllerGamePlay());
+                            gamePlay = new GamePlayInterface(selectMenu.frame, controller);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }

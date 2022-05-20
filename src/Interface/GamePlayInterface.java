@@ -42,6 +42,7 @@ public class GamePlayInterface extends JPanel {
         this.addMouseListener(new GameMouseAdapter(this));
         boardPanel = new BoardPanel(this, controller);
         this.add(boardPanel);
+        controller.setBoardPanel(boardPanel);
         initialiseColorPanels();
         initialiseButtons();
         backGround = new Image(frame, "images/border.png");

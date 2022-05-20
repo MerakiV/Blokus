@@ -15,9 +15,9 @@ import javax.swing.*;
 
 public class GameInterface implements Runnable {
     private JFrame frame;
-    private GamePlayInterface menu;
+//    private GamePlayInterface menu;
     public Game game;
-    //private MenuInterface menu;
+    private MenuInterface menu;
     // private GameSelection menu;
 
     public static void start(){
@@ -38,12 +38,12 @@ public class GameInterface implements Runnable {
 
         try {
             // TODO : initialise game in controller
-            initialiseGame();
-            ControllerGamePlay controller = new ControllerGamePlay();
-            frame.addKeyListener(new KeyBoardAdapter(controller));
-            menu = new GamePlayInterface(frame, controller);
-            //menu.setLayout(new BorderLayout());
-            //menu = new MenuInterface(frame);
+//            initialiseGame();
+//            ControllerGamePlay controller = new ControllerGamePlay();
+//            frame.addKeyListener(new KeyBoardAdapter(controller));
+//            menu = new GamePlayInterface(frame, controller);
+            menu = new MenuInterface(frame);
+            menu.setLayout(new BorderLayout());
             // menu = new GameSelection(frame);
         } catch (IOException e) {
             e.printStackTrace();

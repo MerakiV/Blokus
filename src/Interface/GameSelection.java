@@ -1,6 +1,7 @@
 package Interface;
 
 import Structures.Color;
+import Structures.Game;
 import Structures.Game2P;
 import Structures.GameSettings2P;
 
@@ -233,8 +234,8 @@ public class GameSelection extends JComponent {
         return currentPlayerPicking;
     }
 
-    public Game2P getGame2P() {
-        Game2P g2p = new Game2P(gs2p);
+    public Game getGame() {
+        Game g2p = new Game2P(gs2p);
         return g2p;
     }
 

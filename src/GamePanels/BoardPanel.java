@@ -38,7 +38,8 @@ public class BoardPanel extends JPanel{
         labels = new Hashtable<>();
         originalImages = new ArrayList<>();
         addBoardTiles();
-        controller.boardPanel = this;
+        controller.setBoardPanel(this);
+        System.out.println("Board created");
     }
 
     private void addBoardTiles(){
