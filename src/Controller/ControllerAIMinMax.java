@@ -236,9 +236,16 @@ public class ControllerAIMinMax {
                             t2 = it2.next();
                             ax = t2.getX() - t1.getX() + s.getAnchorX();
                             ay = t2.getY() - t1.getY() + s.getAnchorY();
+                            System.out.println("*** Tentative de pose :\n*** Couleur : "+color+"\n*** Plateau :"); // debug
+                            b.printBoard(b.getCorner(color)); // debug
+                            System.out.println("*** Forme :"); // debug
+                            s.printShape(); // debug
+                            System.out.println("*** Coordonnées : ("+ax+","+ay+")..."); // debug
                             if (b.canPut(s, color, ax, ay)) {
+                                System.out.println("*** Succès !!!"); // debug
                                 sum++;
                             }
+                            System.out.println("\n\n"); // debug
                         }
                     }
                 }
