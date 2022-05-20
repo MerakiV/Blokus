@@ -1,9 +1,6 @@
 package Players;
 
-import Structures.Color;
-import Structures.Piece;
-import Structures.PieceType;
-import Structures.Board;
+import Structures.*;
 
 import java.util.List;
 
@@ -18,6 +15,10 @@ public abstract class Player implements Cloneable {
     public List<Piece> getPieces(){return pieces;}
 
     public int getScore(){return score;}
+
+    public void updateScore(int add){
+        score+= add;
+    }
 
     public boolean isAI(){return isAI;}
 

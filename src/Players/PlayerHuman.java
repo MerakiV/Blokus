@@ -1,9 +1,6 @@
 package Players;
 
-import Structures.Board;
-import Structures.Color;
-import Structures.Piece;
-import Structures.PieceReader;
+import Structures.*;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -32,6 +29,8 @@ public class PlayerHuman extends Player {
     @Override
     public void playPiece(Board b) {
         /* connect to interface */
+
+
     }
 
     @Override

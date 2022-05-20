@@ -1,9 +1,6 @@
 package Structures;
 
-import Players.Player;
-import Players.Player2P;
-import Players.PlayerAIRandom2P;
-import Players.PlayerHuman2P;
+import Players.*;
 
 import java.util.ArrayList;
 
@@ -17,11 +14,38 @@ public class Game2P extends Game{
         board = new Board(set.p1c1, set.p2c1, set.p1c2, set.p2c2);
 
         //TBI : create players
-        //AI random for now
         if(set.p1Human) p1 = new PlayerHuman2P(set.p1c1, set.p1c2);
-        else p1 = new PlayerAIRandom2P(set.p1c1, set.p1c2);
+        else {
+            switch(set.p1AIdiff){
+                case 0:
+                    p1 = new PlayerAIRandom2P(set.p1c1, set.p1c2);
+                    break;
+                case 1:
+                    p1 = new PlayerAIMedium2P(set.p1c1, set.p1c2, 1);
+                    //p1 = new PlayerAIMinMax2P(set.p1c1, set.p1c2);
+                    break;
+                case 2:
+                    p1 = new PlayerAIMinMax2P(set.p1c1, set.p1c2);
+                    break;
+                default:
+            }
+        }
         if(set.p2Human) p2 = new PlayerHuman2P(set.p2c1, set.p2c2);
-        else p2 = new PlayerAIRandom2P(set.p2c1, set.p2c2);
+        else {
+            switch(set.p2AIdiff){
+                case 0:
+                    p2 = new PlayerAIRandom2P(set.p2c1, set.p2c2);
+                    break;
+                case 1:
+                    p2 = new PlayerAIMedium2P(set.p2c1, set.p2c2, 1);
+                    //p2 = new PlayerAIMinMax2P(set.p2c1, set.p2c2);
+                    break;
+                case 2:
+                    p2 = new PlayerAIMinMax2P(set.p2c1, set.p2c2);
+                    break;
+                default:
+            }
+        }
 
         //put players in player list
         players = new ArrayList<Player>();
