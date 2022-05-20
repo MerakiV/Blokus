@@ -20,7 +20,7 @@ public abstract class Player implements Cloneable {
     public int getScore(){return score;}
 
     public void updateScore(int add){
-        add+= score;
+        score+=add;
     }
 
     public boolean isAI(){return isAI;}
