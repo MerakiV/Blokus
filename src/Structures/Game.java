@@ -21,8 +21,7 @@ public abstract class Game implements Serializable, Cloneable {
     }
 
     public boolean put(Shape s, PieceType pt, Color c, int x, int y){
-        int i = board.getCorner(c);
-        if(board.checkAndPut(s, i, x, y)){
+        if(board.checkAndPut(s, c, x, y)){
             currentPlayer.removePiece(pt);
             return true;
         }
@@ -69,7 +68,7 @@ public abstract class Game implements Serializable, Cloneable {
     
     // Can be used in subclasses' clone method.
     public void cloneFields(Game g2) {
-        this.board = g2.board.clone();
+        this.board = (Board) g2.board.clone();
         this.currentPlayer = null;
 
         this.players = new ArrayList<>(g2.players.size());
