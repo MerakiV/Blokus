@@ -34,7 +34,8 @@ public class ControllerAIMinMax {
     public PriorityQueue<Game> moves(boolean max) {
         PriorityQueue<Game> pq = new PriorityQueue<>(11, new ComparatorAIMinMax(this, max));
         Game g2 = (Game) config.clone();
-        Board b = config.getBoard();
+        // System.out.println("Le plateau qu'on clone :"); // debug
+        // g2.getBoard().printBoard(-1); // debug
         Iterator<Piece> it1 = config.getCurrentPlayer().getPieces().iterator();
         Iterator<Shape> it2;
         Iterator<Tile> it3, it4;
@@ -46,14 +47,14 @@ public class ControllerAIMinMax {
 
         while (it1.hasNext()) {
             pi = it1.next();
-            System.out.println("--- Iterating on piece "+pi.getName()); // debug
+            // System.out.println("--- Iterating on piece "+pi.getName()); // debug
             it2 = pi.getShapeList().iterator();
             while (it2.hasNext()) {
                 sh = it2.next();
-                System.out.println("------ Iterating on following shape :"); // debug
-                sh.printShape(); // debug
+                // System.out.println("------ Iterating on following shape :"); // debug
+                // sh.printShape(); // debug
                 for (k=0; k<4; k++) {
-                    System.out.print("--------- Iterating on direction "); // debug
+                    /* System.out.print("--------- Iterating on direction "); // debug
                     switch(k) { // debug
                         case 0: //0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast // debug
                             System.out.println("northeast"); // debug
@@ -69,20 +70,22 @@ public class ControllerAIMinMax {
                             break; // debug
                         default: // debug
                             System.out.println("how did i get here ?"); // debug
-                    } // debug
+                    } // debug */
                     it3 = sh.getCornerList(k).iterator();
                     while (it3.hasNext()) {
                         t1 = it3.next();
-                        System.out.println("------------ Iterating on shape corner ("+t1.getX()+","+t1.getY()+")"); // debug
-                        it4 = b.getCorners(col, k).iterator();
+                        // System.out.println("------------ Iterating on shape corner ("+t1.getX()+","+t1.getY()+")"); // debug
+                        it4 = g2.getBoard().getCorners(col, k).iterator();
                         while (it4.hasNext()) {
                             t2 = it4.next();
-                            System.out.println("--------------- Iterating on board corner ("+t2.getX()+","+t2.getY()+")"); // debug
+                            // System.out.println("--------------- Iterating on board corner ("+t2.getX()+","+t2.getY()+")"); // debug
                             ax = t2.getX() - t1.getX() + sh.getAnchorX();
                             ay = t2.getY() - t1.getY() + sh.getAnchorY();
                             // Automatically checking and then putting
                             if (g2.put(sh, pi.getName(), col, ax, ay)) {
-                                System.out.println("------------------ It matches !!!"); // debug
+                                /* System.out.println("------------------ It matches !!!"); // debug
+                                System.out.println("Le plateau qu'on clone :"); // debug
+                                g2.getBoard().printBoard(-1); // debug */
                                 pq.add(g2);
                                 g2 = (Game) config.clone();
                             }
@@ -114,6 +117,8 @@ public class ControllerAIMinMax {
 
     public int evaluation(Game config, boolean max){
         //(our score - opponent score) + (our possible placements - opponent placements)
+        // System.out.println("Calcul heuristique de :"); // debug
+        // config.getBoard().printBoard(-1); // debug
 
         Player p1c1 = config.getPlayerList().get(0);
         Player p1c2 = config.getPlayerList().get(2);
@@ -124,11 +129,13 @@ public class ControllerAIMinMax {
         int p1score2 = p1c2.getScore();
         int p2score1 = p2c1.getScore();
         int p2score2 = p2c2.getScore();
+        // System.out.println("Scores : J1 : "+p1score1+" "+p1score2+" | J2 : "+p2score1+" "+p2score2); // debug
 
         int sumScoreP1 = p1score1 + p1score2;
-        int sumScoreP2 = p2score1 - p2score2;
+        int sumScoreP2 = p2score1 + p2score2;
         int sumPlacementsP1 = sumAllPlacements(p1c1) + sumAllPlacements(p1c2);
         int sumPlacementsP2 = sumAllPlacements(p2c2) + sumAllPlacements(p2c2);
+        // System.out.println("Somme placements : J1 "+sumPlacementsP1+" | J2 "+sumPlacementsP2+"\n\n\n"); // debug
 
         if(max){
             return (sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2);
