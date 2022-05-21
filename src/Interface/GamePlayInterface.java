@@ -28,15 +28,21 @@ public class GamePlayInterface extends JPanel {
     public Dimension colorPanelSize;
     public BoardPanel boardPanel;
 
+
     // Color Panels
     ColorPanel topLeftPanel, bottomLeftPanel, topRightPanel, bottomRightPanel;
 
     // Controller
     ControllerGamePlay controller;
+    Game2P g2p;
+    Integer p1Score=0;
+    Integer p2Score = 0;
+
 
     public GamePlayInterface(JFrame f, ControllerGamePlay c) throws IOException {
         controller = c;
         frame = f;
+        g2p = (Game2P) controller.game;
         setSize();
         this.setLayout(new FlowLayout());
         this.addMouseListener(new GameMouseAdapter(this));
@@ -47,6 +53,7 @@ public class GamePlayInterface extends JPanel {
         initialiseButtons();
         backGround = new Image(frame, "images/border.png");
         logo = new Image(frame, "images/logo.png");
+        System.out.println(controller.game.getCurrentPlayer().toString());
         System.out.println("Finished GamePlayInterface");
     }
 
@@ -104,6 +111,21 @@ public class GamePlayInterface extends JPanel {
         add(this.counterclockwise);
     }
 
+
+    public void playerTurn(Graphics g){
+        DrawString currentPlayer;
+        if(g2p.currentPlayer2P == g2p.p1) {
+            currentPlayer = new DrawString(g, "Player 1's turn", (int) (width * 0.45), (int) (height * 0.18), 25);
+            p1Score = controller.currentPlayer.getScore();
+        }else {
+            currentPlayer = new DrawString(g, "Player 2's turn", (int) (width * 0.45), (int) (height * 0.18), 25);
+            p2Score = controller.currentPlayer.getScore();
+        }
+        currentPlayer.paint(g);
+    }
+
+
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -126,6 +148,17 @@ public class GamePlayInterface extends JPanel {
         g.drawImage(this.hint.getCurrentImage(), (int)(width * 0.05), (int)(height * 0.08), frame);
         // TODO: Undo
         // TODO: Redo
+
+        // Players
+        playerTurn(g);
+        DrawString player1 = new DrawString(g, "Player 1", (int) (width * 0.15), (int)(height * 0.18), 25);
+        player1.paint(g);
+        DrawString player1Score = new DrawString(g,"Score: "+ p2Score, (int) (width * 0.3), (int)(height * 0.18),25);
+        player1Score.paint(g);
+        DrawString player2 = new DrawString(g, "Player 2", (int) (width * 0.8), (int)(height * 0.18),25);
+        player2.paint(g);
+        DrawString player2Score = new DrawString(g,"Score: "+p1Score, (int) (width * 0.62), (int)(height * 0.18),25);
+        player2Score.paint(g);
 
         // Piece Orientation Buttons
         g.drawImage(this.clockwise.getCurrentImage(), (int) (width * 0.55) - iconSize, (int)(height * 0.85), this);
