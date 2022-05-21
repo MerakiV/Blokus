@@ -3,6 +3,8 @@ package GamePanels;
 import Controller.ControllerGamePlay;
 import Interface.GamePlayInterface;
 import Structures.Board;
+import Structures.Color;
+import Structures.Game2P;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -83,7 +85,23 @@ public class BoardPanel extends JPanel{
             case BLUE:
                 return "tiles/BlueBloc.png";
             case WHITE:
-                return "tiles/boardTile.png";
+                Game2P g2p = (Game2P) controller.game;
+                Color p1c1 = g2p.gs2p.p1c1;
+                Color p1c2 = g2p.gs2p.p1c2;
+                Color p2c1 = g2p.gs2p.p2c1;
+                Color p2c2 = g2p.gs2p.p2c2;
+                if(i == 0 && j == 0){
+                    return "tiles/boardTile"+p1c1+"TopLeft.png";
+                }else if(i == 0 && j == 19){
+                    return "tiles/boardTile"+p2c1+"TopRight.png";
+                }else if(i == 19 && j == 0){
+                    return "tiles/boardTile"+p2c2+"BotLeft.png";
+                }else if(i == 19 && j == 19){
+                    return "tiles/boardTile"+p1c2+"BotRight.png";
+                }
+                else {
+                    return "tiles/boardTile.png";
+                }
         }
         return null;
     }

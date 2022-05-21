@@ -10,8 +10,10 @@ import java.util.ArrayList;
 public class Game2P extends Game{
     public Player2P p1,p2;
     public Player2P currentPlayer2P;
+    public GameSettings2P gs2p;
 
     public Game2P(GameSettings2P set){
+        gs2p = set;
         //TBI : create board
         //with GameSettings
         board = new Board(set.p1c1, set.p2c1, set.p1c2, set.p2c2);
