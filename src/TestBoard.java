@@ -1,6 +1,8 @@
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
 import Structures.*;
 
@@ -17,6 +19,10 @@ class TestBoard {
         String line;
         String [] arg;
         Scanner sc = new Scanner(System.in);
+
+        Tile t;
+        Iterator<Tile> it;
+        Set<Tile> li;
 
         Board bo = new Board(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW);
         // Color [] col = { Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW };
@@ -89,9 +95,14 @@ class TestBoard {
                     break;
                 case "put":
                 case "p":
-                    pl = Integer.decode(arg[1]);
-                    x  = Integer.decode(arg[2]);
-                    y  = Integer.decode(arg[3]);
+                    try {
+                        pl = Integer.decode(arg[1]);
+                        x  = Integer.decode(arg[2]);
+                        y  = Integer.decode(arg[3]);
+                    } catch(Exception e) {
+                        System.out.println("Unable to recognize arguments as numbers.");
+                        break;
+                    }
                     if (bo.checkAndPut(cp, pl, x, y)) {
                         System.out.println("Succesfully put.");
                     } else {
@@ -101,11 +112,14 @@ class TestBoard {
                 case "fullcheck":
                 case "fc":
                     pl = ((arg.length>1) ? (Integer.decode(arg[1])) : 0);
-                    for (x=0; x<20; x++) {
-                        for (y=0; y<20; y++) {
-                            if (bo.canPut(cp, pl, x, y)) {
-                                System.out.println("Can put current piece on ("+x+","+y+")");
-                            }
+                    li = bo.fullcheck(cp, pl);
+                    if (li.isEmpty()) {
+                        System.out.println("This current piece can't be put anywhere.");
+                    } else {
+                        it = li.iterator();
+                        while(it.hasNext()) {
+                            t = it.next();
+                            System.out.println("This current piece can be put on ("+t.getX()+","+t.getY()+")");
                         }
                     }
                     break;
