@@ -34,7 +34,7 @@ public class TutorialInterface extends JComponent {
         add(this.back);
 
         panel=new JPanel();//创建一个普通面板
-        panel.setBounds((frame.getWidth()/2) - ( (int) (frame.getWidth()*0.6)/2),(frame.getHeight()/2) - ( (int) (frame.getHeight()*0.6)/2),(int) (frame.getWidth()*0.6),(int) (frame.getHeight()*0.6));//设置普通面板位置和大小，不能省略
+        panel.setBounds((frame.getWidth()/2) - ( (int) (frame.getWidth()*0.7)/2),(frame.getHeight()/2) - ( (int) (frame.getHeight()*0.7)/2),(int) (frame.getWidth()*0.7),(int) (frame.getHeight()*0.7));//设置普通面板位置和大小，不能省略
         panel.setLayout(new BorderLayout());
         ii = new ImageIcon("resources/images/tuto.png");
 
@@ -43,7 +43,7 @@ public class TutorialInterface extends JComponent {
 
         jsp = new JScrollPane();
         jsp.getViewport().add(panel);
-        jsp.setBounds((frame.getWidth()/2) - ( (int) (frame.getWidth()*0.6)/2),(frame.getHeight()/2) - ( (int) (frame.getHeight()*0.6)/2),(int) (frame.getWidth()*0.6),(int) (frame.getHeight()*0.6));
+        jsp.setBounds((frame.getWidth()/2) - ( (int) (frame.getWidth()*0.7)/2),(frame.getHeight()/2) - ( (int) (frame.getHeight()*0.7)/2),(int) (frame.getWidth()*0.7),(int) (frame.getHeight()*0.7));
         Container contentPane = frame.getContentPane();
         contentPane.add(jsp);
         contentPane.setVisible(true);
@@ -58,14 +58,14 @@ public class TutorialInterface extends JComponent {
         logo.drawImg(g,(width/2)- (logo.getWidth()/2), 15, logo.getWidth(), logo.getHeight() );
         g.drawImage(this.back.getCurrentImage(), (int) (width*0.05), (int) (height*0.08), this);
         //for tuto img adaptive
-        int widthTuto = (int) (frame.getWidth()*0.6), heightTuto = -1;
+        int widthTuto = (int) (frame.getWidth()*0.7), heightTuto = -1;
         img = ii.getImage();
         img = img.getScaledInstance(widthTuto, heightTuto, java.awt.Image.SCALE_DEFAULT);
         ii.setImage(img);
         sc.setIcon(ii);
         panel.add(sc, BorderLayout.NORTH);
 
-        jsp.setBounds((frame.getWidth()/2) - ( (int) (frame.getWidth()*0.6)/2),(frame.getHeight()/2) - ( (int) (frame.getHeight()*0.6)/2),(int) (frame.getWidth()*0.6),(int) (frame.getHeight()*0.6));
+        jsp.setBounds((frame.getWidth()/2) - ( (int) (frame.getWidth()*0.7)/2),(frame.getHeight()/2) - ( (int) (frame.getHeight()*0.7)/2),(int) (frame.getWidth()*0.7),(int) (frame.getHeight()*0.7));
 
     }
 }
