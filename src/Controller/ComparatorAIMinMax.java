@@ -15,6 +15,6 @@ public class ComparatorAIMinMax implements Comparator<Game> {
 
     @Override
     public int compare(Game g1, Game g2) {
-        return ctrl.evaluation(g1, max) - ctrl.evaluation(g2, max);
+        return ctrl.evaluation(g2, max) - ctrl.evaluation(g1, max);
     }
 }
