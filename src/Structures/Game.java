@@ -92,7 +92,7 @@ public abstract class Game implements Serializable, Cloneable {
     }
 
     public void printGame(boolean boardOnly) {
-        System.out.println("---- Gameboard :");
+        System.out.println("**** Gameboard :");
         board.printBoard(-1);
 
         if (!boardOnly) {
@@ -106,7 +106,7 @@ public abstract class Game implements Serializable, Cloneable {
 
             while(it1.hasNext()) {
                 pl = it1.next();
-                System.out.println("---- Color "+p+" pieces :");
+                System.out.println("**** Color "+p+" pieces :");
                 p++;
 
                 it2 = pl.getPieces().iterator();
