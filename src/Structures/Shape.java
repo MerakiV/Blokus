@@ -147,6 +147,31 @@ public class Shape {
 		}
 	}
 
+	public void printShapeCorners() {
+		int bin;
+
+		for (int i=-1; i<Nlin+1; i++) {
+			for (int j=-1; j<Ncol+1; j++) {
+				if (!isEmpty(i, j)) {
+					if(i == anchorX && j == anchorY)
+						System.out.print("X");
+					else
+						System.out.print("#");
+				} else {
+					bin = 0;
+
+					bin = bin | ((avaliableCorners.get(0).contains(new Tile(i+1, j+1))) ? 1 : 0) << 0;
+					bin = bin | ((avaliableCorners.get(1).contains(new Tile(i+1, j-1))) ? 1 : 0) << 1;
+					bin = bin | ((avaliableCorners.get(2).contains(new Tile(i-1, j-1))) ? 1 : 0) << 2;
+					bin = bin | ((avaliableCorners.get(3).contains(new Tile(i-1, j+1))) ? 1 : 0) << 3;
+
+					System.out.print((bin==0) ? "-" : Integer.toHexString(bin));
+				}
+			}
+			System.out.print("\n");
+		}
+	}
+
 	@Override
 	/*
 	Hashes each line of the shape array and puts the hashcodes into an array of int and then hashes that array.
