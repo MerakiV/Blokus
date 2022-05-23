@@ -64,34 +64,34 @@ class TestBoard {
                     break;
                 case "printp":
                 case "pp":
-                    cp.printPiece();
+                    cp.getShape().printShapeCorners();
                     break;
                 case "genp":
                 case "gp":
                     index = r.nextInt(lp.size());
                     cp = lp.get(index);
-                    cp.printPiece();
+                    cp.getShape().printShapeCorners();
                     break;
                 case "nextp":
                 case "np":
                     index = (index + 1) % lp.size();
                     cp = lp.get(index);
-                    cp.printPiece();
+                    cp.getShape().printShapeCorners();
                     break;
                 case "rotatep":
                 case "rp":
                     cp.rotateClockwise();
-                    cp.printPiece();
+                    cp.getShape().printShapeCorners();
                     break;
                 case "flipvp":
                 case "fvp":
                     cp.flipV();
-                    cp.printPiece();
+                    cp.getShape().printShapeCorners();
                     break;
                 case "fliphp":
                 case "fhp":
                     cp.flipH();
-                    cp.printPiece();
+                    cp.getShape().printShapeCorners();
                     break;
                 case "put":
                 case "p":
