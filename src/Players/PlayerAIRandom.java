@@ -7,9 +7,11 @@ public class PlayerAIRandom extends PlayerAI {
     private final long seed;
     private final Random generator;
 
-    public PlayerAIRandom(Color c) {
+    private void init(Color c) {
+        col = c;
         isAI = true;
         score = 0;
+        difficultyLevel = 0;
         PieceReader pRead = null;
         try {
             pRead = new PieceReader();
@@ -18,29 +20,20 @@ public class PlayerAIRandom extends PlayerAI {
             System.err.println("FATAL ERROR : missing piece file");
             System.exit(1);
         }
+    }
+
+    public PlayerAIRandom(Color c) {
+        this.init(c);
 
         seed = System.currentTimeMillis();
         this.generator = new Random(seed);
-        difficultyLevel = 0;
-        col = c;
     }
 
     public PlayerAIRandom(Color c, long s) {
-        isAI = true;
-        score = 0;
-        PieceReader pRead = null;
-        try {
-            pRead = new PieceReader();
-            pieces = pRead.getPiecesList();
-        } catch(Exception e) {
-            System.err.println("FATAL ERROR : missing piece file");
-            System.exit(1);
-        }
+        this.init(c);
 
         seed = s;
         this.generator = new Random(s);
-        difficultyLevel = 0;
-        col = c;
     }
 
     // This constructor will allow to do reproductible tests
