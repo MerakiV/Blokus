@@ -33,64 +33,31 @@ public class ControllerAIMinMax {
     //enum algo
     public PriorityQueue<Game> moves(boolean max) {
         PriorityQueue<Game> pq = new PriorityQueue<>(11, new ComparatorAIMinMax(this, max));
-        Game g2 = (Game) config.clone();
-        // System.out.println("Le plateau qu'on clone :"); // debug
-        // g2.getBoard().printBoard(-1); // debug
+        Game g2;
         Iterator<Piece> it1 = config.getCurrentPlayer().getPieces().iterator();
         Iterator<Shape> it2;
-        Iterator<Tile> it3, it4;
+        Iterator<Tile> it3;
+        HashSet<Tile> hs;
         Piece pi;
         Shape sh;
-        Tile t1, t2;
+        Tile t;
         Color col = config.getCurrentColor();
-        int k, ax, ay;
 
         while (it1.hasNext()) {
             pi = it1.next();
-            // System.out.println("--- Iterating on piece "+pi.getName()); // debug
             it2 = pi.getShapeList().iterator();
             while (it2.hasNext()) {
                 sh = it2.next();
-                // System.out.println("------ Iterating on following shape :"); // debug
-                // sh.printShape(); // debug
-                for (k=0; k<4; k++) {
-                    /* System.out.print("--------- Iterating on direction "); // debug
-                    switch(k) { // debug
-                        case 0: //0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast // debug
-                            System.out.println("northeast"); // debug
-                            break; // debug
-                        case 1:  // debug
-                            System.out.println("northwest"); // debug
-                            break; // debug
-                        case 2:  // debug
-                            System.out.println("southwest"); // debug
-                            break; // debug
-                        case 3:  // debug
-                            System.out.println("southeast"); // debug
-                            break; // debug
-                        default: // debug
-                            System.out.println("how did i get here ?"); // debug
-                    } // debug */
-                    it3 = sh.getCornerList(k).iterator();
-                    while (it3.hasNext()) {
-                        t1 = it3.next();
-                        // System.out.println("------------ Iterating on shape corner ("+t1.getX()+","+t1.getY()+")"); // debug
-                        it4 = g2.getBoard().getCorners(col, k).iterator();
-                        while (it4.hasNext()) {
-                            t2 = it4.next();
-                            // System.out.println("--------------- Iterating on board corner ("+t2.getX()+","+t2.getY()+")"); // debug
-                            ax = t2.getX() - t1.getX() + sh.getAnchorX();
-                            ay = t2.getY() - t1.getY() + sh.getAnchorY();
-                            // Automatically checking and then putting
-                            if (g2.put(sh, pi.getName(), col, ax, ay)) {
-                                /* System.out.println("------------------ It matches !!!"); // debug
-                                System.out.println("Le plateau qu'on clone :"); // debug
-                                g2.getBoard().printBoard(-1); // debug */
-                                pq.add(g2);
-                                g2 = (Game) config.clone();
-                            }
-                        }
-                    }
+
+                hs = config.getBoard().fullcheck(sh, col);
+
+                it3 = hs.iterator();
+                while(it3.hasNext()) {
+                    t = it3.next();
+                    
+                    g2 = (Game) config.clone();
+                    g2.put(sh, pi.getName(), col, t.getX(), t.getY());
+                    pq.add(g2);
                 }
             }
         }
