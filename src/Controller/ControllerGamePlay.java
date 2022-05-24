@@ -60,10 +60,61 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     @Override
     public void run(){
+        noEndRun();
+    }
+
+    public void endRun(){
+        boolean allAI = true;
+        for(Player p : game.getPlayerList()){
+            allAI = allAI && p.isAI();
+        }
+        while (!game.hasEnded()) {
+            //System.out.println(currentPlayer.getColor() + "'s turn");
+            try {
+                t.sleep(allAI?500:16);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(currentPlayer.isAI()) {
+                if(currentPlayer.checkForMoves(game.getBoard())) {
+                    System.out.println("AI playing");
+                    Move m = ((PlayerAI) currentPlayer).generateMove(game.getBoard());
+                    if (m != null) {
+                        piece = m.getPiece();
+                        color = currentColor;
+                        int x = m.getTile().getX();
+                        int y = m.getTile().getY();
+                        piece.printPiece();
+                        System.out.println("Board tile " + x + " " + y);
+                        paintImage(y, x);
+                        put(x, y);
+                        boardPanel.repaint();
+                        frame.repaint();
+                    }
+                } else {
+                    System.out.println("No more moves for AI " + currentPlayer.getColor());
+                }
+            } else { //not AI
+                if(currentPlayer.checkForMoves(game.getBoard())){
+                    System.out.println("No more moves for Player " + currentPlayer.getColor());
+                    game.nextTurn();
+                }
+            }
+            game.updateEnd();
+        }
+        //game has ended
+        System.out.println("Game over");
+    }
+
+    public void noEndRun(){
+        boolean allAI = true;
+        for(Player p : game.getPlayerList()){
+            allAI = allAI && p.isAI();
+        }
         while (true) {
             //System.out.println(currentPlayer.getColor() + "'s turn");
             try {
-                t.sleep(16);
+                t.sleep(allAI?500:16);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

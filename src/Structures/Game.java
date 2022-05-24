@@ -17,6 +17,8 @@ public abstract class Game implements Serializable, Cloneable {
 
     History history;
 
+    boolean end;
+
     public boolean put(Piece p, Color c, int x, int y) {
         return put(p.getShape(), p.getName(), c, x, y);
     }
@@ -32,6 +34,21 @@ public abstract class Game implements Serializable, Cloneable {
         else{
             return false;
         }
+    }
+
+    public void updateEnd(){
+        boolean e = true;
+        for(Player p : players){
+            e = e && p.hasMoves();
+        }
+        if(!e) System.out.println("Player with no moves found, game ending");
+        setEnd(!e);
+    }
+
+    public boolean hasEnded(){return end;}
+
+    public void setEnd(boolean end) {
+        this.end = end;
     }
 
     public Player getCurrentPlayer(){return currentPlayer;}

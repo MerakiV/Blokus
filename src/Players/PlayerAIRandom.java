@@ -25,6 +25,7 @@ public class PlayerAIRandom extends PlayerAI {
         difficultyLevel = 0;
         col = c;
         isAI = true;
+        hasMoves = true;
         initPieces();
     }
 
@@ -34,6 +35,7 @@ public class PlayerAIRandom extends PlayerAI {
         difficultyLevel = 0;
         col = c;
         isAI = true;
+        hasMoves = true;
         initPieces();
     }
 

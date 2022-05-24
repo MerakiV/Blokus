@@ -11,6 +11,7 @@ public class PlayerAIMedium extends PlayerAI {
 
     public PlayerAIMedium(Color c, int t) {
         isAI = true;
+        hasMoves = true;
         score = 0;
         type = t;
         PieceReader pRead = null;

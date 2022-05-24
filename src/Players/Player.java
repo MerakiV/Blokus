@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public abstract class Player implements Cloneable {
     Color col;
     ArrayList<Piece> pieces;
-    boolean isAI;
+    boolean isAI, hasMoves;
     int score;
 
     public Color getColor(){return col;}
@@ -24,6 +24,25 @@ public abstract class Player implements Cloneable {
     }
 
     public boolean isAI(){return isAI;}
+
+    public void updateMoves(Board b){
+        if(b.sumAllPlacements(pieces,col) == 0){
+            hasMoves = false;
+        }
+    }
+
+    public boolean checkForMoves(Board b){
+        updateMoves(b);
+        return hasMoves;
+    }
+
+    public boolean hasMoves() {
+        return hasMoves;
+    }
+
+    public void setHasMoves(boolean hasMoves) {
+        this.hasMoves = hasMoves;
+    }
 
     public void printPlayer(){
         System.out.println("Color : "+col.toString());
