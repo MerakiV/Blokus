@@ -11,8 +11,24 @@ public class Shape {
 	public int anchorX, anchorY;
 	TileType name;
 
-    // Note : 0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast
-    ArrayList<ArrayList<Tile>> avaliableCorners;
+	// Note : 0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast
+	ArrayList<ArrayList<Tile>> avaliableCorners;
+
+	// Mainly for debugging purposes.
+	public static String intToDirection(int dir) {
+		switch(dir) {
+			case 0:
+				return "northwest";
+			case 1:
+				return "northeast";
+			case 2:
+				return "southeast";
+			case 3:
+				return "southwest";
+			default:
+				return "unknown";
+		}
+	}
 
 	public Shape(int l, int c, int ax, int ay, boolean [][] s) {
 		Nlin = l;
