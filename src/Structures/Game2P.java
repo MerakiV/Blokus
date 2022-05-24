@@ -15,6 +15,7 @@ public class Game2P extends Game{
         //with GameSettings
         board = new Board(set.p1c1, set.p2c1, set.p1c2, set.p2c2);
 
+        //set difficulty
         if(set.p1Human) p1 = new PlayerHuman2P(set.p1c1, set.p1c2);
         else {
             switch(set.p1AIdiff){
