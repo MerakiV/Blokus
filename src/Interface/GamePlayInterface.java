@@ -28,6 +28,8 @@ public class GamePlayInterface extends JComponent{
     public Dimension colorPanelSize;
     public BoardPanel boardPanel;
 
+    public GamePlayMenu playMenu;
+
 
     // Color Panels
     ColorPanel topLeftPanel, bottomLeftPanel, topRightPanel, bottomRightPanel;
@@ -57,10 +59,23 @@ public class GamePlayInterface extends JComponent{
         this.addMouseListener(new GameMouseAdapter(this, hint));
         this.addMouseListener(new GameMouseAdapter(this, undo));
         this.addMouseListener(new GameMouseAdapter(this, redo));
+
+        playMenu = new GamePlayMenu(frame);
+        add(playMenu);
+        playMenu.setVisible(true);
+
         System.out.println(controller.game.getCurrentPlayer().toString());
         System.out.println("Finished GamePlayInterface");
     }
 
+
+    public void drawMenu(Graphics g) throws IOException {
+        if (playMenu.isVisible()){
+            String bg = "images/background.png";
+            backGround = new Image(frame, bg);
+            backGround.drawImg(g, 100, 100, 400, 400);
+        }
+    }
 
     private void setSize(){
         widthFrame = frame.getWidth();
@@ -125,7 +140,9 @@ public class GamePlayInterface extends JComponent{
     }
 
 
+    public void setMenu(Graphics g){
 
+    }
     @Override
     public void paintComponent(Graphics g) {
 //        super.paintComponent(g);
@@ -164,6 +181,12 @@ public class GamePlayInterface extends JComponent{
         player2.paint(g);
         DrawString player2Score = new DrawString(g,"Score: "+p1Score, (int) (width * 0.62), (int)(height * 0.18),25);
         player2Score.paint(g);
+
+        try {
+            drawMenu(g);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         this.requestFocus();
         this.setVisible(true);
