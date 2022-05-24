@@ -7,11 +7,8 @@ public class PlayerAIRandom extends PlayerAI {
     private final long seed;
     private final Random generator;
 
-    private void init(Color c) {
-        col = c;
-        isAI = true;
-        score = 0;
-        difficultyLevel = 0;
+    void initPieces(){
+        //create list of pieces from PieceReader
         PieceReader pRead = null;
         try {
             pRead = new PieceReader();
@@ -23,17 +20,21 @@ public class PlayerAIRandom extends PlayerAI {
     }
 
     public PlayerAIRandom(Color c) {
-        this.init(c);
-
         seed = System.currentTimeMillis();
         this.generator = new Random(seed);
+        difficultyLevel = 0;
+        col = c;
+        isAI = true;
+        initPieces();
     }
 
     public PlayerAIRandom(Color c, long s) {
-        this.init(c);
-
         seed = s;
         this.generator = new Random(s);
+        difficultyLevel = 0;
+        col = c;
+        isAI = true;
+        initPieces();
     }
 
     // This constructor will allow to do reproductible tests
@@ -43,8 +44,7 @@ public class PlayerAIRandom extends PlayerAI {
     }*/
 
     @Override
-    public void playPiece(Game g) {
-        Board b = g.getBoard();
+    public void playPiece(Board b) {
         int x,y;
         List<Shape> tried = new ArrayList<>();
         List<Tile> possiblePut;
@@ -74,19 +74,57 @@ public class PlayerAIRandom extends PlayerAI {
                 int idxPut = this.generator.nextInt(possiblePut.size());
                 Tile putTile = possiblePut.get(idxPut);
                 b.checkAndPut(play, colorCode, putTile.getX(), putTile.getY());
-                pieces.remove(play);
                 notPlaced = false;
             }
         }
     }
 
     private PlayerAIRandom(long s) {
-        seed = s;
-        this.generator = new Random(s); }
+        this.seed = s;
+        this.generator = new Random(s);
+    }
     @Override
     public Object clone() {
         PlayerAIRandom p2 = new PlayerAIRandom(this.seed);
         p2.cloneFields(this);
         return p2;
+    }
+
+    @Override
+    public Move generateMove(Board b){
+        Move res = null;
+        int x,y;
+        List<Shape> tried = new ArrayList<>();
+        List<Tile> possiblePut;
+        int colorCode = b.getCorner(this.col);
+        boolean notPlaced = true;
+        while(notPlaced) {
+            possiblePut = new ArrayList<>();
+            int idx = this.generator.nextInt(pieces.size());
+            Piece play = pieces.get(idx);
+            play.setDisp(generator.nextInt(16));
+            while(tried.contains(play.getShape())){
+                idx = this.generator.nextInt(pieces.size());
+                play = pieces.get(idx);
+                play.setDisp(generator.nextInt(16));
+            }
+            tried.add(play.getShape());
+            //test for can put
+            for (x=0; x<20; x++) {
+                for (y=0; y<20; y++) {
+                    if (b.canPut(play, colorCode, x, y)) {
+                        possiblePut.add(new Tile(x,y));
+                    }
+                }
+            }
+            //randomly choose where to put if exists
+            if(!possiblePut.isEmpty()) {
+                int idxPut = this.generator.nextInt(possiblePut.size());
+                Tile putTile = possiblePut.get(idxPut);
+                res = new Move(play, putTile);
+                notPlaced = false;
+            }
+        }
+        return res;
     }
 }

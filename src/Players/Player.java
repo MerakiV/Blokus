@@ -1,6 +1,9 @@
 package Players;
 
-import Structures.*;
+import Structures.Color;
+import Structures.Piece;
+import Structures.PieceType;
+import Structures.Board;
 
 import java.util.ArrayList;
 
@@ -65,6 +68,7 @@ public abstract class Player implements Cloneable {
         if(!found){
             System.out.println("Piece "+pt.toString()+" not found");
         } else{
+            score += pr.getValue();
             pieces.remove(pr);
         }
     }
@@ -73,9 +77,8 @@ public abstract class Player implements Cloneable {
     * Takes a piece from the player's list, places it on the board, removes it from the list,
     * and adds the value of the piece to score.
     * */
-    public abstract void playPiece(Game g);
+    public abstract void playPiece(Board b);
 
-    // Must be overwritten in subclasses.
     @Override
     public Object clone() { return null; }
 

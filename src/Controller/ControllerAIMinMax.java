@@ -48,7 +48,7 @@ public class ControllerAIMinMax {
             it2 = pi.getShapeList().iterator();
             while (it2.hasNext()) {
                 sh = it2.next();
-
+ 
                 hs = config.getBoard().fullcheck(sh, col);
 
                 it3 = hs.iterator();
@@ -84,8 +84,6 @@ public class ControllerAIMinMax {
 
     public int evaluation(Game config, boolean max){
         //(our score - opponent score) + (our possible placements - opponent placements)
-        // System.out.println("Calcul heuristique de :"); // debug
-        // config.getBoard().printBoard(-1); // debug
 
         Player p1c1 = config.getPlayerList().get(0);
         Player p1c2 = config.getPlayerList().get(2);
@@ -96,13 +94,11 @@ public class ControllerAIMinMax {
         int p1score2 = p1c2.getScore();
         int p2score1 = p2c1.getScore();
         int p2score2 = p2c2.getScore();
-        // System.out.println("Scores : J1 : "+p1score1+" "+p1score2+" | J2 : "+p2score1+" "+p2score2); // debug
 
         int sumScoreP1 = p1score1 + p1score2;
         int sumScoreP2 = p2score1 + p2score2;
         int sumPlacementsP1 = sumAllPlacements(p1c1) + sumAllPlacements(p1c2);
         int sumPlacementsP2 = sumAllPlacements(p2c2) + sumAllPlacements(p2c2);
-        // System.out.println("Somme placements : J1 "+sumPlacementsP1+" | J2 "+sumPlacementsP2+"\n\n\n"); // debug
 
         if(max){
             return (sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2);
@@ -120,7 +116,7 @@ public class ControllerAIMinMax {
         List<Tile> lt;
         Tile t1, t2;
         int k, ax, ay;
-        for(int ip= 0; ip <= lp.size(); ip++) {
+        for(int ip= 0; ip < lp.size(); ip++) {
             Piece p = lp.get(ip);
             List<Shape> ls = p.getShapeList();
             for(Shape s: ls) {
@@ -190,7 +186,7 @@ public class ControllerAIMinMax {
         Iterator<Tile> it1, it2;
         Tile t1, t2;
         int k, ax, ay;
-        for(int ip= 0; ip < lp.size(); ip++) {
+        for(int ip= 0; ip <= lp.size(); ip++) {
             Piece p = lp.get(ip);
             List<Shape> ls = p.getShapeList();
             for(Shape s: ls) {

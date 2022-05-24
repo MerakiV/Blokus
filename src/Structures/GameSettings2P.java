@@ -3,8 +3,9 @@ package Structures;
 /*
 to do : add more settings if needed
 default colors?
-*/
+ */
 
+import java.awt.desktop.SystemEventListener;
 
 public class GameSettings2P {
     public boolean p1Human;

@@ -5,7 +5,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
+import Controller.ControllerGamePlay;
 import Structures.Color;
+import Structures.Game2P;
+import Structures.Game;
 
 public class NGMouseAdapter implements MouseListener {
 
@@ -13,7 +16,7 @@ public class NGMouseAdapter implements MouseListener {
     ColorSelect drop;
     GameSelection selectMenu;
     MenuInterface menu;
-    GamePlay gamePlay;
+    GamePlayInterface gamePlay;
 
     NGMouseAdapter(HoverButton b, GameSelection g) {
         hover = b;
@@ -43,12 +46,18 @@ public class NGMouseAdapter implements MouseListener {
                     break;
                 case "Play":
                     if (selectMenu.validColors()) {
+                        Game g2p = selectMenu.getGame();
+                        selectMenu.gs2p.printSettings();
+                        ControllerGamePlay controller = new ControllerGamePlay(g2p, selectMenu.frame);
+                        selectMenu.frame.addKeyListener(new KeyBoardAdapter(controller));
                         selectMenu.frame.getContentPane().remove(selectMenu);
                         try {
-                            gamePlay = new GamePlay(selectMenu.frame);
+                            gamePlay = new GamePlayInterface(selectMenu.frame, controller);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
+                        // TODO : init game loop somewhere here?
+                        // create new class containing controller and interface?
                         selectMenu.frame.getContentPane().add(gamePlay, BorderLayout.CENTER);
                         selectMenu.frame.getContentPane().invalidate();
                         selectMenu.frame.getContentPane().validate();

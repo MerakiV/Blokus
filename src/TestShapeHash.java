@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class TestGame {
+public class TestShapeHash {
     public static void main(String[] args){
         //manually set game settings
         GameSettings2P settings = new GameSettings2P();
+        //settings.setP1AI(0);
         settings.setP1Human();
-        settings.setP2AI(0);
+        settings.setP2Human();
+        //settings.setP2AI(0);
         settings.setP1Color1(Color.RED);
         settings.setP1Color2(Color.BLUE);
         settings.setP2Color1(Color.GREEN);
@@ -42,6 +44,8 @@ public class TestGame {
                 g.getCurrentPlayer().playPiece(bo);
                 bo.printBoard(-1);
                 g.nextTurn();
+                System.out.print("[TestGame] ");
+                sc.nextLine();
             }
             else {
                 System.out.println("Current player color : " + g2p.getCurrentColor());
@@ -123,9 +127,13 @@ public class TestGame {
                         case "quit":
                         case "q":
                             cont = false;
+                            playerChanged = true;
                             break;
                         case "plist":
                             g.getCurrentPlayer().printPlayer();
+                            break;
+                        case "hash":
+                            System.out.println("Shape hash : "+cp.getShape().hashCode());
                             break;
                         default:
                             System.out.println("Couldn't recognize command.");

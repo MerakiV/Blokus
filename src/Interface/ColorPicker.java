@@ -12,14 +12,14 @@ public class ColorPicker extends JPanel {
     private boolean visible;
 
     public ColorPicker(GameSelection selectMenu, int x, int y) throws IOException {
-        yellow = new HoverButton(selectMenu, "YellowButton", x, y);
+        yellow = new HoverButton(selectMenu, "YellowButton", x + 10, y + 10);
         selectMenu.add(yellow);
         buttonSize = yellow.getCurrentImageHeight();
-        green = new HoverButton(selectMenu, "GreenButton", x + buttonSize + 10, y);
+        green = new HoverButton(selectMenu, "GreenButton", x + buttonSize + 20, y + 10);
         selectMenu.add(green);
-        red = new HoverButton(selectMenu, "RedButton", x, y + buttonSize + 10);
+        red = new HoverButton(selectMenu, "RedButton", x + 10, y + buttonSize + 20);
         selectMenu.add(red);
-        blue = new HoverButton(selectMenu, "BlueButton", x + buttonSize + 10, y + buttonSize + 10);
+        blue = new HoverButton(selectMenu, "BlueButton", x + buttonSize + 20, y + buttonSize + 20);
         selectMenu.add(blue);
         setVisible(false);
 
@@ -74,6 +74,10 @@ public class ColorPicker extends JPanel {
             default:
                 throw new IllegalArgumentException("Color not found");
         }
+    }
+
+    public int getButtonSize() {
+        return buttonSize;
     }
 
     public Image getCurrentImage(String color) {

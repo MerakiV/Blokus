@@ -1,7 +1,8 @@
 package Players;
 
+import Structures.Board;
 import Structures.Color;
-import Structures.Game;
+import Structures.Move;
 
 public class PlayerAIAlphaBeta extends PlayerAI {
 
@@ -11,7 +12,7 @@ public class PlayerAIAlphaBeta extends PlayerAI {
     }
 
     @Override
-    public void playPiece(Game g) {
+    public void playPiece(Board b) {
         return;
     }
 
@@ -21,5 +22,10 @@ public class PlayerAIAlphaBeta extends PlayerAI {
         PlayerAIAlphaBeta p2 = new PlayerAIAlphaBeta();
         p2.cloneFields(this);
         return p2;
+    }
+
+    @Override
+    public Move generateMove(Board b){
+        return null;
     }
 }

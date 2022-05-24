@@ -26,10 +26,12 @@ public class Shape {
 		}
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
-				if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i, j)); }
-				if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(1).add(new Tile(i, j)); }
-				if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(2).add(new Tile(i, j)); }
-				if (isEmpty(i+1, j) && isEmpty(i, j-1) && isEmpty(i+1, j-1)) { avaliableCorners.get(3).add(new Tile(i, j)); }
+				if (!isEmpty(i, j)) {
+					if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i, j)); }
+					if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(1).add(new Tile(i, j)); }
+					if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(2).add(new Tile(i, j)); }
+					if (isEmpty(i+1, j) && isEmpty(i, j-1) && isEmpty(i+1, j-1)) { avaliableCorners.get(3).add(new Tile(i, j)); }
+				}
 			}
 		}
 	}

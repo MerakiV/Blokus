@@ -2,8 +2,16 @@ package Players;
 
 import Structures.Board;
 import Structures.Color;
-import Structures.Game;
+import Structures.Piece;
 import Structures.PieceReader;
+
+import java.util.ArrayList;
+import java.util.Set;
+
+/*
+to do: initialize Set<Piece>
+ */
+
 public class PlayerHuman extends Player {
 
     public PlayerHuman(Color c){
@@ -22,7 +30,7 @@ public class PlayerHuman extends Player {
     }
 
     @Override
-    public void playPiece(Game g) {
+    public void playPiece(Board b) {
         /* connect to interface */
     }
 

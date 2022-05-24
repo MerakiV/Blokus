@@ -1,6 +1,7 @@
 package Structures;
 
 import Players.Player;
+import Players.Player2P;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,16 +22,11 @@ public abstract class Game implements Serializable, Cloneable {
     }
 
     public boolean put(Shape s, PieceType pt, Color c, int x, int y){
-        if(board.checkAndPut(s, c, x, y)){
+        int i = board.getCorner(c);
+        if(board.canPut(s, i, x, y)){
+            pushToPast();
+            board.put(s, i, x, y);
             currentPlayer.removePiece(pt);
-
-            //sets the new score for a player
-            if(pt.toString().contains("FIVE")) currentPlayer.updateScore(5);
-            else if(pt.toString().contains("FOUR")) currentPlayer.updateScore(4);
-            else if(pt.toString().contains("THREE")) currentPlayer.updateScore(3);
-            else if(pt.toString().contains("TWO")) currentPlayer.updateScore(2);
-            else if(pt.toString().contains("ONE")) currentPlayer.updateScore(1);
-
             return true;
         }
         else{
@@ -47,33 +43,34 @@ public abstract class Game implements Serializable, Cloneable {
     public Board getBoard(){return board;}
 
     public void undo(){
+        pushToFuture();
         GameState previous = history.undo();
         board = previous.board;
         currentPlayer = previous.player;
     }
 
     public void redo(){
+        pushToPast();
         GameState next = history.redo();
         board = next.board;
         currentPlayer = next.player;
     }
 
     void pushToPast(){
-        GameState gs = new GameState(board, currentPlayer);
+        GameState gs = new GameState(board.clone(), currentPlayer.clone());
         history.pushToPast(gs);
     }
 
     void pushToFuture(){
-        GameState gs = new GameState(board, currentPlayer);
+        GameState gs = new GameState(board.clone(), currentPlayer.clone());
         history.pushToFuture(gs);
     }
 
     public abstract void nextTurn();
 
-    // Must be overwritten in subclasses.
     @Override
     public Object clone() { return null; }
-    
+     
     // Can be used in subclasses' clone method.
     public void cloneFields(Game g2) {
         this.board = (Board) g2.board.clone();

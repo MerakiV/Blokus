@@ -179,7 +179,7 @@ public class Board implements Cloneable {
     public void put(Piece p, int color, int ax, int ay) { put(p.getShape(), color, ax, ay); }
     public boolean checkAndPut(Piece p, int color, int ax, int ay) { return checkAndPut(p.getShape(), color, ax, ay); }
 
-    // Returns the list of positions where the given shape of the given color can be put.
+    // Returns the set of positions where the given shape of the given color can be put.
     public HashSet<Tile> fullcheck(Shape sh, int color) {
         HashSet<Tile> li = new HashSet<>();
         Iterator<Tile> itb, its;

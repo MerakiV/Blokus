@@ -33,7 +33,7 @@ public class PieceReader {
     char currentChar;
 
     public PieceReader() throws FileNotFoundException {
-        f = new File("../resources/pieces/normal.txt");
+        f = new File("resources/pieces/normal.txt");
         sc = new Scanner(f);
         readPieces();
     }

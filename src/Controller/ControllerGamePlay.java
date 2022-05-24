@@ -4,6 +4,7 @@ import GamePanels.BoardPanel;
 import GamePanels.PiecePanel;
 import Interface.EventController;
 import Players.Player;
+import Players.PlayerAI;
 import Structures.*;
 import Structures.Color;
 
@@ -15,7 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class ControllerGamePlay implements EventController {
+public class ControllerGamePlay implements EventController, Runnable {
     public Game game;
     public Piece piece;
     public Color color;
@@ -30,6 +31,9 @@ public class ControllerGamePlay implements EventController {
     public JLabel tile;
     public ArrayList<Icon> originalImages;
 
+    JFrame frame;
+    Thread t;
+
     public ControllerGamePlay(){
         initialiseGame();
         piece = null;
@@ -39,13 +43,44 @@ public class ControllerGamePlay implements EventController {
         originalImages = new ArrayList<>();
     }
 
-    public ControllerGamePlay(Game g){
+    public ControllerGamePlay(Game g, JFrame f){
+        frame = f;
         game = g;
         piece = null;
         color = null;
         currentPlayer = game.getCurrentPlayer();
         currentColor = game.getCurrentColor();
         originalImages = new ArrayList<>();
+        // TODO: thread here maybe?
+        t = new Thread(this);
+        t.start();
+    }
+
+    @Override
+    public void run(){
+        while (true) {
+            //System.out.println(currentPlayer.getColor() + "'s turn");
+            try {
+                t.sleep(16);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(currentPlayer.isAI()) {
+                System.out.println("AI playing");
+                Move m = ((PlayerAI) currentPlayer).generateMove(game.getBoard());
+                piece = m.getPiece();
+                color = currentColor;
+                int x = m.getTile().getX();
+                int y = m.getTile().getY();
+                piece.printPiece();
+                System.out.println("Board tile "+ x+ " "+ y);
+                paintImage(y,x);
+                //paintImage();
+                put(x,y);
+                boardPanel.repaint();
+                frame.repaint();
+            }
+        }
     }
 
     private void initialiseGame(){
@@ -86,6 +121,7 @@ public class ControllerGamePlay implements EventController {
         System.out.println("Game Next turn :" +currentPlayer.getColor());
         currentColor = game.getCurrentColor();
         System.out.println("Game Next turn :" +currentColor);
+        game.getBoard().printBoard(0);
     }
 
     void modifyBoardPanel(){
@@ -107,6 +143,26 @@ public class ControllerGamePlay implements EventController {
                 int temp = x;
                 for (int j=0; j<piece.getShape().Ncol; j++) {
                     originalImages.add(boardPanel.labels.get(temp + " " + y).getIcon());
+                    if (shape[i][j]) {
+                        boardPanel.labels.get(temp + " " + y).setIcon(new ImageIcon(image));
+                        boardPanel.labels.get(temp + " " + y).repaint();
+                    }
+                    temp++;
+                }
+                y++;
+            }
+        }
+    }
+
+    public void paintImage(int x, int y){
+        Image image = getImage();
+        boolean [][] shape = piece.getShape().shape;
+        x -= piece.getShape().anchorY ;
+        y -= piece.getShape().anchorX;
+        if (x >=0 && x + piece.getShape().Ncol - 1 <=19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19){
+            for (int i=0; i<piece.getShape().Nlin; i++) {
+                int temp = x;
+                for (int j=0; j<piece.getShape().Ncol; j++) {
                     if (shape[i][j]) {
                         boardPanel.labels.get(temp + " " + y).setIcon(new ImageIcon(image));
                         boardPanel.labels.get(temp + " " + y).repaint();
@@ -268,4 +324,13 @@ public class ControllerGamePlay implements EventController {
         }
         return true;
     }
+
+    public void setBoardPanel(BoardPanel b){
+        if( b == null){
+            throw new RuntimeException("Panel null");
+        }
+        this.boardPanel = b;
+
+    }
+
 }

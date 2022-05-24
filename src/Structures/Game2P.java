@@ -1,51 +1,29 @@
 package Structures;
 
-import Players.*;
+import Players.Player;
+import Players.Player2P;
+import Players.PlayerAIRandom2P;
+import Players.PlayerHuman2P;
 
 import java.util.ArrayList;
 
 public class Game2P extends Game{
     public Player2P p1,p2;
     public Player2P currentPlayer2P;
+    public GameSettings2P gs2p;
 
     public Game2P(GameSettings2P set){
+        gs2p = set;
         //TBI : create board
         //with GameSettings
         board = new Board(set.p1c1, set.p2c1, set.p1c2, set.p2c2);
 
         //TBI : create players
+        //AI random for now
         if(set.p1Human) p1 = new PlayerHuman2P(set.p1c1, set.p1c2);
-        else {
-            switch(set.p1AIdiff){
-                case 0:
-                    p1 = new PlayerAIRandom2P(set.p1c1, set.p1c2);
-                    break;
-                case 1:
-                    p1 = new PlayerAIMedium2P(set.p1c1, set.p1c2, 1);
-                    //p1 = new PlayerAIMinMax2P(set.p1c1, set.p1c2);
-                    break;
-                case 2:
-                    p1 = new PlayerAIMinMax2P(set.p1c1, set.p1c2);
-                    break;
-                default:
-            }
-        }
+        else p1 = new PlayerAIRandom2P(set.p1c1, set.p1c2);
         if(set.p2Human) p2 = new PlayerHuman2P(set.p2c1, set.p2c2);
-        else {
-            switch(set.p2AIdiff){
-                case 0:
-                    p2 = new PlayerAIRandom2P(set.p2c1, set.p2c2);
-                    break;
-                case 1:
-                    p2 = new PlayerAIMedium2P(set.p2c1, set.p2c2, 1);
-                    //p2 = new PlayerAIMinMax2P(set.p2c1, set.p2c2);
-                    break;
-                case 2:
-                    p2 = new PlayerAIMinMax2P(set.p2c1, set.p2c2);
-                    break;
-                default:
-            }
-        }
+        else p2 = new PlayerAIRandom2P(set.p2c1, set.p2c2);
 
         //put players in player list
         players = new ArrayList<Player>();
@@ -87,7 +65,6 @@ public class Game2P extends Game{
     }
 
     private Game2P() {}
-
     @Override
     public Object clone() {
         Game2P g2 = new Game2P();
@@ -123,4 +100,3 @@ public class Game2P extends Game{
 
 
 }
-
