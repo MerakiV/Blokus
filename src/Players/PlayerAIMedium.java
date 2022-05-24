@@ -129,7 +129,62 @@ public class PlayerAIMedium extends PlayerAI {
     }*/
 
     @Override
-    public Move generateMove(Game g) {
-        return null;
+    public Move generateMove(Game g){
+        Move res = null;
+        Board b = g.getBoard();
+        int x,y;
+        List<Shape> tried = new ArrayList<>();
+        List<Tile> possiblePut;
+        int colorCode = b.getCorner(this.col);
+        boolean notPlaced = true;
+
+        //see label of last piece
+        String name = pieces.get(pieces.size()-1).getName().toString();
+        String pieceValue;
+        if(name.contains("FIVE")) pieceValue = "FIVE";
+        else if(name.contains("FOUR")) pieceValue = "FOUR";
+        else if(name.contains("THREE")) pieceValue = "THREE";
+        else if(name.contains("TWO")) pieceValue = "TWO";
+        else if(name.contains("ONE")) pieceValue = "ONE";
+        else return null; //no remaining pieces
+
+        int pieceCount = 1; //count number of pieces of same value
+        for(int i = pieces.size()-2; i>=0; i--){
+            if(pieces.get(i).getName().toString().contains(pieceValue)) {
+                System.out.println(pieces.get(i).getName().toString());
+                pieceCount++;
+                System.out.println(pieceCount);
+            }
+        }
+
+
+        while(notPlaced) {
+            possiblePut = new ArrayList<>();
+            int idx = this.generator.nextInt(pieces.size());
+            Piece play = pieces.get(idx);
+            play.setDisp(generator.nextInt(16));
+            while(tried.contains(play.getShape())){
+                idx = this.generator.nextInt(pieces.size());
+                play = pieces.get(idx);
+                play.setDisp(generator.nextInt(16));
+            }
+            tried.add(play.getShape());
+            //test for can put
+            for (x=0; x<20; x++) {
+                for (y=0; y<20; y++) {
+                    if (b.canPut(play, colorCode, x, y)) {
+                        possiblePut.add(new Tile(x,y));
+                    }
+                }
+            }
+            //randomly choose where to put if exists
+            if(!possiblePut.isEmpty()) {
+                int idxPut = this.generator.nextInt(possiblePut.size());
+                Tile putTile = possiblePut.get(idxPut);
+                res = new Move(play, putTile);
+                notPlaced = false;
+            }
+        }
+        return res;
     }
 }
