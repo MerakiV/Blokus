@@ -84,8 +84,8 @@ public class PlayerAIRandom extends PlayerAI {
         this.generator = new Random(s);
     }
     @Override
-    public Object clone() {
-        PlayerAIRandom p2 = new PlayerAIRandom(this.seed);
+    public Player clone() {
+        Player p2 = new PlayerAIRandom(this.seed);
         p2.cloneFields(this);
         return p2;
     }

@@ -80,7 +80,7 @@ public abstract class Player implements Cloneable {
     public abstract void playPiece(Board b);
 
     @Override
-    public Object clone() { return null; }
+    public Player clone() { return null; }
 
     // Can be used in subclasses' clone method.
     public void cloneFields(Player p2) {

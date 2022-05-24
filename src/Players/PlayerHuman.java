@@ -36,8 +36,8 @@ public class PlayerHuman extends Player {
 
     private PlayerHuman() {}; // empty constructor
     @Override
-    public Object clone() {
-        PlayerHuman p2 = new PlayerHuman();
+    public Player clone() {
+        Player p2 = new PlayerHuman();
         p2.cloneFields(this);
         return p2;
     }

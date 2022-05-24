@@ -69,7 +69,7 @@ public abstract class Game implements Serializable, Cloneable {
     public abstract void nextTurn();
 
     @Override
-    public Object clone() { return null; }
+    public Game clone() { return null; }
      
     // Can be used in subclasses' clone method.
     public void cloneFields(Game g2) {

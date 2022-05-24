@@ -256,7 +256,7 @@ public class Board implements Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Board clone() {
         Board b2 = new Board(cornerColors[0], cornerColors[1], cornerColors[2], cornerColors[3]);
         int i,j;
 

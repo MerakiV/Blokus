@@ -47,15 +47,18 @@ public class PlayerAIMedium extends PlayerAI {
     }
 
     @Override
-    public void playPiece(Game g) {
+    public void playPiece(Board b) {
+        /*
         switch(type){
             case 1:
                 PlayPieceByValue(g);
                 break;
-            /*case 2:
+            case 2:
                 PlayPieceValueAndAvCorners(g);
-                break;*/
+                break;
         }
+         */
+        return;
     }
 
     @Override
@@ -124,4 +127,9 @@ public class PlayerAIMedium extends PlayerAI {
 
     /*public void PlayPieceValueAndAvCorners(g){
     }*/
+
+    @Override
+    public Move generateMove(Board b) {
+        return null;
+    }
 }

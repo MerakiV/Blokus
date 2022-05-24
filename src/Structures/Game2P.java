@@ -66,7 +66,7 @@ public class Game2P extends Game{
 
     private Game2P() {}
     @Override
-    public Object clone() {
+    public Game clone() {
         Game2P g2 = new Game2P();
         g2.board = (Board) this.board.clone();
 

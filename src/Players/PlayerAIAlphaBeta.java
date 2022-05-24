@@ -18,8 +18,8 @@ public class PlayerAIAlphaBeta extends PlayerAI {
 
     private PlayerAIAlphaBeta() {}; // empty constructor
     @Override
-    public Object clone() {
-        PlayerAIAlphaBeta p2 = new PlayerAIAlphaBeta();
+    public Player clone() {
+        Player p2 = new PlayerAIAlphaBeta();
         p2.cloneFields(this);
         return p2;
     }
