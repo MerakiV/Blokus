@@ -19,7 +19,7 @@ import Structures.Tile;
 public class PlayerAIMinMax extends PlayerAI {
 
     public PlayerAIMinMax(Color c) {
-        difficultyLevel = 1;
+        difficultyLevel = 2;
         col = c;
     }
 
@@ -29,7 +29,10 @@ public class PlayerAIMinMax extends PlayerAI {
     }
 
     @Override
-    public Move generateMove(Board b){
+    public Move generateMove(Game config){
+        if (!canMove(config, config.getCurrentPlayer())) {
+            return null;
+        }
         return null;
     }
 
@@ -83,6 +86,12 @@ public class PlayerAIMinMax extends PlayerAI {
             }
             return ret;
         }
+    }
+
+    public boolean canMove(Game config, Player pl){
+        if(pl.getPieces().isEmpty() || sumAllPlacements(config, pl) == 0)
+            return false;
+        return true;
     }
 
     public boolean isLeaf(Game g){

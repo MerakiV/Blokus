@@ -18,15 +18,15 @@ public class TestAIMM {
         
         ControllerAIMinMax ctrl = new ControllerAIMinMax(g);
         //System.out.println("flag1"); // debug
-        PriorityQueue<Game> pq = ctrl.moves(true);
+        //PriorityQueue<Game> pq = ctrl.moves(true);
         //System.out.println("flag2"); // debug
         Game ga;
         //System.out.println("flag3"); // debug
 
-        while(!pq.isEmpty()) {
+        /*while(!pq.isEmpty()) {
             //System.out.println("flag4"); // debug
             ga = pq.poll();
             ga.printGame(true);
-        }
+        }*/
     }
 }

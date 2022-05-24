@@ -91,8 +91,9 @@ public class PlayerAIRandom extends PlayerAI {
     }
 
     @Override
-    public Move generateMove(Board b){
+    public Move generateMove(Game g){
         Move res = null;
+        Board b = g.getBoard();
         int x,y;
         List<Shape> tried = new ArrayList<>();
         List<Tile> possiblePut;
