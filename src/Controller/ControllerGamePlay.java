@@ -51,7 +51,9 @@ public class ControllerGamePlay implements EventController, Runnable {
         currentPlayer = game.getCurrentPlayer();
         currentColor = game.getCurrentColor();
         originalImages = new ArrayList<>();
-        // TODO: thread here maybe?
+    }
+
+    public void startGame(){
         t = new Thread(this);
         t.start();
     }

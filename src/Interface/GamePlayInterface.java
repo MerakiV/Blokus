@@ -49,13 +49,13 @@ public class GamePlayInterface extends JPanel {
         boardPanel = new BoardPanel(this, controller);
         controller.setBoardPanel(boardPanel);
         this.add(boardPanel);
-        controller.setBoardPanel(boardPanel);
         initialiseColorPanels();
         initialiseButtons();
         backGround = new Image(frame, "images/border.png");
         logo = new Image(frame, "images/logo.png");
         System.out.println(controller.game.getCurrentPlayer().toString());
         System.out.println("Finished GamePlayInterface");
+        controller.startGame();
     }
 
 
