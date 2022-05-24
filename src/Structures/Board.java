@@ -212,6 +212,41 @@ public class Board implements Cloneable {
     public HashSet<Tile> fullcheck(Piece pi, int color) { return fullcheck(pi.getShape(), color         ); }
     public HashSet<Tile> fullcheck(Piece pi, Color col) { return fullcheck(pi.getShape(), getCorner(col)); }
 
+    // Returns the number of a possible moves for a given piece (and all its shapes)
+    public int sumPiecePlacements(Piece p, int color) {
+        int sum = 0;
+        Shape sh;
+        HashSet<Tile> hs;
+
+        List<Shape> ls = p.getShapeList();
+        Iterator<Shape> its = ls.iterator();
+        while (its.hasNext()) {
+            sh = its.next();
+            hs = fullcheck(sh, color);
+            sum+=hs.size();
+        }
+
+        return sum;
+    }
+
+    public int sumPiecePlacements(Piece p, Color col) { return sumPiecePlacements(p, getCorner(col)); }
+
+    // Returns the sum of all possible moves with all the pieces of a given list.
+    public int sumAllPlacements(List<Piece> lp, int color) {
+        int sum = 0;
+
+        Piece p;
+        Iterator<Piece> itp = lp.iterator();
+        while(itp.hasNext()) {
+            p = itp.next();
+            sum += sumPiecePlacements(p, color);
+        }
+
+        return sum;
+    }
+
+    public int sumAllPlacements(List<Piece> lp, Color col) { return sumAllPlacements(lp, getCorner(col)); }
+
     // Prints the grid on standard output.
     // if seefor!=-1, shows the avaliable corners for this player to put a piece.
     public void printBoard(int seeFor) {
