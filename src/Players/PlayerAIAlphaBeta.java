@@ -16,8 +16,16 @@ public class PlayerAIAlphaBeta extends PlayerAI {
         return;
     }
 
+    private PlayerAIAlphaBeta() {}; // empty constructor
     @Override
     public Player clone() {
+        Player p2 = new PlayerAIAlphaBeta();
+        p2.cloneFields(this);
+        return p2;
+    }
+
+    @Override
+    public Move generateMove(Board b){
         return null;
     }
 

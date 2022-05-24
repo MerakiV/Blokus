@@ -26,10 +26,12 @@ public class Shape {
 		}
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
-				if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i-1, j-1)); }
-				if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(1).add(new Tile(i-1, j+1)); }
-				if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(2).add(new Tile(i+1, j+1)); }
-				if (isEmpty(i+1, j) && isEmpty(i, j-1) && isEmpty(i+1, j-1)) { avaliableCorners.get(3).add(new Tile(i+1, j-1)); }
+				if (!isEmpty(i, j)) {
+					if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i, j)); }
+					if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(1).add(new Tile(i, j)); }
+					if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(2).add(new Tile(i, j)); }
+					if (isEmpty(i+1, j) && isEmpty(i, j-1) && isEmpty(i+1, j-1)) { avaliableCorners.get(3).add(new Tile(i, j)); }
+				}
 			}
 		}
 	}
@@ -141,6 +143,31 @@ public class Shape {
 						System.out.print("#");
 				} else {
 					System.out.print("-");
+				}
+			}
+			System.out.print("\n");
+		}
+	}
+
+	public void printShapeCorners() {
+		int bin;
+
+		for (int i=-1; i<Nlin+1; i++) {
+			for (int j=-1; j<Ncol+1; j++) {
+				if (!isEmpty(i, j)) {
+					if(i == anchorX && j == anchorY)
+						System.out.print("X");
+					else
+						System.out.print("#");
+				} else {
+					bin = 0;
+
+					bin = bin | ((avaliableCorners.get(0).contains(new Tile(i+1, j+1))) ? 1 : 0) << 0;
+					bin = bin | ((avaliableCorners.get(1).contains(new Tile(i+1, j-1))) ? 1 : 0) << 1;
+					bin = bin | ((avaliableCorners.get(2).contains(new Tile(i-1, j-1))) ? 1 : 0) << 2;
+					bin = bin | ((avaliableCorners.get(3).contains(new Tile(i-1, j+1))) ? 1 : 0) << 3;
+
+					System.out.print((bin==0) ? "-" : Integer.toHexString(bin));
 				}
 			}
 			System.out.print("\n");

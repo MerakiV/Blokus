@@ -3,6 +3,8 @@ package Structures;
 import Players.Player;
 import Players.Player2P;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import java.io.Serializable;
@@ -67,8 +69,51 @@ public abstract class Game implements Serializable, Cloneable {
     public abstract void nextTurn();
 
     @Override
-    public Game clone() {
-        return null;
+    public Game clone() { return null; }
+     
+    // Can be used in subclasses' clone method.
+    public void cloneFields(Game g2) {
+        this.board = (Board) g2.board.clone();
+        this.currentPlayer = null;
+
+        this.players = new ArrayList<>(g2.players.size());
+        for (int i=0; i<g2.players.size(); i++) {
+            this.players.add( (Player) g2.players.get(i).clone());
+            if (g2.players.get(i)==g2.currentPlayer) {
+                this.currentPlayer = this.players.get(i);
+            }
+        }
+
+        this.currentColor = g2.currentColor;
+        this.history = g2.history;
+    }
+
+    public void printGame(boolean boardOnly) {
+        System.out.println("**** Gameboard :");
+        board.printBoard(-1);
+
+        if (!boardOnly) {
+            System.out.println();
+
+            int p = 1;
+            Iterator<Player> it1 = players.iterator();
+            Player pl;
+            Iterator<Piece> it2;
+            Piece pi;
+
+            while(it1.hasNext()) {
+                pl = it1.next();
+                System.out.println("**** Color "+p+" pieces :");
+                p++;
+
+                it2 = pl.getPieces().iterator();
+                while (it2.hasNext()) {
+                    pi = it2.next();
+                    pi.getShape().printShape();
+                    System.out.println();
+                }
+            }
+        }
     }
 
 }

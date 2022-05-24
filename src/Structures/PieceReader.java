@@ -7,7 +7,7 @@ import java.io.File;
 public class PieceReader {
     Piece piece;
     Shape shape;
-    List<Piece> pieceList;
+    ArrayList<Piece> pieceList;
     PieceType pt;
     TileType tt;
     int Ncol;
@@ -122,10 +122,10 @@ public class PieceReader {
         }
     }
 
-    public List<Piece> getPiecesList(){
+    public ArrayList<Piece> getPiecesList(){
         return pieceList;
     }
-    public void setPiecesList(List<Piece> p){ pieceList = p; }
+    public void setPiecesList(ArrayList<Piece> p){ pieceList = p; }
 
     public void printPiecesList(){
         Piece p;

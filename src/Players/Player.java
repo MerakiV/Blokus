@@ -5,19 +5,23 @@ import Structures.Piece;
 import Structures.PieceType;
 import Structures.Board;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public abstract class Player implements Cloneable {
     Color col;
-    List<Piece> pieces;
+    ArrayList<Piece> pieces;
     boolean isAI;
     int score;
 
     public Color getColor(){return col;}
 
-    public List<Piece> getPieces(){return pieces;}
+    public ArrayList<Piece> getPieces(){return pieces;}
 
     public int getScore(){return score;}
+
+    public void updateScore(int add){
+        score+= add;
+    }
 
     public boolean isAI(){return isAI;}
 
@@ -76,5 +80,13 @@ public abstract class Player implements Cloneable {
     public abstract void playPiece(Board b);
 
     @Override
-    abstract public Player clone();
+    public Player clone() { return null; }
+
+    // Can be used in subclasses' clone method.
+    public void cloneFields(Player p2) {
+        this.col = p2.col;
+        this.pieces = (ArrayList<Piece>) p2.pieces.clone();
+        this.isAI = p2.isAI;
+        this.score = p2.score;
+    }
 }

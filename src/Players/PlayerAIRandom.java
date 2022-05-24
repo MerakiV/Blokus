@@ -79,12 +79,14 @@ public class PlayerAIRandom extends PlayerAI {
         }
     }
 
+    private PlayerAIRandom(long s) {
+        this.seed = s;
+        this.generator = new Random(s);
+    }
     @Override
-    public Player clone(){
-        Player p2 = new PlayerAIRandom(this.col);
-        p2.score = this.score;
-        p2.pieces = new ArrayList<>();
-        p2.pieces.addAll(this.pieces);
+    public Player clone() {
+        Player p2 = new PlayerAIRandom(this.seed);
+        p2.cloneFields(this);
         return p2;
     }
 
@@ -96,7 +98,8 @@ public class PlayerAIRandom extends PlayerAI {
         List<Tile> possiblePut;
         int colorCode = b.getCorner(this.col);
         boolean notPlaced = true;
-        while(notPlaced) {
+        boolean allTried = tried.size() == pieces.size();
+        while(notPlaced && !allTried) {
             possiblePut = new ArrayList<>();
             int idx = this.generator.nextInt(pieces.size());
             Piece play = pieces.get(idx);
@@ -122,6 +125,7 @@ public class PlayerAIRandom extends PlayerAI {
                 res = new Move(play, putTile);
                 notPlaced = false;
             }
+            allTried = tried.size() == pieces.size();
         }
         return res;
     }

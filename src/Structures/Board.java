@@ -2,6 +2,7 @@ package Structures;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class Board implements Cloneable {
     public static final int size = 20;
@@ -177,6 +178,39 @@ public class Board implements Cloneable {
     public boolean canPut(Piece p, int color, int ax, int ay) { return canPut(p.getShape(), color, ax, ay); }
     public void put(Piece p, int color, int ax, int ay) { put(p.getShape(), color, ax, ay); }
     public boolean checkAndPut(Piece p, int color, int ax, int ay) { return checkAndPut(p.getShape(), color, ax, ay); }
+
+    // Returns the set of positions where the given shape of the given color can be put.
+    public HashSet<Tile> fullcheck(Shape sh, int color) {
+        HashSet<Tile> li = new HashSet<>();
+        Iterator<Tile> itb, its;
+        Tile tb, ts;
+        int dir, ax, ay;
+
+        for (dir = 0; dir<4; dir++) {
+
+            itb = availableCorners.get(color).get(dir).iterator();
+            while (itb.hasNext()) {
+                tb = itb.next();
+
+                its = sh.getCornerList(dir).iterator();
+                while(its.hasNext()) {
+                    ts = its.next();
+
+                    ax = tb.getX() - ts.getX() + sh.getAnchorX();
+                    ay = tb.getY() - ts.getY() + sh.getAnchorY();
+                    if (canPut(sh, color, ax, ay)) {
+                        li.add(new Tile(ax, ay));
+                    }
+                }
+            }
+        }
+
+        return li;
+    }
+
+    public HashSet<Tile> fullcheck(Shape sh, Color col) { return fullcheck(sh,            getCorner(col)); }
+    public HashSet<Tile> fullcheck(Piece pi, int color) { return fullcheck(pi.getShape(), color         ); }
+    public HashSet<Tile> fullcheck(Piece pi, Color col) { return fullcheck(pi.getShape(), getCorner(col)); }
 
     // Prints the grid on standard output.
     // if seefor!=-1, shows the avaliable corners for this player to put a piece.

@@ -10,4 +10,12 @@ public class PlayerAIRandom2P extends Player2P {
         pcol2 = new PlayerAIRandom(col2, seed+1);
     }
 
+    private PlayerAIRandom2P() {}; // empty constructor
+    @Override
+    public Object clone() {
+        PlayerAIRandom2P p2 = new PlayerAIRandom2P();
+        p2.cloneFields(this);
+        return p2;
+    }
+
 }

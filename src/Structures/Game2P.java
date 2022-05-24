@@ -64,6 +64,39 @@ public class Game2P extends Game{
         history.future.clear();
     }
 
+    private Game2P() {}
+    @Override
+    public Game clone() {
+        Game2P g2 = new Game2P();
+        g2.board = (Board) this.board.clone();
+
+        g2.p1 = (Player2P) p1.clone();
+        g2.p2 = (Player2P) p2.clone();
+        if (p1==currentPlayer2P)
+            g2.currentPlayer2P = g2.p1;
+        else
+            g2.currentPlayer2P = g2.p2;
+
+        g2.players = new ArrayList<Player>();
+        g2.players.add(g2.p1.pcol1);
+        g2.players.add(g2.p2.pcol1);
+        g2.players.add(g2.p1.pcol2);
+        g2.players.add(g2.p2.pcol2);
+
+        g2.currentPlayer = null;
+        int i = 0;
+        while (g2.currentPlayer==null && i<players.size()) {
+            if (currentPlayer==players.get(i))
+                g2.currentPlayer = g2.players.get(i);
+            i++;
+        }
+
+        g2.currentColor = currentColor;
+        g2.history = history;
+
+        return g2;
+    }
+
 
 
 }

@@ -34,14 +34,11 @@ public class PlayerHuman extends Player {
         /* connect to interface */
     }
 
+    private PlayerHuman() {}; // empty constructor
     @Override
-    public Player clone(){
-        Player p2 = new PlayerHuman(this.col);
-        p2.score = this.score;
-        p2.pieces = new ArrayList<>();
-        for(Piece p : this.pieces){
-            p2.pieces.add(p);
-        }
+    public Player clone() {
+        Player p2 = new PlayerHuman();
+        p2.cloneFields(this);
         return p2;
     }
 }

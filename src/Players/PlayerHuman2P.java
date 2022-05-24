@@ -1,10 +1,6 @@
 package Players;
 
 import Structures.Color;
-import Structures.Piece;
-import Structures.PieceReader;
-
-import java.util.Set;
 
 /*
 to do: initialize Set<Piece>
@@ -16,6 +12,14 @@ public class PlayerHuman2P extends Player2P {
         pcol1 = new PlayerHuman(col1);
         pcol2 = new PlayerHuman(col2);
         score = pcol1.score + pcol2.score;
+    }
+
+    private PlayerHuman2P() {}; // empty constructor
+    @Override
+    public Object clone() {
+        PlayerHuman2P p2 = new PlayerHuman2P();
+        p2.cloneFields(this);
+        return p2;
     }
 
 }

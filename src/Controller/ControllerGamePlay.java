@@ -83,6 +83,43 @@ public class ControllerGamePlay implements EventController, Runnable {
         }
     }
 
+    public void startGame(){
+        t = new Thread(this);
+        t.start();
+    }
+
+    @Override
+    public void run(){
+        while (true) {
+            //System.out.println(currentPlayer.getColor() + "'s turn");
+            try {
+                t.sleep(16);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(currentPlayer.isAI()) {
+                System.out.println("AI playing");
+                Move m = ((PlayerAI) currentPlayer).generateMove(game.getBoard());
+                if(m != null) {
+                    piece = m.getPiece();
+                    color = currentColor;
+                    int x = m.getTile().getX();
+                    int y = m.getTile().getY();
+                    piece.printPiece();
+                    System.out.println("Board tile " + x + " " + y);
+                    paintImage(y, x);
+                    //paintImage();
+                    put(x, y);
+                    boardPanel.repaint();
+                    frame.repaint();
+                }
+                else{
+                    System.out.println("No more moves for AI");
+                }
+            }
+        }
+    }
+
     private void initialiseGame(){
         // Game Settings + Create Game
         setUpGameSettings();
