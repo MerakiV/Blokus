@@ -59,6 +59,7 @@ public class GamePlayInterface extends JComponent{
         this.addMouseListener(new GameMouseAdapter(this, redo));
         System.out.println(controller.game.getCurrentPlayer().toString());
         System.out.println("Finished GamePlayInterface");
+        controller.startGame();
     }
 
 

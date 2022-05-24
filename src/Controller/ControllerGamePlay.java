@@ -51,7 +51,9 @@ public class ControllerGamePlay implements EventController, Runnable {
         currentPlayer = game.getCurrentPlayer();
         currentColor = game.getCurrentColor();
         originalImages = new ArrayList<>();
-        // TODO: thread here maybe?
+    }
+
+    public void startGame(){
         t = new Thread(this);
         t.start();
     }
@@ -121,7 +123,7 @@ public class ControllerGamePlay implements EventController, Runnable {
         System.out.println("Game Next turn :" +currentPlayer.getColor());
         currentColor = game.getCurrentColor();
         System.out.println("Game Next turn :" +currentColor);
-        game.getBoard().printBoard(0);
+        game.getBoard().printBoard(game.getBoard().getCorner(currentColor));
     }
 
     void modifyBoardPanel(){

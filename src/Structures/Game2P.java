@@ -40,6 +40,9 @@ public class Game2P extends Game{
 
         //init history
         history = new History();
+
+        //not ended yet
+        hasEnded = false;
     }
 
     public void nextTurn(){
