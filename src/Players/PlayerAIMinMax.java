@@ -29,7 +29,7 @@ public class PlayerAIMinMax extends PlayerAI {
     }
 
     @Override
-    public Move generateMove(Board b){
+    public Move generateMove(Game g){
         return null;
     }
 
