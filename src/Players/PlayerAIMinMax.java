@@ -19,7 +19,7 @@ import Structures.Tile;
 public class PlayerAIMinMax extends PlayerAI {
 
     public PlayerAIMinMax(Color c) {
-        difficultyLevel = 1;
+        difficultyLevel = 2;
         col = c;
     }
 
