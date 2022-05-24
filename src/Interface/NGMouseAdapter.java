@@ -66,24 +66,8 @@ public class NGMouseAdapter implements MouseListener {
                         selectMenu.repaint();
                     }
                     break;
-                case "C1P1":
-                    selectMenu.showColorPicker(1);
-                    selectMenu.repaint();
-                    break;
-                case "C1P2":
-                    selectMenu.showColorPicker(2);
-                    selectMenu.repaint();
-                    break;
-                case "C2P1":
-                    selectMenu.showColorPicker(3);
-                    selectMenu.repaint();
-                    break;
-                case "C2P2":
-                    selectMenu.showColorPicker(4);
-                    selectMenu.repaint();
-                    break;
                 case "RedButton":
-                    selectMenu.setColor(Color.RED);
+                    selectMenu.setColor(Color.RED, hover.player);
                     selectMenu.showColorPicker(0);
                     selectMenu.repaint();
                     break;

@@ -17,8 +17,7 @@ public class GameSelection extends JComponent {
     JPanel panel;
     Image backGround, logo, board, colorSelectbg;
     HoverButton playButton, backButton;
-    ColorSelect selectC1P1, selectC2P1, selectC1P2, selectC2P2;
-    ColorPicker colorPicker1, colorPicker2, colorPicker3, colorPicker4;
+    ColorPicker selectC1P1, selectC2P1, selectC1P2, selectC2P2;
     String currentPlayerPicking;
     boolean errorPlay;
     JComboBox selectP1, selectP2;
@@ -37,7 +36,6 @@ public class GameSelection extends JComponent {
         board = new Image(frame, "images/board.png");
         logo = new Image(frame, "images/LogoBlokus.png");
         colorSelectbg = new Image(frame, "images/colorSelectBackground.png");
-        initUIButton();
         gs2p = new GameSettings2P();
         try {
             // create the font to use
@@ -48,7 +46,7 @@ public class GameSelection extends JComponent {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
-
+        initUIButton();
     }
 
     private void initUIButton() throws IOException {
@@ -91,32 +89,22 @@ public class GameSelection extends JComponent {
         });
 
         // buttons to pick a color for a player
-        selectC1P1 = new ColorSelect(this, "C1P1", (width - boardWidth) / 2, (height - boardHeight) / 2);
+        selectC1P1 = new ColorPicker(this, "C1P1", (width - boardWidth) / 2, (height - boardHeight) / 2);
+        gs2p.setP1Color1(Color.YELLOW);
         add(selectC1P1);
-        buttonSize = selectC1P1.getCurrentImageWidth();
-        selectC1P2 = new ColorSelect(this, "C1P2", (width + boardWidth) / 2 - buttonSize,
+        buttonSize = selectC1P1.getButtonSize();
+        selectC1P2 = new ColorPicker(this, "C1P2", (width + boardWidth) / 2 - buttonSize,
                 (height - boardHeight) / 2);
+        gs2p.setP2Color1(Color.GREEN);
         add(selectC1P2);
-        selectC2P1 = new ColorSelect(this, "C2P1", (width - boardWidth) / 2,
+        selectC2P1 = new ColorPicker(this, "C2P1", (width - boardWidth) / 2,
                 (height + boardHeight) / 2 - buttonSize);
+        gs2p.setP1Color1(Color.RED);
         add(selectC2P1);
-        selectC2P2 = new ColorSelect(this, "C2P2", (width + boardWidth) / 2 - buttonSize,
+        selectC2P2 = new ColorPicker(this, "C2P2", (width + boardWidth) / 2 - buttonSize,
                 (height + boardHeight) / 2 - buttonSize);
+        gs2p.setP2Color2(Color.BLUE);
         add(selectC2P2);
-
-        // color pickers
-        colorPicker1 = new ColorPicker(this, 0, 0);
-        add(colorPicker1);
-        colorPicker1.setVisible(false);
-        colorPicker2 = new ColorPicker(this, 0, 0);
-        add(colorPicker2);
-        colorPicker2.setVisible(false);
-        colorPicker3 = new ColorPicker(this, 0, 0);
-        add(colorPicker3);
-        colorPicker3.setVisible(false);
-        colorPicker4 = new ColorPicker(this, 0, 0);
-        add(colorPicker4);
-        colorPicker4.setVisible(false);
 
         // back and play buttons
         backButton = new HoverButton(this, "Back", 0, 0);
@@ -128,8 +116,6 @@ public class GameSelection extends JComponent {
     private void resetBound() {
         height = frame.getHeight();
         width = frame.getWidth();
-        int offsetRight = (buttonSize * 3 + 10);
-        int offsetBottom = (buttonSize * 2 + 10);
 
         playButton.setButtonBound((width - playButton.getWidth()) / 2, (int) (height * 0.82));
         backButton.setButtonBound((int) (width * 0.05), (int) (height * 0.08));
@@ -139,15 +125,6 @@ public class GameSelection extends JComponent {
         selectC2P1.setButtonBound((width - boardWidth) / 2, (height + boardHeight) / 2 - buttonSize);
         selectC2P2.setButtonBound((width + boardWidth) / 2 - buttonSize, (height + boardHeight) / 2 - buttonSize);
 
-        colorPicker1.setButtonBound((width - boardWidth) / 2 + buttonSize + 25,
-                (height - boardHeight) / 2 + 25);
-        colorPicker2.setButtonBound((width + boardWidth) / 2 - offsetRight - 25,
-                (height - boardHeight) / 2 + 25);
-        colorPicker3.setButtonBound((width - boardWidth) / 2 + buttonSize + 25,
-                (height + boardHeight) / 2 - offsetBottom - 25);
-        colorPicker4.setButtonBound((width + boardWidth) / 2 - offsetRight - 25,
-                (height + boardHeight) / 2 - offsetBottom - 25);
-
         int offsetPlayerY = selectC1P1.getY() + selectC1P1.getHeight() + 40;
         int offsetPlayer1X = (width - boardWidth) / 2 * 7 / 9 - (width / 8) / 2;
         int offsetPlayer2X = (width + boardWidth) / 2;
@@ -156,73 +133,22 @@ public class GameSelection extends JComponent {
         selectP2.setBounds(offsetPlayer2X, offsetPlayerY, width / 8, height / 17);
     }
 
-    public void showColorPicker(int i) {
-        switch (i) {
-            case 0:
-                System.out.println("Hide all color pickers");
-                currentPlayerPicking = null;
-                colorPicker1.setVisible(false);
-                colorPicker2.setVisible(false);
-                colorPicker3.setVisible(false);
-                colorPicker4.setVisible(false);
-                break;
-            case 1:
-                System.out.println("show color picker 1");
-                currentPlayerPicking = "C1P1";
-                colorPicker1.setVisible(true);
-                colorPicker2.setVisible(false);
-                colorPicker3.setVisible(false);
-                colorPicker4.setVisible(false);
-                break;
-            case 2:
-                System.out.println("show color picker 2");
-                currentPlayerPicking = "C1P2";
-                colorPicker1.setVisible(false);
-                colorPicker2.setVisible(true);
-                colorPicker3.setVisible(false);
-                colorPicker4.setVisible(false);
-                break;
-            case 3:
-                System.out.println("show color picker 3");
-                currentPlayerPicking = "C2P1";
-                colorPicker1.setVisible(false);
-                colorPicker2.setVisible(false);
-                colorPicker3.setVisible(true);
-                colorPicker4.setVisible(false);
-                break;
-            case 4:
-                System.out.println("show color picker 4");
-                currentPlayerPicking = "C2P2";
-                colorPicker1.setVisible(false);
-                colorPicker2.setVisible(false);
-                colorPicker3.setVisible(false);
-                colorPicker4.setVisible(true);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid color picker index");
-        }
-    }
-
-    public void setColor(Color color) {
-        switch (currentPlayerPicking) {
+    public void setColor(Color color, String player) {
+        switch (player) {
             case "C1P1":
                 System.out.println("Changing C1P1 color to " + color);
-                selectC1P1.changeCurrentImage(color);
                 gs2p.setP1Color1(color);
                 break;
             case "C1P2":
                 System.out.println("Changing C1P1 color to " + color);
-                selectC1P2.changeCurrentImage(color);
                 gs2p.setP2Color1(color);
                 break;
             case "C2P1":
                 System.out.println("Changing C1P1 color to " + color);
-                selectC2P1.changeCurrentImage(color);
                 gs2p.setP1Color2(color);
                 break;
             case "C2P2":
                 System.out.println("Changing C1P1 color to " + color);
-                selectC2P2.changeCurrentImage(color);
                 gs2p.setP2Color2(color);
                 break;
             default:

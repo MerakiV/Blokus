@@ -7,43 +7,27 @@ import javax.swing.*;
 
 public class ColorPicker extends JPanel {
 
-    private HoverButton red, blue, green, yellow;
+    private ColorSelect red, blue, green, yellow;
     private int buttonSize;
-    private boolean visible;
 
-    public ColorPicker(GameSelection selectMenu, int x, int y) throws IOException {
-        yellow = new HoverButton(selectMenu, "YellowButton", x + 10, y + 10);
+    public ColorPicker(GameSelection selectMenu, String player, int x, int y) throws IOException {
+        yellow = new ColorSelect(selectMenu, "YellowButton", player, x + 10, y + 10);
         selectMenu.add(yellow);
         buttonSize = yellow.getCurrentImageHeight();
-        green = new HoverButton(selectMenu, "GreenButton", x + buttonSize + 20, y + 10);
+        green = new ColorSelect(selectMenu, "GreenButton", player, x + buttonSize + 10*2, y + 10);
         selectMenu.add(green);
-        red = new HoverButton(selectMenu, "RedButton", x + 10, y + buttonSize + 20);
+        red = new ColorSelect(selectMenu, "RedButton", player, x + buttonSize * 2 + 10 * 3, y + 10);
         selectMenu.add(red);
-        blue = new HoverButton(selectMenu, "BlueButton", x + buttonSize + 20, y + buttonSize + 20);
+        blue = new ColorSelect(selectMenu, "BlueButton", player, x + buttonSize * 3 + 10 * 4, y + 10);
         selectMenu.add(blue);
-        setVisible(false);
 
-    }
-
-    @Override
-    public void setVisible(boolean b) {
-        yellow.setVisible(b);
-        green.setVisible(b);
-        red.setVisible(b);
-        blue.setVisible(b);
-        visible = b;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return visible;
     }
 
     public void setButtonBound(int x, int y) {
-        yellow.setButtonBound(x, y);
-        green.setButtonBound(x + buttonSize + 10, y);
-        red.setButtonBound(x, y + buttonSize + 10);
-        blue.setButtonBound(x + buttonSize + 10, y + buttonSize + 10);
+        yellow.setButtonBound(x + 10, y + 10);
+        green.setButtonBound(x + buttonSize + 10*2, y + 10);
+        red.setButtonBound(x + buttonSize * 2 + 10 * 3, y + 10);
+        blue.setButtonBound(x + buttonSize * 3 + 10 * 4, y + 10);
     }
 
     public int getX(String color) {
