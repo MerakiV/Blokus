@@ -2,19 +2,20 @@ package Controller;
 
 import java.util.Comparator;
 
+import Players.PlayerAIMinMax;
 import Structures.Game;
 
 public class ComparatorAIMinMax implements Comparator<Game> {
-    ControllerAIMinMax ctrl;
+    PlayerAIMinMax play;
     boolean max;
 
-    public ComparatorAIMinMax(ControllerAIMinMax ctl, boolean mx) {
-        ctrl = ctl;
+    public ComparatorAIMinMax(PlayerAIMinMax ply, boolean mx) {
+        play = ply;
         max = mx;
     }
 
     @Override
     public int compare(Game g1, Game g2) {
-        return ctrl.evaluation(g2, max) - ctrl.evaluation(g1, max);
+        return play.evaluation(g2, max) - play.evaluation(g1, max);
     }
 }
