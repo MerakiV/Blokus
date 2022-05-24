@@ -78,7 +78,7 @@ public class ControllerGamePlay implements EventController, Runnable {
             if(currentPlayer.isAI()) {
                 if(currentPlayer.checkForMoves(game.getBoard())) {
                     System.out.println("AI playing");
-                    Move m = ((PlayerAI) currentPlayer).generateMove(game.getBoard());
+                    Move m = ((PlayerAI) currentPlayer).generateMove(game);
                     if (m != null) {
                         piece = m.getPiece();
                         color = currentColor;
