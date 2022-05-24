@@ -42,8 +42,8 @@ public class HoverButton extends JPanel {
         this.rolloverImage = newNormal.getScaledInstance((int) (newS * 1.1), (int) (newS * 1.1), Image.SCALE_DEFAULT);
         this.currentImage = normalImage;
         this.setBounds(x, y, newS, newS);
-        this.addMouseListener(new Interface.ButtonMouseAdapter(this,gameMenu));
-        this.setFocusable(true);
+//        this.addMouseListener(new GameMouseAdapter(gameMenu, this));
+        System.out.println(x + " " + y);
     }
 
     // Hover Button for Game Selection
