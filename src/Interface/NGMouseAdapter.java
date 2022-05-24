@@ -56,8 +56,6 @@ public class NGMouseAdapter implements MouseListener {
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
-                        // TODO : init game loop somewhere here?
-                        // create new class containing controller and interface?
                         selectMenu.frame.getContentPane().add(gamePlay, BorderLayout.CENTER);
                         selectMenu.frame.getContentPane().invalidate();
                         selectMenu.frame.getContentPane().validate();
