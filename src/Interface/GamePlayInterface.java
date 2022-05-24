@@ -46,6 +46,7 @@ public class GamePlayInterface extends JComponent{
         setSize();
         this.setLayout(new FlowLayout());
         boardPanel = new BoardPanel(this, controller);
+        controller.setBoardPanel(boardPanel);
         this.add(boardPanel);
         controller.setBoardPanel(boardPanel);
         backGround = new Image(frame, "images/border.png");

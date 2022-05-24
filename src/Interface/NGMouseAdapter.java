@@ -47,7 +47,8 @@ public class NGMouseAdapter implements MouseListener {
                 case "Play":
                     if (selectMenu.validColors()) {
                         Game g2p = selectMenu.getGame();
-                        ControllerGamePlay controller = new ControllerGamePlay(g2p);
+                        selectMenu.gs2p.printSettings();
+                        ControllerGamePlay controller = new ControllerGamePlay(g2p, selectMenu.frame);
                         selectMenu.frame.addKeyListener(new KeyBoardAdapter(controller));
                         selectMenu.frame.getContentPane().remove(selectMenu);
                         try {
@@ -55,6 +56,8 @@ public class NGMouseAdapter implements MouseListener {
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
+                        // TODO : init game loop somewhere here?
+                        // create new class containing controller and interface?
                         selectMenu.frame.getContentPane().add(gamePlay, BorderLayout.CENTER);
                         selectMenu.frame.getContentPane().invalidate();
                         selectMenu.frame.getContentPane().validate();
