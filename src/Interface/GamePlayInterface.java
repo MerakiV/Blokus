@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class GamePlayInterface extends JPanel {
+public class GamePlayInterface extends JComponent{
 
     public JFrame frame;
     // Background images
     Image backGround, logo;
     // Buttons
-    public HoverButton menu, hint, vertical,horizontal, clockwise, counterclockwise;
+    public HoverButton menu, hint, undo, redo;
 
     public int boardSize,tileSize,height,width,widthFrame,heightFrame;
     int topLeftX, topLeftY, topRightX, topRightY,bottomLeftX, bottomLeftY, bottomRightX, bottomRightY, boardX, boardY;
@@ -45,14 +45,17 @@ public class GamePlayInterface extends JPanel {
         g2p = (Game2P) controller.game;
         setSize();
         this.setLayout(new FlowLayout());
-        this.addMouseListener(new GameMouseAdapter(this));
         boardPanel = new BoardPanel(this, controller);
         this.add(boardPanel);
         controller.setBoardPanel(boardPanel);
-        initialiseColorPanels();
-        initialiseButtons();
         backGround = new Image(frame, "images/border.png");
         logo = new Image(frame, "images/logo.png");
+        initialiseColorPanels();
+        initialiseButtons();
+        this.addMouseListener(new GameMouseAdapter(this, menu));
+        this.addMouseListener(new GameMouseAdapter(this, hint));
+        this.addMouseListener(new GameMouseAdapter(this, undo));
+        this.addMouseListener(new GameMouseAdapter(this, redo));
         System.out.println(controller.game.getCurrentPlayer().toString());
         System.out.println("Finished GamePlayInterface");
     }
@@ -101,14 +104,10 @@ public class GamePlayInterface extends JPanel {
         add(this.menu);
         hint = new HoverButton(this, "Hints", (int)(width * 0.05), (int)(height * 0.08));
         add(this.hint);
-        vertical = new HoverButton(this, "Vertical", (int) (width * 0.65) - 50, (int)(height * 0.85));
-        add(this.vertical);
-        horizontal = new HoverButton(this, "Horizontal", (int) (width * 0.35) - 50, (int)(height * 0.85));
-        add(this.horizontal);
-        clockwise = new HoverButton(this, "Clockwise", (int) (width * 0.55) - 50, (int)(height * 0.85));
-        add(this.clockwise);
-        counterclockwise= new HoverButton(this, "CounterClockwise", (int) (width * 0.45)- 50, (int)(height * 0.85));
-        add(this.counterclockwise);
+        undo = new HoverButton(this, "Clockwise", (int) (width * 0.55) - 50, (int)(height * 0.85));
+        add(this.undo);
+        redo = new HoverButton(this, "CounterClockwise", (int) (width * 0.45)- 50, (int)(height * 0.85));
+        add(this.redo);
     }
 
 
@@ -128,7 +127,7 @@ public class GamePlayInterface extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+//        super.paintComponent(g);
         boardPanel.setLocation(boardX, boardY);
         topLeftPanel.setBounds(topLeftX, topLeftY, colorPanelSize.width, colorPanelSize.height);
         bottomLeftPanel.setBounds(bottomLeftX,  bottomLeftY, colorPanelSize.width, colorPanelSize.height);
@@ -137,15 +136,20 @@ public class GamePlayInterface extends JPanel {
         // Sizes
         height = frame.getHeight();
         width = frame.getWidth();
-        int iconSize = clockwise.getCurrentImageWidth()/2;
-        // Background
-        backGround.drawImg(g,0, 0, width,height);
-        logo.drawImg(g, (int)(width * 0.425) ,0, (int)(width * 0.15), (int)(height * 0.15));
+        int iconSize = undo.getCurrentImageWidth()/2;
 
+        // Piece Orientation Buttons
+        g.drawImage(this.undo.getCurrentImage(), (int) (width * 0.55) - iconSize, (int)(height * 0.85), this);
+        g.drawImage(this.redo.getCurrentImage(), (int) (width * 0.45)- iconSize, (int)(height * 0.85), this);
         // TODO: Merge previous Menu
         g.drawImage(this.menu.getCurrentImage(), (int) (width * 0.91), (int)(height * 0.08), frame);
         // Hint
         g.drawImage(this.hint.getCurrentImage(), (int)(width * 0.05), (int)(height * 0.08), frame);
+
+        // Background
+        backGround.drawImg(g,0, 0, width,height);
+        logo.drawImg(g, (int)(width * 0.425) ,0, (int)(width * 0.15), (int)(height * 0.15));
+
         // TODO: Undo
         // TODO: Redo
 
@@ -160,11 +164,9 @@ public class GamePlayInterface extends JPanel {
         DrawString player2Score = new DrawString(g,"Score: "+p1Score, (int) (width * 0.62), (int)(height * 0.18),25);
         player2Score.paint(g);
 
-        // Piece Orientation Buttons
-        g.drawImage(this.clockwise.getCurrentImage(), (int) (width * 0.55) - iconSize, (int)(height * 0.85), this);
-        g.drawImage(this.counterclockwise.getCurrentImage(), (int) (width * 0.45)- iconSize, (int)(height * 0.85), this);
-        g.drawImage(this.vertical.getCurrentImage(), (int) (width * 0.65)- iconSize, (int)(height * 0.85), this);
-        g.drawImage(this.horizontal.getCurrentImage(), (int) (width * 0.35)- iconSize, (int)(height * 0.85), this);
+        this.requestFocus();
+        this.setVisible(true);
+
 
     }
 }
