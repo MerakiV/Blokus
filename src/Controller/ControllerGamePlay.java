@@ -60,7 +60,12 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     @Override
     public void run(){
-        noEndRun();
+        endRun();
+        //noEndRun();
+    }
+
+    long refreshTime(boolean ai){
+        return ai?500:32;
     }
 
     public void endRun(){
@@ -68,10 +73,11 @@ public class ControllerGamePlay implements EventController, Runnable {
         for(Player p : game.getPlayerList()){
             allAI = allAI && p.isAI();
         }
+        long lag = refreshTime(allAI);
         while (!game.hasEnded()) {
             //System.out.println(currentPlayer.getColor() + "'s turn");
             try {
-                t.sleep(allAI?500:16);
+                t.sleep(lag);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -89,18 +95,21 @@ public class ControllerGamePlay implements EventController, Runnable {
                         paintImage(y, x);
                         put(x, y);
                         boardPanel.repaint();
-                        frame.repaint();
                     }
                 } else {
                     System.out.println("No more moves for AI " + currentPlayer.getColor());
                 }
+                nextTurn();
+                frame.repaint();
+                game.updateEnd();
             } else { //not AI
-                if(currentPlayer.checkForMoves(game.getBoard())){
+                if(!currentPlayer.checkForMoves(game.getBoard())){
                     System.out.println("No more moves for Player " + currentPlayer.getColor());
-                    game.nextTurn();
+                    nextTurn();
+                    frame.repaint();
+                    game.updateEnd();
                 }
             }
-            game.updateEnd();
         }
         //game has ended
         System.out.println("Game over");
@@ -111,10 +120,11 @@ public class ControllerGamePlay implements EventController, Runnable {
         for(Player p : game.getPlayerList()){
             allAI = allAI && p.isAI();
         }
+        long lag = refreshTime(allAI);
         while (true) {
             //System.out.println(currentPlayer.getColor() + "'s turn");
             try {
-                t.sleep(allAI?500:16);
+                t.sleep(lag);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -129,14 +139,14 @@ public class ControllerGamePlay implements EventController, Runnable {
                     piece.printPiece();
                     System.out.println("Board tile " + x + " " + y);
                     paintImage(y, x);
-                    //paintImage();
                     put(x, y);
                     boardPanel.repaint();
-                    frame.repaint();
                 }
                 else{
                     System.out.println("No more moves for AI");
                 }
+                nextTurn();
+                frame.repaint();
             }
         }
     }
@@ -165,7 +175,6 @@ public class ControllerGamePlay implements EventController, Runnable {
                 System.out.println("Works");
                 piece = null;
                 color = null;
-                nextTurn();
                 System.out.println("It's " + currentColor);
                 return true;
             }else

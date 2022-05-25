@@ -19,15 +19,17 @@ public abstract class Game implements Serializable, Cloneable {
     boolean end;
 
     public boolean put(Piece p, Color c, int x, int y) {
-        return put(p.getShape(), p.getName(), c, x, y);
+        boolean ok = put(p.getShape(), p, c, x, y);
+        return ok;
     }
 
-    public boolean put(Shape s, PieceType pt, Color c, int x, int y){
+    public boolean put(Shape s, Piece p, Color c, int x, int y){
         int i = board.getCorner(c);
         if(board.canPut(s, i, x, y)){
             pushToPast();
             board.put(s, i, x, y);
-            currentPlayer.removePiece(pt);
+            currentPlayer.updateScore(p.getValue());
+            currentPlayer.removePiece(p.getName());
             return true;
         }
         else{
@@ -36,11 +38,11 @@ public abstract class Game implements Serializable, Cloneable {
     }
 
     public void updateEnd(){
-        boolean e = true;
+        boolean e = false;
         for(Player p : players){
-            e = e && p.hasMoves();
+            e = e || p.hasMoves();
         }
-        if(!e) System.out.println("Player with no moves found, game ending");
+        if(!e) System.out.println("No more moves for any player, game ending");
         setEnd(!e);
     }
 

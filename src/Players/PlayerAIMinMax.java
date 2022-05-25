@@ -59,7 +59,7 @@ public class PlayerAIMinMax extends PlayerAI {
                     t = it3.next();
                     
                     g2 = (Game) config.clone();
-                    g2.put(sh, pi.getName(), col, t.getX(), t.getY());
+                    g2.put(sh, pi, col, t.getX(), t.getY());
                     pq.add(g2);
                 }
             }
