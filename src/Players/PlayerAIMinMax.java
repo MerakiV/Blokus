@@ -30,13 +30,21 @@ public class PlayerAIMinMax extends PlayerAI {
 
     @Override
     public Move generateMove(Game g){
-        return null;
+        Move m = new Move(null, null, null);
+        if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
+            m = AlgoMinMax(m, g, true, 0);
+        } else {
+            m = AlgoMinMax(m, g, false, 0);
+        }
+        if(m.getHeuristic() == 0)
+            return null;
+        return m;
     }
 
     //enum algo
-    public PriorityQueue<Game> moves(Game config, boolean max) {
-        PriorityQueue<Game> pq = new PriorityQueue<Game>(11, new ComparatorAIMinMax(config, max));
-        Game g2;
+    public PriorityQueue<Move> moves(Move m, Game config, boolean max) {
+        PriorityQueue<Move> pq = new PriorityQueue<>(11, new ComparatorAIMinMax(config, max));
+        //Game g2;
         Iterator<Piece> it1 = config.getCurrentPlayer().getPieces().iterator();
         Iterator<Shape> it2;
         Iterator<Tile> it3;
@@ -58,9 +66,11 @@ public class PlayerAIMinMax extends PlayerAI {
                 while(it3.hasNext()) {
                     t = it3.next();
                     
-                    g2 = (Game) config.clone();
-                    g2.put(sh, pi.getName(), col, t.getX(), t.getY());
-                    pq.add(g2);
+                    //g2 = (Game) config.clone();
+                    //g2.put(sh, pi.getName(), col, t.getX(), t.getY());
+                    //pq.add(g2);
+                    Move m2 = new Move(sh, pi.getName(), t);
+                    pq.add(m2);
                 }
             }
         }
@@ -68,20 +78,25 @@ public class PlayerAIMinMax extends PlayerAI {
         return pq;
     }
 
-    public int AlgoMinMax(Game config, boolean max, int depth){
+    public Move AlgoMinMax(Move move, Game config, boolean max, int depth){
         if(isLeaf(config) || depth==0){
-            return evaluation(config, max);
+            int h = evaluation(config, max);
+            move.setHeuristic(h);
+            return move;
         }
         else{
             int ret = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE );
-            PriorityQueue<Game> moves = moves(config, max); //children of the config object
+            PriorityQueue<Move> moves = moves(move, config, max); //children of the config object
+            Move bestMove = null;
             for(int i=0; i<=moves.size(); i++){
-                int x = AlgoMinMax(moves.poll(), !max, depth-1);
+                Move m = AlgoMinMax(moves.poll(), config, !max, depth-1);
+                int x = m.getHeuristic();
                 if(max ? x>ret : x<ret){
                     ret = x;
+                    bestMove = m;
                 }
             }
-            return ret;
+            return bestMove;
         }
     }
 
