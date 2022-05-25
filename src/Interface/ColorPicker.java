@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.io.IOException;
 import javax.swing.*;
 
+import Structures.Color;
+
 public class ColorPicker extends JPanel {
 
     private ColorSelect red, blue, green, yellow;
@@ -34,6 +36,35 @@ public class ColorPicker extends JPanel {
         green.setButtonBound(x + buttonSize + sepSize * 2, y + sepSize, buttonSize, buttonSize);
         red.setButtonBound(x + buttonSize * 2 + sepSize * 3, y + sepSize, buttonSize, buttonSize);
         blue.setButtonBound(x + buttonSize * 3 + sepSize * 4, y + sepSize, buttonSize, buttonSize);
+    }
+
+    public void setCurrentColor(Color color) {
+        switch (color) {
+            case RED:
+                red.setSelected(true);
+                blue.setSelected(false);
+                green.setSelected(false);
+                yellow.setSelected(false);
+                break;
+            case BLUE:
+                red.setSelected(false);
+                blue.setSelected(true);
+                green.setSelected(false);
+                yellow.setSelected(false);
+                break;
+            case GREEN:
+                red.setSelected(false);
+                blue.setSelected(false);
+                green.setSelected(true);
+                yellow.setSelected(false);
+                break;
+            case YELLOW:
+                red.setSelected(false);
+                blue.setSelected(false);
+                green.setSelected(false);
+                yellow.setSelected(true);
+                break;
+        }
     }
 
     public String getPlayer() {

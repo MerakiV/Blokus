@@ -13,6 +13,10 @@ public class DrawString extends JPanel {
     Font font;
     Color color;
 
+    public DrawString(String text) {
+        this.text = text;
+    }
+
     public DrawString(Graphics g, String text, int x, int y, int fontSize) {
         this.text = text;
         this.x = x;
@@ -33,9 +37,6 @@ public class DrawString extends JPanel {
     public void paint(Graphics g) {
         g2d = (Graphics2D) g;
         g2d.setFont(font);
-        // g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-        // RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
         // Select the color of text
         if (this.color == null)
             g2d.setColor(Color.BLACK);
@@ -44,8 +45,16 @@ public class DrawString extends JPanel {
         g2d.drawString(text, x, y);
     }
 
-    public void changeFontSize(int fontSize) {
+    public void setFontSize(int fontSize) {
         font = new Font("ABeeZee-Regular", Font.PLAIN, fontSize);
     }
 
+    public void setCoords(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setGraphics(Graphics g) {
+        this.g = g;
+    }
 }

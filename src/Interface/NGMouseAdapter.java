@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import Controller.ControllerGamePlay;
 import Structures.Color;
-import Structures.Game2P;
 import Structures.Game;
 
 public class NGMouseAdapter implements MouseListener {

@@ -6,7 +6,6 @@ import Structures.Game2P;
 import Structures.GameSettings2P;
 
 import javax.swing.*;
-
 import java.awt.*;
 
 import java.io.File;
@@ -60,32 +59,55 @@ public class GameSelection extends JComponent {
         // Combo boxes
         selectP1 = new JComboBox(players);
         add(selectP1);
+        selectP2 = new JComboBox(players);
+        add(selectP2);
 
         // Listeners for combo boxes (to modify)
-
         selectP1.addActionListener(e -> {
             JComboBox comboBox = (JComboBox) e.getSource();
             String p1 = (String) comboBox.getSelectedItem();
-            // TBI: modify when more AI difficulty made
-            if (p1 == "Human") {
-                gs2p.setP1Human();
-            } else {
-                gs2p.setP1AI(0);
+            switch (p1) {
+                case "Human":
+                    gs2p.setP1Human();
+                    break;
+                case "AI Easy":
+                    gs2p.setP1AI(0);
+                    break;
+                case "AI Medium":
+                    System.out.println("P1 AI Medium");
+                    // gs2p.setP1AI(1);
+                    break;
+                case "AI Hard":
+                    System.out.println("P1 AI Hard");
+                    // gs2p.setP1AI(2);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid player 1");
             }
             System.out.println("Player 1 set to " + p1);
         });
-
-        selectP2 = new JComboBox(players);
-        add(selectP2);
 
         selectP2.addActionListener(e -> {
             JComboBox comboBox = (JComboBox) e.getSource();
             String p2 = (String) comboBox.getSelectedItem();
             // TBI: modify when more AI difficulty made
-            if (p2 == "Human") {
-                gs2p.setP2Human();
-            } else {
-                gs2p.setP2AI(0);
+            switch (p2) {
+                case "Human":
+                    gs2p.setP2Human();
+                    break;
+                case "AI Easy":
+                    gs2p.setP2AI(0);
+                    break;
+                case "AI Medium":
+                    System.out.println("P2 AI Medium");
+                    // gs2p.setP2AI(1);
+                    break;
+                case "AI Hard":
+                    System.out.println("P2 AI Hard");
+                    // gs2p.setP2AI(2);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid player 2");
             }
             System.out.println("Player 2 set to " + p2);
         });
@@ -113,6 +135,12 @@ public class GameSelection extends JComponent {
         add(backButton);
         playButton = new HoverButton(this, "Play", 0, 0);
         add(playButton);
+
+        // player selection text
+        player11 = new DrawString("Player 1");
+        player21 = new DrawString("Player 2");
+        player12 = new DrawString("Player 1");
+        player22 = new DrawString("Player 2");
     }
 
     private void resetBound() {
@@ -136,11 +164,26 @@ public class GameSelection extends JComponent {
 
         // resizing the color selection buttons
         int topBorder = offsetPlayerY + selectP1.getHeight() + 20;
-        int bottomBorder = (height + boardHeight) / 2 - imageSize - 40 - selectC1P1.getButtonSize();
+        int bottomBorder = (height + boardHeight) / 2 - imageSize - 20 - selectC1P1.getHeight();
         selectC1P1.setButtonBound(offsetPlayer1X, topBorder + (bottomBorder - topBorder) / 4, width / 8);
         selectC1P2.setButtonBound(offsetPlayer2X, topBorder + (bottomBorder - topBorder) / 4, width / 8);
         selectC2P1.setButtonBound(offsetPlayer2X, bottomBorder, width / 8);
         selectC2P2.setButtonBound(offsetPlayer1X, bottomBorder, width / 8);
+
+        // resizing the player selection text
+        int offsetPlayerText1Y = (height - boardHeight) / 2 + (imageSize + (int) (0.015 * width)) / 2;
+        int offsetPlayerText2Y = (height + boardHeight) / 2 - (imageSize - (int) (0.015 * width)) / 2;
+        int offsetPlayerText1X = (int) ((width - boardWidth) / 2 * 7 / 9 - 0.075 * width / 2);
+        int offsetPlayerText2X = (width + boardWidth) / 2;
+        offsetPlayerText2X += (int) ((width - offsetPlayerText2X) * 2 / 9 - 0.075 * width / 2);
+        player11.setCoords(offsetPlayerText1X, offsetPlayerText1Y);
+        player21.setCoords(offsetPlayerText2X, offsetPlayerText1Y);
+        player12.setCoords(offsetPlayerText1X, offsetPlayerText2Y);
+        player22.setCoords(offsetPlayerText2X, offsetPlayerText2Y);
+        player11.setFontSize((int) (width * 0.02));
+        player21.setFontSize((int) (width * 0.02));
+        player12.setFontSize((int) (width * 0.02));
+        player22.setFontSize((int) (width * 0.02));
     }
 
     public void setCurrentPlayer(String player) {
@@ -153,21 +196,44 @@ public class GameSelection extends JComponent {
             case "C1P1":
                 System.out.println("Changing C1P1 color to " + color);
                 gs2p.setP1Color1(color);
+                p1c1 = colorToImage(color);
+                selectC1P1.setCurrentColor(color);
                 break;
             case "C1P2":
                 System.out.println("Changing C1P1 color to " + color);
                 gs2p.setP2Color1(color);
+                p2c1 = colorToImage(color);
+                selectC1P2.setCurrentColor(color);
                 break;
             case "C2P1":
                 System.out.println("Changing C1P1 color to " + color);
                 gs2p.setP1Color2(color);
+                p1c2 = colorToImage(color);
+                selectC2P1.setCurrentColor(color);
                 break;
             case "C2P2":
                 System.out.println("Changing C1P1 color to " + color);
                 gs2p.setP2Color2(color);
+                p2c2 = colorToImage(color);
+                selectC2P2.setCurrentColor(color);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid player");
+        }
+    }
+
+    public Image colorToImage(Color color) {
+        switch (color) {
+            case YELLOW:
+                return yellow;
+            case GREEN:
+                return green;
+            case BLUE:
+                return blue;
+            case RED:
+                return red;
+            default:
+                throw new IllegalArgumentException("Invalid color");
         }
     }
 
@@ -234,23 +300,21 @@ public class GameSelection extends JComponent {
     }
 
     public void drawText(Graphics g) {
-        // drawing text according to frame size
-        int offsetPlayerText1Y = (height - boardHeight) / 2 + (imageSize + 30) / 2;
-        int offsetPlayerText2Y = (height + boardHeight) / 2 - (imageSize - 30) / 2;
-        int offsetPlayerText1X = (int) ((width - boardWidth) / 2 * 7 / 9 - 0.075 * width / 2);
-        int offsetPlayerText2X = (width + boardWidth) / 2;
-        offsetPlayerText2X += (int) ((width - offsetPlayerText2X) * 2 / 9 - 0.075 * width / 2);
-
-        player11 = new DrawString(g, "Player 1", offsetPlayerText1X, offsetPlayerText1Y, (int) (width * 0.02));
+        // drawing text for player selection
+        player11.setGraphics(g);
+        player21.setGraphics(g);
+        player12.setGraphics(g);
+        player22.setGraphics(g);
         player11.paint(g);
-        player21 = new DrawString(g, "Player 2", offsetPlayerText2X, offsetPlayerText1Y, (int) (width * 0.02));
         player21.paint(g);
-        player12 = new DrawString(g, "Player 2", offsetPlayerText1X, offsetPlayerText2Y, (int) (width * 0.02));
         player12.paint(g);
-        player22 = new DrawString(g, "Player 1", offsetPlayerText2X, offsetPlayerText2Y, (int) (width * 0.02));
         player22.paint(g);
 
-        // TBI : "clor 1" and "color 2" on top of the color selection boxes
+        // TBI : "color 1" and "color 2" on top of the color selection boxes
+        // colorText11.paint(g);
+        // colorText12.paint(g);
+        // colorText21.paint(g);
+        // colorText22.paint(g);
 
         // error message when players pick the same color
         if (errorPlay) {
@@ -287,20 +351,5 @@ public class GameSelection extends JComponent {
         drawBoard(g);
         drawText(g);
         frame.setVisible(true);
-
-        // printDebug();
-    }
-
-    private void printDebug() {
-        System.out.println("\n--------------------------------------");
-        System.out.println("P1 human : " + gs2p.p1Human);
-        System.out.println("P1 AI : " + gs2p.p1AIdiff);
-        System.out.println("P2 human : " + gs2p.p2Human);
-        System.out.println("P2 AI : " + gs2p.p2AIdiff);
-        System.out.println("P1 color 1 : " + gs2p.p1c1);
-        System.out.println("P1 color 2 : " + gs2p.p1c2);
-        System.out.println("P2 color 1 : " + gs2p.p2c1);
-        System.out.println("P2 color 2 : " + gs2p.p2c2);
-        System.out.println("--------------------------------------");
     }
 }
