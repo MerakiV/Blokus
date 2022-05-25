@@ -71,9 +71,9 @@ public class GamePlayInterface extends JPanel {
         topRightX = (int)(0.94 * widthFrame - boardSize * 0.72) - 10;
         topRightY = (int) (heightFrame * 0.2);
         bottomLeftX = (int) (widthFrame * 0.06) - 10;
-        bottomLeftY = (int)(heightFrame * 0.25 + boardSize/2);
+        bottomLeftY = (int)(heightFrame * 0.28 + boardSize/2);
         bottomRightX = (int)(0.94 * widthFrame - boardSize * 0.72) - 10;
-        bottomRightY = (int)(heightFrame * 0.25 + boardSize/2);
+        bottomRightY = (int)(heightFrame * 0.28 + boardSize/2);
         boardX = (widthFrame - size.width) / 2;
         boardY = (int) (heightFrame * 0.2);
     }
@@ -166,14 +166,21 @@ public class GamePlayInterface extends JPanel {
 
         // Players
         playerTurn(g);
+        // Top
         DrawString player1 = new DrawString(g, "Player 1", (int) (width * 0.15), (int)(height * 0.18), 25);
         player1.paint(g);
         DrawString player1Score = new DrawString(g,"Score: "+ p2Score, (int) (width * 0.3), (int)(height * 0.18),25);
         player1Score.paint(g);
-        DrawString player2 = new DrawString(g, "Player 2", (int) (width * 0.8), (int)(height * 0.18),25);
+        DrawString player2 = new DrawString(g, "Player 2", topRightX + colorPanelSize.width/3, (int)(height * 0.18),25);
         player2.paint(g);
         DrawString player2Score = new DrawString(g,"Score: "+p1Score, (int) (width * 0.62), (int)(height * 0.18),25);
         player2Score.paint(g);
+
+        // Bottom
+        DrawString player1bottom = new DrawString(g, "Player 1", bottomRightX + colorPanelSize.width/3, (int)(heightFrame * 0.26 + boardSize/2), 25);
+        player1bottom.paint(g);
+        DrawString player2bottom = new DrawString(g, "Player 2", (int) (width * 0.15), (int)(heightFrame * 0.26 + boardSize/2), 25);
+        player2bottom.paint(g);
 
         // Piece Orientation Buttons
         g.drawImage(this.clockwise.getCurrentImage(), (int) (width * 0.55) - iconSize, (int)(height * 0.85), this);
