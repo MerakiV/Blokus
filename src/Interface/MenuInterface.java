@@ -7,17 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class MenuInterface extends JComponent {
-    Image backGround;
-    Image whiteBack;
-    Image logo;
-    public HoverButton newGame;
-    public HoverButton conti;
-    public HoverButton tutorial;
-    public HoverButton exit;
+    Image backGround, whiteBack, logo;
+    public HoverButton newGame, conti ,tutorial,  exit;
     public JFrame frame;
-    int x, y;
-    int height;
-    int width;
+    int x, y, height, width;
 
     public MenuInterface(JFrame f) throws IOException {
         frame = f;
@@ -43,10 +36,11 @@ public class MenuInterface extends JComponent {
     }
 
     private void resetBound(Integer x, Integer y) {
-        this.newGame.setButtonBound(x - 202, (int) (y * 0.35));
-        this.conti.setButtonBound(x - 202, (int) (y * 0.45));
-        this.tutorial.setButtonBound(x - 202, (int) (y * 0.55));
-        this.exit.setButtonBound(x - 202, (int) (y * 0.65));
+        int widthImage = this.newGame.getCurrentImageWidth() / 2;
+        this.newGame.setButtonBound(x - widthImage, (int) (y * 0.35));
+        this.conti.setButtonBound(x - widthImage, (int) (y * 0.47));
+        this.tutorial.setButtonBound(x - widthImage, (int) (y * 0.59));
+        this.exit.setButtonBound(x - widthImage, (int) (y * 0.71));
     }
 
     public void drawButtons(Graphics g) throws IOException {
@@ -55,9 +49,9 @@ public class MenuInterface extends JComponent {
         int widthImage = this.newGame.getCurrentImageWidth() / 2;
         resetBound(x, y);
         g.drawImage(this.newGame.getCurrentImage(), x - widthImage, (int) (y * 0.35), this);
-        g.drawImage(this.conti.getCurrentImage(), x - widthImage, (int) (y * 0.45), this);
-        g.drawImage(this.tutorial.getCurrentImage(), x - widthImage, (int) (y * 0.55), this);
-        g.drawImage(this.exit.getCurrentImage(), x - widthImage, (int) (y * 0.65), this);
+        g.drawImage(this.conti.getCurrentImage(), x - widthImage, (int) (y * 0.47), this);
+        g.drawImage(this.tutorial.getCurrentImage(), x - widthImage, (int) (y * 0.59), this);
+        g.drawImage(this.exit.getCurrentImage(), x - widthImage, (int) (y * 0.71), this);
     }
 
     public void paintComponent(Graphics g) {
