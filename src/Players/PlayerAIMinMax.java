@@ -93,7 +93,7 @@ public class PlayerAIMinMax extends PlayerAI {
         List<Player> players = g.getPlayerList();
         int nbPlayers = players.size();
         for(i = 0; i<=nbPlayers; i++){
-            if (players.get(i).getPieces().isEmpty())
+            if (g.getBoard().canPlacePieces(players.get(i).getPieces(), players.get(i).col))
                 zeroPieces++;
             if (g.getBoard().numberOfCorners(players.get(i).getColor()) == 0)
                 zeroCorners++;
@@ -102,7 +102,7 @@ public class PlayerAIMinMax extends PlayerAI {
 
     }
 
-    public int evaluation(Game config, boolean max){
+    public static int evaluation(Game config, boolean max){
         //(our score - opponent score) + (our possible placements - opponent placements)
 
         Player p1c1 = config.getPlayerList().get(0);
@@ -117,8 +117,8 @@ public class PlayerAIMinMax extends PlayerAI {
 
         int sumScoreP1 = p1score1 + p1score2;
         int sumScoreP2 = p2score1 + p2score2;
-        int sumPlacementsP1 = sumAllPlacements(config, p1c1) + sumAllPlacements(config, p1c2);
-        int sumPlacementsP2 = sumAllPlacements(config, p2c2) + sumAllPlacements(config, p2c2);
+        int sumPlacementsP1 = config.getBoard().sumAllPlacements(p1c1.getPieces(), p1c1.col) + config.getBoard().sumAllPlacements(p1c2.getPieces(), p1c2.col);
+        int sumPlacementsP2 = config.getBoard().sumAllPlacements(p2c1.getPieces(), p2c1.col) + config.getBoard().sumAllPlacements(p2c2.getPieces(), p2c2.col);
 
         if(max){
             return (sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2);
@@ -127,6 +127,8 @@ public class PlayerAIMinMax extends PlayerAI {
             return (sumScoreP2 - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1);
         }
     }
+
+    /*
 
     // returns a list of every shapes that can be put for a given corner (unused rn)
     public Hashtable<Shape, List<Tile>> allPlacementsforCorner(Game config, List<Piece> lp, Color color, int x, int y){
@@ -229,6 +231,8 @@ public class PlayerAIMinMax extends PlayerAI {
         }
         return sum;
     }
+
+    */
 
     private PlayerAIMinMax() {}; // empty constructor
     @Override
