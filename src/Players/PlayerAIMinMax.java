@@ -35,7 +35,7 @@ public class PlayerAIMinMax extends PlayerAI {
 
     //enum algo
     public PriorityQueue<Game> moves(Game config, boolean max) {
-        PriorityQueue<Game> pq = new PriorityQueue<>(11, new ComparatorAIMinMax(this, max));
+        PriorityQueue<Game> pq = new PriorityQueue<Game>(11, new ComparatorAIMinMax(config, max));
         Game g2;
         Iterator<Piece> it1 = config.getCurrentPlayer().getPieces().iterator();
         Iterator<Shape> it2;
@@ -59,7 +59,7 @@ public class PlayerAIMinMax extends PlayerAI {
                     t = it3.next();
                     
                     g2 = (Game) config.clone();
-                    g2.put(sh, pi, col, t.getX(), t.getY());
+                    g2.put(sh, pi.getName(), col, t.getX(), t.getY());
                     pq.add(g2);
                 }
             }

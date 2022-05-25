@@ -10,8 +10,16 @@ public class Move {
     Tile tile;
     int heuristic;
 
-    public Move(Shape s, Tile t){
+    public Move(Shape s, PieceType pt, Tile t){
         this.shape = s;
+        this.pieceT = pt;
+        this.tile = t;
+        this.heuristic = baseH;
+    }
+
+    public Move(Piece p, Tile t){
+        this.shape = p.getShape();
+        this.pieceT = p.getName();
         this.tile = t;
         this.heuristic = baseH;
     }

@@ -30,8 +30,4 @@ public class PlayerAIAlphaBeta extends PlayerAI {
         return null;
     }
 
-    @Override
-    public Move generateMove(Board b){
-        return null;
-    }
 }

@@ -19,17 +19,17 @@ public abstract class Game implements Serializable, Cloneable {
     boolean end;
 
     public boolean put(Piece p, Color c, int x, int y) {
-        boolean ok = put(p.getShape(), p, c, x, y);
+        boolean ok = put(p.getShape(), p.getName(), c, x, y);
         return ok;
     }
 
-    public boolean put(Shape s, Piece p, Color c, int x, int y){
+    public boolean put(Shape s, PieceType pt, Color c, int x, int y){
         int i = board.getCorner(c);
         if(board.canPut(s, i, x, y)){
             pushToPast();
             board.put(s, i, x, y);
-            currentPlayer.updateScore(p.getValue());
-            currentPlayer.removePiece(p.getName());
+            currentPlayer.updateScore(s.getValue());
+            currentPlayer.removePiece(pt);
             return true;
         }
         else{

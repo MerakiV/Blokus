@@ -203,4 +203,15 @@ public class Shape {
 		hash = Arrays.hashCode(lineHash);
 		return hash;
 	}
+
+	public int getValue(){
+		int sum = 0;
+		for(int i = 0 ; i < Nlin ; i++){
+			for(int j = 0 ; j < Ncol ; j++){
+				if(shape[i][j]) sum++;
+			}
+		}
+		return sum;
+	}
+
 }
