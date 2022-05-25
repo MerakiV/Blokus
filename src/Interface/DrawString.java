@@ -1,48 +1,31 @@
 package Interface;
 
 import java.awt.*;
-import java.awt.Image;
-
-import java.awt.geom.AffineTransform;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-
-/*
-game settings object
-create game object on play button press (GameSettings2P, Game2P)
-
-*/
 
 public class DrawString extends JPanel {
     String text;
     int x;
     int y;
-    int fontSize;
     Graphics g;
     Graphics2D g2d;
 
     Font font;
     Color color;
 
-    public DrawString(Graphics g, String t, int x, int y, int f) {
-        text = t;
+    public DrawString(Graphics g, String text, int x, int y, int fontSize) {
+        this.text = text;
         this.x = x;
         this.y = y;
         this.g = g;
-        this.fontSize = f;
         font = new Font("ABeeZee-Regular", Font.PLAIN, fontSize);
     }
 
-    public DrawString(Graphics g, String t, Color color, int x, int y, int f) {
-        text = t;
+    public DrawString(Graphics g, String text, Color color, int x, int y, int fontSize) {
+        this.text = text;
         this.x = x;
         this.y = y;
         this.g = g;
-        this.fontSize = f;
         this.color = color;
         font = new Font("ABeeZee-Regular", Font.PLAIN, fontSize);
     }
@@ -59,6 +42,10 @@ public class DrawString extends JPanel {
         else
             g2d.setColor(this.color);
         g2d.drawString(text, x, y);
+    }
+
+    public void changeFontSize(int fontSize) {
+        font = new Font("ABeeZee-Regular", Font.PLAIN, fontSize);
     }
 
 }

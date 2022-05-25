@@ -4,20 +4,21 @@ import Players.*;
 
 import java.util.ArrayList;
 
-public class Game2P extends Game{
-    public Player2P p1,p2;
+public class Game2P extends Game {
+    public Player2P p1, p2;
     public Player2P currentPlayer2P;
     public GameSettings2P gs2p;
 
-    public Game2P(GameSettings2P set){
+    public Game2P(GameSettings2P set) {
         gs2p = set;
-        //TBI : create board
-        //with GameSettings
+        // TBI : create board
+        // with GameSettings
         board = new Board(set.p1c1, set.p2c1, set.p1c2, set.p2c2);
 
-        if(set.p1Human) p1 = new PlayerHuman2P(set.p1c1, set.p1c2);
+        if (set.p1Human)
+            p1 = new PlayerHuman2P(set.p1c1, set.p1c2);
         else {
-            switch(set.p1AIdiff){
+            switch (set.p1AIdiff) {
                 case 0:
                     p1 = new PlayerAIRandom2P(set.p1c1, set.p1c2);
                     break;
@@ -30,9 +31,10 @@ public class Game2P extends Game{
                 default:
             }
         }
-        if(set.p2Human) p2 = new PlayerHuman2P(set.p2c1, set.p2c2);
+        if (set.p2Human)
+            p2 = new PlayerHuman2P(set.p2c1, set.p2c2);
         else {
-            switch(set.p2AIdiff){
+            switch (set.p2AIdiff) {
                 case 0:
                     p2 = new PlayerAIRandom2P(set.p2c1, set.p2c2);
                     break;
@@ -46,41 +48,37 @@ public class Game2P extends Game{
             }
         }
 
-        //put players in player list
+        // put players in player list
         players = new ArrayList<Player>();
         players.add(p1.pcol1);
         players.add(p2.pcol1);
         players.add(p1.pcol2);
         players.add(p2.pcol2);
 
-
-        //set p1 as current player
+        // set p1 as current player
         currentPlayer2P = p1;
         currentPlayer = p1.pcol1;
         currentColor = p1.pcol1.getColor();
 
-        //init history
+        // init history
         history = new History();
 
-        //ended
+        // ended
         end = false;
     }
 
-    public void nextTurn(){
+    public void nextTurn() {
         pushToPast();
-        if(currentPlayer == p1.pcol1){
+        if (currentPlayer == p1.pcol1) {
             currentPlayer = p2.pcol1;
             currentPlayer2P = p2;
-        }
-        else if(currentPlayer == p1.pcol2){
+        } else if (currentPlayer == p1.pcol2) {
             currentPlayer = p2.pcol2;
             currentPlayer2P = p2;
-        }
-        else if(currentPlayer == p2.pcol1){
+        } else if (currentPlayer == p2.pcol1) {
             currentPlayer = p1.pcol2;
             currentPlayer2P = p1;
-        }
-        else{ //currentPlayer == p2.col2
+        } else { // currentPlayer == p2.col2
             currentPlayer = p1.pcol1;
             currentPlayer2P = p1;
         }
@@ -88,7 +86,9 @@ public class Game2P extends Game{
         history.future.clear();
     }
 
-    private Game2P() {}
+    private Game2P() {
+    }
+
     @Override
     public Game clone() {
         Game2P g2 = new Game2P();
@@ -96,7 +96,7 @@ public class Game2P extends Game{
 
         g2.p1 = (Player2P) p1.clone();
         g2.p2 = (Player2P) p2.clone();
-        if (p1==currentPlayer2P)
+        if (p1 == currentPlayer2P)
             g2.currentPlayer2P = g2.p1;
         else
             g2.currentPlayer2P = g2.p2;
@@ -109,8 +109,8 @@ public class Game2P extends Game{
 
         g2.currentPlayer = null;
         int i = 0;
-        while (g2.currentPlayer==null && i<players.size()) {
-            if (currentPlayer==players.get(i))
+        while (g2.currentPlayer == null && i < players.size()) {
+            if (currentPlayer == players.get(i))
                 g2.currentPlayer = g2.players.get(i);
             i++;
         }
@@ -120,7 +120,5 @@ public class Game2P extends Game{
 
         return g2;
     }
-
-
 
 }

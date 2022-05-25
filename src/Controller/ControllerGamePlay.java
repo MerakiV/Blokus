@@ -36,7 +36,7 @@ public class ControllerGamePlay implements EventController, Runnable {
     Thread t;
     Shape shape;
 
-    public ControllerGamePlay(){
+    public ControllerGamePlay() {
         initialiseGame();
         piece = null;
         color = null;
@@ -45,7 +45,7 @@ public class ControllerGamePlay implements EventController, Runnable {
         originalImages = new ArrayList<>();
     }
 
-    public ControllerGamePlay(Game g, JFrame f){
+    public ControllerGamePlay(Game g, JFrame f) {
         frame = f;
         game = g;
         piece = null;
@@ -55,36 +55,36 @@ public class ControllerGamePlay implements EventController, Runnable {
         originalImages = new ArrayList<>();
     }
 
-    public void startGame(){
+    public void startGame() {
         t = new Thread(this);
         t.start();
     }
 
     @Override
-    public void run(){
+    public void run() {
         endRun();
-        //noEndRun();
+        // noEndRun();
     }
 
-    long refreshTime(boolean ai){
-        return ai?500:32;
+    long refreshTime(boolean ai) {
+        return ai ? 500 : 32;
     }
 
-    public void endRun(){
+    public void endRun() {
         boolean allAI = true;
-        for(Player p : game.getPlayerList()){
+        for (Player p : game.getPlayerList()) {
             allAI = allAI && p.isAI();
         }
         long lag = refreshTime(allAI);
         while (!game.hasEnded()) {
-            //System.out.println(currentPlayer.getColor() + "'s turn");
+            // System.out.println(currentPlayer.getColor() + "'s turn");
             try {
                 t.sleep(lag);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(currentPlayer.isAI()) {
-                if(currentPlayer.checkForMoves(game.getBoard())) {
+            if (currentPlayer.isAI()) {
+                if (currentPlayer.checkForMoves(game.getBoard())) {
                     System.out.println("AI playing");
                     Move m = ((PlayerAI) currentPlayer).generateMove(game);
                     if (m != null) {
@@ -94,8 +94,8 @@ public class ControllerGamePlay implements EventController, Runnable {
                         color = currentColor;
                         int x = m.getTile().getX();
                         int y = m.getTile().getY();
-                        //piece.printPiece();
-                        //System.out.println("Board tile " + x + " " + y);
+                        // piece.printPiece();
+                        // System.out.println("Board tile " + x + " " + y);
                         paintImage(y, x);
                         put(x, y);
                         boardPanel.repaint();
@@ -106,8 +106,8 @@ public class ControllerGamePlay implements EventController, Runnable {
                 nextTurn();
                 frame.repaint();
                 game.updateEnd();
-            } else { //not AI
-                if(!currentPlayer.checkForMoves(game.getBoard())){
+            } else { // not AI
+                if (!currentPlayer.checkForMoves(game.getBoard())) {
                     System.out.println("No more moves for Player " + currentPlayer.getColor());
                     nextTurn();
                     frame.repaint();
@@ -115,27 +115,27 @@ public class ControllerGamePlay implements EventController, Runnable {
                 }
             }
         }
-        //game has ended
+        // game has ended
         System.out.println("Game over");
     }
 
-    public void noEndRun(){
+    public void noEndRun() {
         boolean allAI = true;
-        for(Player p : game.getPlayerList()){
+        for (Player p : game.getPlayerList()) {
             allAI = allAI && p.isAI();
         }
         long lag = refreshTime(allAI);
         while (true) {
-            //System.out.println(currentPlayer.getColor() + "'s turn");
+            // System.out.println(currentPlayer.getColor() + "'s turn");
             try {
                 t.sleep(lag);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(currentPlayer.isAI()) {
+            if (currentPlayer.isAI()) {
                 System.out.println("AI playing");
                 Move m = ((PlayerAI) currentPlayer).generateMove(game);
-                if(m != null) {
+                if (m != null) {
                     shape = m.getShape();
                     piece = new Piece(shape);
                     piece.setName(m.getPieceType());
@@ -147,8 +147,7 @@ public class ControllerGamePlay implements EventController, Runnable {
                     paintImage(y, x);
                     put(x, y);
                     boardPanel.repaint();
-                }
-                else{
+                } else {
                     System.out.println("No more moves for AI");
                 }
                 nextTurn();
@@ -157,14 +156,14 @@ public class ControllerGamePlay implements EventController, Runnable {
         }
     }
 
-    private void initialiseGame(){
+    private void initialiseGame() {
         // Game Settings + Create Game
         setUpGameSettings();
         System.out.println("Finished InitialiseGame");
     }
 
     // TODO : to change once game settings completed
-    public void setUpGameSettings(){
+    public void setUpGameSettings() {
         GameSettings2P gameSettings2P = new GameSettings2P();
         gameSettings2P.setP1Color1(Structures.Color.YELLOW);
         gameSettings2P.setP1Color2(Structures.Color.RED);
@@ -175,40 +174,41 @@ public class ControllerGamePlay implements EventController, Runnable {
         System.out.println("Finished SetUpGameSettings");
     }
 
-    public boolean put(int y, int x){
-        if (piece != null){
-            if (game.put(piece, color,y,x)){
+    public boolean put(int y, int x) {
+        if (piece != null) {
+            if (game.put(piece, color, y, x)) {
                 piece = null;
                 color = null;
-                //System.out.println("Works");
-                //System.out.println("It's " + currentColor);
+                // System.out.println("Works");
+                // System.out.println("It's " + currentColor);
                 return true;
-            }else
+            } else
                 System.out.println("Invalid");
         }
         return false;
     }
-    public void nextTurn(){
+
+    public void nextTurn() {
         game.nextTurn();
         currentPlayer = game.getCurrentPlayer();
         currentColor = game.getCurrentColor();
-        //System.out.println("Game Next turn :" +currentPlayer.getColor());
-        //System.out.println("Game Next turn :" +currentColor);
-        //game.getBoard().printBoard(game.getBoard().getCorner(currentColor));
+        // System.out.println("Game Next turn :" +currentPlayer.getColor());
+        // System.out.println("Game Next turn :" +currentColor);
+        // game.getBoard().printBoard(game.getBoard().getCorner(currentColor));
     }
 
-    public void paintImage(){
+    public void paintImage() {
         Image image = getImage();
         String[] split = tile.getName().split(" ");
         int x = Integer.parseInt(split[0]);
         int y = Integer.parseInt(split[1]);
-        boolean [][] shape = piece.getShape().shape;
-        x -= piece.getShape().anchorY ;
+        boolean[][] shape = piece.getShape().shape;
+        x -= piece.getShape().anchorY;
         y -= piece.getShape().anchorX;
-        if (x >=0 && x + piece.getShape().Ncol - 1 <=19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19){
-            for (int i=0; i<piece.getShape().Nlin; i++) {
+        if (x >= 0 && x + piece.getShape().Ncol - 1 <= 19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19) {
+            for (int i = 0; i < piece.getShape().Nlin; i++) {
                 int temp = x;
-                for (int j=0; j<piece.getShape().Ncol; j++) {
+                for (int j = 0; j < piece.getShape().Ncol; j++) {
                     originalImages.add(boardPanel.labels.get(temp + " " + y).getIcon());
                     if (shape[i][j]) {
                         boardPanel.labels.get(temp + " " + y).setIcon(new ImageIcon(image));
@@ -221,15 +221,15 @@ public class ControllerGamePlay implements EventController, Runnable {
         }
     }
 
-    public void paintImage(int x, int y){
+    public void paintImage(int x, int y) {
         Image image = getImage();
-        boolean [][] shape = piece.getShape().shape;
-        x -= piece.getShape().anchorY ;
+        boolean[][] shape = piece.getShape().shape;
+        x -= piece.getShape().anchorY;
         y -= piece.getShape().anchorX;
-        if (x >=0 && x + piece.getShape().Ncol - 1 <=19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19){
-            for (int i=0; i<piece.getShape().Nlin; i++) {
+        if (x >= 0 && x + piece.getShape().Ncol - 1 <= 19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19) {
+            for (int i = 0; i < piece.getShape().Nlin; i++) {
                 int temp = x;
-                for (int j=0; j<piece.getShape().Ncol; j++) {
+                for (int j = 0; j < piece.getShape().Ncol; j++) {
                     if (shape[i][j]) {
                         boardPanel.labels.get(temp + " " + y).setIcon(new ImageIcon(image));
                         boardPanel.labels.get(temp + " " + y).repaint();
@@ -243,7 +243,7 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     private Image getImage() {
         BufferedImage img;
-        int tileSize = boardPanel.boardSize/20;
+        int tileSize = boardPanel.boardSize / 20;
         Image resizedImage = null;
         try {
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(getPath());
@@ -256,8 +256,8 @@ public class ControllerGamePlay implements EventController, Runnable {
         return resizedImage;
     }
 
-    private String getPath(){
-        switch(color){
+    private String getPath() {
+        switch (color) {
             case RED:
                 return "tiles/RedBloc.png";
             case YELLOW:
@@ -272,22 +272,22 @@ public class ControllerGamePlay implements EventController, Runnable {
         return null;
     }
 
-    public void replaceOriginal(){
-        if (originalImages.isEmpty()){
+    public void replaceOriginal() {
+        if (originalImages.isEmpty()) {
             originalImages = boardPanel.originalImages;
         }
-        String name =  tile.getName();
+        String name = tile.getName();
         System.out.println(name);
         String[] split = name.split(" ");
         int x = Integer.parseInt(split[0]);
         int y = Integer.parseInt(split[1]);
-        boolean [][] shape = piece.getShape().shape;
-        x -= piece.getShape().anchorY ;
+        boolean[][] shape = piece.getShape().shape;
+        x -= piece.getShape().anchorY;
         y -= piece.getShape().anchorX;
-        if (x >=0 && x + piece.getShape().Ncol - 1 <=19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19){
-            for (int i=0; i<piece.getShape().Nlin; i++) {
+        if (x >= 0 && x + piece.getShape().Ncol - 1 <= 19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19) {
+            for (int i = 0; i < piece.getShape().Nlin; i++) {
                 int temp = x;
-                for (int j=0; j<piece.getShape().Ncol; j++) {
+                for (int j = 0; j < piece.getShape().Ncol; j++) {
                     boardPanel.labels.get(temp + " " + y).setIcon(originalImages.get(0));
                     originalImages.remove(0);
                     boardPanel.labels.get(temp + " " + y).repaint();
@@ -296,26 +296,24 @@ public class ControllerGamePlay implements EventController, Runnable {
                 y++;
             }
             System.out.println("replace original");
-        }
-        else {
+        } else {
             System.out.println("replace original failed : " + x + " " + y);
         }
 
     }
 
-    void newGame(){
+    void newGame() {
         // TODO: reset board and player turn to original
     }
 
     // TODO : fix redo / undo since it doesn't work even for the text board
-    void redo(){
+    void redo() {
         game.redo();
         game.getBoard().printBoard(-1);
-        //updateInterface();
+        // updateInterface();
     }
 
-
-    void undo(){
+    void undo() {
         game.undo();
         game.getBoard().printBoard(-1);
         // updateInterface();
@@ -392,8 +390,8 @@ public class ControllerGamePlay implements EventController, Runnable {
         return true;
     }
 
-    public void setBoardPanel(BoardPanel b){
-        if( b == null){
+    public void setBoardPanel(BoardPanel b) {
+        if (b == null) {
             throw new RuntimeException("Panel null");
         }
         this.boardPanel = b;
