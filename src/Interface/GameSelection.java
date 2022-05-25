@@ -115,18 +115,22 @@ public class GameSelection extends JComponent {
         // buttons to pick a color for a player
         selectC1P1 = new ColorPicker(this, "C1P1");
         gs2p.setP1Color1(Color.YELLOW);
+        selectC1P1.setCurrentColor(Color.YELLOW);
         p1c1 = yellow;
         add(selectC1P1);
         selectC1P2 = new ColorPicker(this, "C1P2");
         gs2p.setP2Color1(Color.GREEN);
+        selectC1P2.setCurrentColor(Color.GREEN);
         p2c1 = green;
         add(selectC1P2);
         selectC2P1 = new ColorPicker(this, "C2P1");
         gs2p.setP1Color2(Color.BLUE);
+        selectC2P1.setCurrentColor(Color.BLUE);
         p1c2 = blue;
         add(selectC2P1);
         selectC2P2 = new ColorPicker(this, "C2P2");
         gs2p.setP2Color2(Color.RED);
+        selectC2P2.setCurrentColor(Color.RED);
         p2c2 = red;
         add(selectC2P2);
 

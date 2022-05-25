@@ -64,6 +64,8 @@ public class ColorPicker extends JPanel {
                 green.setSelected(false);
                 yellow.setSelected(true);
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid color");
         }
     }
 
