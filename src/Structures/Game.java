@@ -1,7 +1,6 @@
 package Structures;
 
 import Players.Player;
-import Players.Player2P;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,7 +10,7 @@ import java.io.Serializable;
 
 public abstract class Game implements Serializable, Cloneable {
     Board board;
-    List<Player> players;
+    ArrayList<Player> players;
     Player currentPlayer;
     Color currentColor;
 
@@ -63,23 +62,35 @@ public abstract class Game implements Serializable, Cloneable {
         pushToFuture();
         GameState previous = history.undo();
         board = previous.board;
-        currentPlayer = previous.player;
+        currentPlayer = previous.getCurrentPlayer();
     }
 
     public void redo(){
         pushToPast();
         GameState next = history.redo();
         board = next.board;
-        currentPlayer = next.player;
+        currentPlayer = next.getCurrentPlayer();
     }
 
     void pushToPast(){
-        GameState gs = new GameState(board.clone(), currentPlayer.clone());
+        int pl = -1;
+        for (int i=0; i<players.size() && pl==-1; i++) {
+            if (currentPlayer==players.get(i)) {
+                pl = i;
+            }
+        }
+        GameState gs = new GameState(board.clone(), (ArrayList<Player>) players.clone(), pl);
         history.pushToPast(gs);
     }
 
     void pushToFuture(){
-        GameState gs = new GameState(board.clone(), currentPlayer.clone());
+        int pl = -1;
+        for (int i=0; i<players.size() && pl==-1; i++) {
+            if (currentPlayer==players.get(i)) {
+                pl = i;
+            }
+        }
+        GameState gs = new GameState(board.clone(), (ArrayList<Player>) players.clone(), pl);
         history.pushToFuture(gs);
     }
 
