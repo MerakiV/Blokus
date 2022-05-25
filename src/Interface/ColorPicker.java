@@ -8,26 +8,36 @@ import javax.swing.*;
 public class ColorPicker extends JPanel {
 
     private ColorSelect red, blue, green, yellow;
-    private int buttonSize;
+    private int buttonSize, sepSize;
+    private String player;
 
-    public ColorPicker(GameSelection selectMenu, String player, int x, int y) throws IOException {
-        yellow = new ColorSelect(selectMenu, "YellowButton", player, x + 10, y + 10);
+    public ColorPicker(GameSelection selectMenu, String player) throws IOException {
+        yellow = new ColorSelect(selectMenu, "YellowButton");
         selectMenu.add(yellow);
         buttonSize = yellow.getCurrentImageHeight();
-        green = new ColorSelect(selectMenu, "GreenButton", player, x + buttonSize + 10*2, y + 10);
+        green = new ColorSelect(selectMenu, "GreenButton");
         selectMenu.add(green);
-        red = new ColorSelect(selectMenu, "RedButton", player, x + buttonSize * 2 + 10 * 3, y + 10);
+        red = new ColorSelect(selectMenu, "RedButton");
         selectMenu.add(red);
-        blue = new ColorSelect(selectMenu, "BlueButton", player, x + buttonSize * 3 + 10 * 4, y + 10);
+        blue = new ColorSelect(selectMenu, "BlueButton");
         selectMenu.add(blue);
-
+        this.player = player;
+        this.addMouseListener(new NGMouseAdapter(this, selectMenu));
+        setOpaque(false);
     }
 
-    public void setButtonBound(int x, int y) {
-        yellow.setButtonBound(x + 10, y + 10);
-        green.setButtonBound(x + buttonSize + 10*2, y + 10);
-        red.setButtonBound(x + buttonSize * 2 + 10 * 3, y + 10);
-        blue.setButtonBound(x + buttonSize * 3 + 10 * 4, y + 10);
+    public void setButtonBound(int x, int y, int width) {
+        buttonSize = (int) (width / (4 + 5 / 4.5));
+        sepSize = (int) (buttonSize / 4.5);
+        setBounds(x, y, width, buttonSize + sepSize * 2);
+        yellow.setButtonBound(x + sepSize, y + sepSize, buttonSize, buttonSize);
+        green.setButtonBound(x + buttonSize + sepSize * 2, y + sepSize, buttonSize, buttonSize);
+        red.setButtonBound(x + buttonSize * 2 + sepSize * 3, y + sepSize, buttonSize, buttonSize);
+        blue.setButtonBound(x + buttonSize * 3 + sepSize * 4, y + sepSize, buttonSize, buttonSize);
+    }
+
+    public String getPlayer() {
+        return player;
     }
 
     public int getX(String color) {
@@ -79,34 +89,12 @@ public class ColorPicker extends JPanel {
         }
     }
 
-    public int getCurrentImageWidth(String color) {
-        switch (color) {
-            case "red":
-                return red.getCurrentImageWidth();
-            case "blue":
-                return blue.getCurrentImageWidth();
-            case "green":
-                return green.getCurrentImageWidth();
-            case "yellow":
-                return yellow.getCurrentImageWidth();
-            default:
-                throw new IllegalArgumentException("Color not found");
-        }
+    public int getCurrentImageWidth() {
+        return red.getCurrentImageWidth();
     }
 
-    public int getCurrentImageHeight(String color) {
-        switch (color) {
-            case "red":
-                return red.getCurrentImageHeight();
-            case "blue":
-                return blue.getCurrentImageHeight();
-            case "green":
-                return green.getCurrentImageHeight();
-            case "yellow":
-                return yellow.getCurrentImageHeight();
-            default:
-                throw new IllegalArgumentException("Color not found");
-        }
+    public int getCurrentImageHeight() {
+        return red.getCurrentImageHeight();
     }
 
 }

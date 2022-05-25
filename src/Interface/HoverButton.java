@@ -42,7 +42,7 @@ public class HoverButton extends JPanel {
         this.rolloverImage = newNormal.getScaledInstance((int) (newS * 1.1), (int) (newS * 1.1), Image.SCALE_DEFAULT);
         this.currentImage = normalImage;
         this.setBounds(x, y, newS, newS);
-//        this.addMouseListener(new GameMouseAdapter(gameMenu, this));
+        // this.addMouseListener(new GameMouseAdapter(gameMenu, this));
         System.out.println(x + " " + y);
     }
 
@@ -71,6 +71,10 @@ public class HoverButton extends JPanel {
 
     public void setButtonBound(Integer x, Integer y) {
         this.setBounds(x, y, normalImage.getWidth(null), normalImage.getHeight(null));
+    }
+
+    public void setButtonBound(Integer x, Integer y, Integer width, Integer height) {
+        this.setBounds(x, y, width, height);
     }
 
     public void paint(Graphics g) {

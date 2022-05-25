@@ -13,7 +13,7 @@ import Structures.Game;
 public class NGMouseAdapter implements MouseListener {
 
     HoverButton hover;
-    ColorSelect drop;
+    ColorPicker picker;
     GameSelection selectMenu;
     MenuInterface menu;
     GamePlayInterface gamePlay;
@@ -23,8 +23,8 @@ public class NGMouseAdapter implements MouseListener {
         selectMenu = g;
     }
 
-    NGMouseAdapter(ColorSelect b, GameSelection g) {
-        drop = b;
+    NGMouseAdapter(ColorPicker b, GameSelection g) {
+        picker = b;
         selectMenu = g;
     }
 
@@ -67,23 +67,19 @@ public class NGMouseAdapter implements MouseListener {
                     }
                     break;
                 case "RedButton":
-                    selectMenu.setColor(Color.RED, hover.player);
-                    selectMenu.showColorPicker(0);
+                    selectMenu.setColor(Color.RED);
                     selectMenu.repaint();
                     break;
                 case "GreenButton":
                     selectMenu.setColor(Color.GREEN);
-                    selectMenu.showColorPicker(0);
                     selectMenu.repaint();
                     break;
                 case "BlueButton":
                     selectMenu.setColor(Color.BLUE);
-                    selectMenu.showColorPicker(0);
                     selectMenu.repaint();
                     break;
                 case "YellowButton":
                     selectMenu.setColor(Color.YELLOW);
-                    selectMenu.showColorPicker(0);
                     selectMenu.repaint();
                     break;
                 default:
@@ -108,6 +104,9 @@ public class NGMouseAdapter implements MouseListener {
     public void mouseEntered(MouseEvent e) {
         if (hover != null) {
             hover.currentImage = hover.rolloverImage;
+        }
+        if (picker != null) {
+            selectMenu.setCurrentPlayer(picker.getPlayer());
         }
         selectMenu.repaint();
     }
