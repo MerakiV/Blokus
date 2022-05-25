@@ -47,6 +47,14 @@ public class Board implements Cloneable {
         availableCorners.get(3).get(1).add(new Tile(size-1, 0     ));
     }
 
+
+
+
+
+
+
+
+
     // Returns the color on the given indexes, or WHITE if it's out of bounds.
     public Color getColor(int i, int j) {
         if (i<0 || i>=size || j<0 || j>=size) {
@@ -83,6 +91,14 @@ public class Board implements Cloneable {
         return getCorners(getCorner(col), dir);
     }
 
+
+
+
+
+
+
+
+    
     public boolean canPut(Shape s, int color, int ax, int ay) {
         int x = ax - s.anchorX;
         int y = ay - s.anchorY;
@@ -211,6 +227,13 @@ public class Board implements Cloneable {
     public void put(Piece p, int color, int ax, int ay) { put(p.getShape(), color, ax, ay); }
     public boolean checkAndPut(Piece p, int color, int ax, int ay) { return checkAndPut(p.getShape(), color, ax, ay); }
 
+
+
+
+
+
+
+
     // Returns the set of positions where the given shape of the given color can be put.
     public HashSet<Tile> fullcheck(Shape sh, int color) {
         // System.out.println("*** Iterating on the following :"); // debug
@@ -285,6 +308,53 @@ public class Board implements Cloneable {
     }
 
     public int sumAllPlacements(List<Piece> lp, Color col) { return sumAllPlacements(lp, getCorner(col)); }
+
+
+
+
+
+
+
+
+    // Same functions as before, but only return a boolean if the piece(s) is placeable, and stop after finding one good shape.
+    public boolean canPlacePiece(Piece p, int color) {
+        Shape sh;
+        HashSet<Tile> hs;
+
+        List<Shape> ls = p.getShapeList();
+        Iterator<Shape> its = ls.iterator();
+        while (its.hasNext()) {
+            sh = its.next();
+            hs = fullcheck(sh, color);
+            if (!hs.isEmpty()) { return true; }
+        }
+
+        return false;
+    }
+
+    public boolean canPlacePiece(Piece p, Color col) { return canPlacePiece(p, getCorner(col)); }
+
+    public boolean canPlacePieces(List<Piece> lp, int color) {
+
+        Piece p;
+        Iterator<Piece> itp = lp.iterator();
+        while(itp.hasNext()) {
+            p = itp.next();
+            if (canPlacePiece(p, color)) { return true; }
+        }
+
+        return false;
+    }
+
+    public boolean canPlacePieces(List<Piece> lp, Color col) { return canPlacePieces(lp, getCorner(col)); }
+
+
+
+
+
+
+
+
 
     // Prints the grid on standard output.
     // if seefor!=-1, shows the avaliable corners for this player to put a piece.

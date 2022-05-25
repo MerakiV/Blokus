@@ -1,39 +1,23 @@
 package Structures;
 
 public class Move {
-    PieceType pieceType;
+    // The heuristic sums the number of cases of the player's color on the board, and the number of shapes they can still place somewhere on the board.
+    // There are 400 cases on the board, and 91 total possible shapes for all the pieces.
+    // 400 + 91*400 = 36 800. So the heuristic is always in the interval [-36000; 36000]
+    public static final int baseH = 36801;
     Shape shape;
+    PieceType pieceT;
     Tile tile;
     int heuristic;
 
-    public Move(Shape s, PieceType pt,  Tile t){
+    public Move(Shape s, Tile t){
         this.shape = s;
-        this.pieceType = pt;
         this.tile = t;
-        this.heuristic = Integer.MIN_VALUE;
-    }
-
-    public Move(Piece p, Tile t){
-        this.shape = p.getShape();
-        this.pieceType = p.getName();
-        this.tile = t;
-        this.heuristic = Integer.MIN_VALUE;
-    }
-
-    public PieceType getPieceType() {
-        return pieceType;
-    }
-
-    public void setPieceType(PieceType pieceType) {
-        this.pieceType = pieceType;
+        this.heuristic = baseH;
     }
 
     public Shape getShape(){
         return shape;
-    }
-
-    public void setShape(Shape shape) {
-        this.shape = shape;
     }
 
     public Tile getTile() {
@@ -44,7 +28,11 @@ public class Move {
         return heuristic;
     }
 
-    public void setPiece(Shape sh) {
+    public PieceType getPieceType() {
+        return pieceT;
+    }
+
+    public void setShape(Shape sh) {
         this.shape = sh;
     }
 
@@ -54,5 +42,9 @@ public class Move {
 
     public void setHeuristic(int h) {
         heuristic = h;
+    }
+
+    public void setPieceType(PieceType pieceType) {
+        this.pieceT = pieceType;
     }
 }
