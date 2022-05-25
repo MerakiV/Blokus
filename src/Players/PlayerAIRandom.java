@@ -101,7 +101,7 @@ public class PlayerAIRandom extends PlayerAI {
         List<Tile> possiblePut;
         int colorCode = b.getCorner(this.col);
         boolean notPlaced = true;
-        boolean allTried = tried.size() == pieces.size();
+        boolean allTried = (tried.size() == pieces.size());
         while(notPlaced && !allTried) {
             possiblePut = new ArrayList<>();
             int idx = this.generator.nextInt(pieces.size());
@@ -128,7 +128,7 @@ public class PlayerAIRandom extends PlayerAI {
                 res = new Move(play, putTile);
                 notPlaced = false;
             }
-            allTried = tried.size() == pieces.size();
+            allTried = (tried.size() == pieces.size());
         }
         return res;
     }

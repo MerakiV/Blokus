@@ -1,18 +1,39 @@
 package Structures;
 
 public class Move {
+    PieceType pieceType;
     Shape shape;
     Tile tile;
     int heuristic;
 
-    public Move(Shape s, Tile t){
+    public Move(Shape s, PieceType pt,  Tile t){
         this.shape = s;
+        this.pieceType = pt;
         this.tile = t;
         this.heuristic = Integer.MIN_VALUE;
     }
 
-    public Shape getPiece(){
+    public Move(Piece p, Tile t){
+        this.shape = p.getShape();
+        this.pieceType = p.getName();
+        this.tile = t;
+        this.heuristic = Integer.MIN_VALUE;
+    }
+
+    public PieceType getPieceType() {
+        return pieceType;
+    }
+
+    public void setPieceType(PieceType pieceType) {
+        this.pieceType = pieceType;
+    }
+
+    public Shape getShape(){
         return shape;
+    }
+
+    public void setShape(Shape shape) {
+        this.shape = shape;
     }
 
     public Tile getTile() {

@@ -7,6 +7,7 @@ import Players.Player;
 import Players.PlayerAI;
 import Structures.*;
 import Structures.Color;
+import Structures.Shape;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,6 +34,7 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     JFrame frame;
     Thread t;
+    Shape shape;
 
     public ControllerGamePlay(){
         initialiseGame();
@@ -86,7 +88,9 @@ public class ControllerGamePlay implements EventController, Runnable {
                     System.out.println("AI playing");
                     Move m = ((PlayerAI) currentPlayer).generateMove(game);
                     if (m != null) {
-                        piece = m.getPiece();
+                        shape = m.getShape();
+                        piece = new Piece(shape);
+                        piece.setName(m.getPieceType());
                         color = currentColor;
                         int x = m.getTile().getX();
                         int y = m.getTile().getY();
@@ -132,7 +136,9 @@ public class ControllerGamePlay implements EventController, Runnable {
                 System.out.println("AI playing");
                 Move m = ((PlayerAI) currentPlayer).generateMove(game);
                 if(m != null) {
-                    piece = m.getPiece();
+                    shape = m.getShape();
+                    piece = new Piece(shape);
+                    piece.setName(m.getPieceType());
                     color = currentColor;
                     int x = m.getTile().getX();
                     int y = m.getTile().getY();
