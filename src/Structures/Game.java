@@ -16,7 +16,7 @@ public abstract class Game implements Serializable, Cloneable {
 
     History history;
 
-    boolean end;
+    public boolean end;
 
     public boolean put(Piece p, Color c, int x, int y) {
         boolean ok = put(p.getShape(), p.getName(), c, x, y);

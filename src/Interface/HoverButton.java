@@ -12,10 +12,7 @@ import javax.swing.*;
 public class HoverButton extends JPanel {
 
     private Image[] img;
-    public Image normalImage;
-    public Image rolloverImage;
-    public Image currentImage;
-
+    public Image normalImage, rolloverImage, currentImage;
     private boolean enabled = true;
 
     public String name;
