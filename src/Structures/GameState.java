@@ -1,15 +1,49 @@
 package Structures;
 
+import java.util.ArrayList;
+
 import Players.Player;
 
 public class GameState {
 
     Board board;
-    Player player;
+    ArrayList<Player> players;
+    int currentPlayer;
+    int heuristic;
 
-    GameState(Board b, Player p){
+    GameState(Board b, ArrayList<Player> pl, int curpl){
         board = b;
-        player = p;
+        players = pl;
+        currentPlayer = curpl;
+        heuristic = Integer.MAX_VALUE; // default uninitialized value
+    }
+
+    public Player getCurrentPlayer() {
+        return players.get(currentPlayer);
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void nextPlayer() {
+        currentPlayer = (currentPlayer + 1) % players.size();
+    }
+
+    public int getHeuristic() {
+        if (heuristic==Integer.MAX_VALUE) {
+            // initialize heuristic
+        }
+        return heuristic;
+    }
+
+    public GameState clone() {
+        ArrayList<Player> pl2 = new ArrayList<>(this.players.size());
+        for (int i=0; i<this.players.size(); i++) {
+            pl2.add(this.players.get(i).clone());
+        }
+
+        return new GameState(this.board.clone(), pl2, this.currentPlayer);
     }
 
 }
