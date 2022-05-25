@@ -133,7 +133,7 @@ public class Board implements Cloneable {
                         for (int l=0; l<4; l++) {
                             // Removes the tiles this piece is occupying if it's an avaliable corner for any color.
                             if (availableCorners.get(k).get(l).remove(t)) {
-                                // System.out.println("Removed ("+t.getX()+","+t.getY()+") from "+cornerColors[k]+"'s "+Shape.intToDirection(l)+" corners : a piece now covers it."); // debug
+                                System.out.println("Removed ("+t.getX()+","+t.getY()+") from "+cornerColors[k]+"'s "+Shape.intToDirection(l)+" corners : a piece now covers it."); // debug
                             }
                         }
                     }
@@ -141,22 +141,22 @@ public class Board implements Cloneable {
                     if (x+i>0      && y+j>0      && s.isEmpty(i-1, j) && s.isEmpty(i, j-1) && s.isEmpty(i-1, j-1) && grid[x+i-1][y+j-1]==Color.WHITE && getColor(x+i-2, y+j-1)==Color.WHITE && getColor(x+i-1, y+j-2)==Color.WHITE) {
                         t = new Tile(x+i-1, y+j-1);
                         availableCorners.get(color).get(0).add(t);
-                        // System.out.println("Added ("+t.getX()+","+t.getY()+") from "+cornerColors[color]+"'s "+Shape.intToDirection(0)+" corners."); // debug
+                        System.out.println("Added ("+t.getX()+","+t.getY()+") from "+cornerColors[color]+"'s "+Shape.intToDirection(0)+" corners."); // debug
                     }
                     if (x+i>0      && y+j<size-1 && s.isEmpty(i-1, j) && s.isEmpty(i, j+1) && s.isEmpty(i-1, j+1) && grid[x+i-1][y+j+1]==Color.WHITE && getColor(x+i-2, y+j+1)==Color.WHITE && getColor(x+i-1, y+j+2)==Color.WHITE) {
                         t = new Tile(x+i-1, y+j+1);
                         availableCorners.get(color).get(1).add(t);
-                        // System.out.println("Added ("+t.getX()+","+t.getY()+") from "+cornerColors[color]+"'s "+Shape.intToDirection(1)+" corners."); // debug
+                        System.out.println("Added ("+t.getX()+","+t.getY()+") from "+cornerColors[color]+"'s "+Shape.intToDirection(1)+" corners."); // debug
                     }
                     if (x+i<size-1 && y+j<size-1 && s.isEmpty(i+1, j) && s.isEmpty(i, j+1) && s.isEmpty(i+1, j+1) && grid[x+i+1][y+j+1]==Color.WHITE && getColor(x+i+2, y+j+1)==Color.WHITE && getColor(x+i+1, y+j+2)==Color.WHITE) {
                         t = new Tile(x+i+1, y+j+1);
                         availableCorners.get(color).get(2).add(t);
-                        // System.out.println("Added ("+t.getX()+","+t.getY()+") from "+cornerColors[color]+"'s "+Shape.intToDirection(2)+" corners."); // debug
+                        System.out.println("Added ("+t.getX()+","+t.getY()+") from "+cornerColors[color]+"'s "+Shape.intToDirection(2)+" corners."); // debug
                     }
                     if (x+i<size-1 && y+j>0      && s.isEmpty(i+1, j) && s.isEmpty(i, j-1) && s.isEmpty(i+1, j-1) && grid[x+i+1][y+j-1]==Color.WHITE && getColor(x+i+2, y+j-1)==Color.WHITE && getColor(x+i+1, y+j-2)==Color.WHITE) {
                         t = new Tile(x+i+1, y+j-1);
                         availableCorners.get(color).get(3).add(t);
-                        // System.out.println("Added ("+t.getX()+","+t.getY()+") from "+cornerColors[color]+"'s "+Shape.intToDirection(3)+" corners."); // debug
+                        System.out.println("Added ("+t.getX()+","+t.getY()+") from "+cornerColors[color]+"'s "+Shape.intToDirection(3)+" corners."); // debug
                     }
                 }
             }

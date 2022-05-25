@@ -179,7 +179,7 @@ public class ControllerGamePlay implements EventController, Runnable {
         System.out.println("Game Next turn :" +currentPlayer.getColor());
         currentColor = game.getCurrentColor();
         System.out.println("Game Next turn :" +currentColor);
-        game.getBoard().printBoard(0);
+        game.getBoard().printBoard(game.getBoard().getCorner(currentColor));
     }
 
     void modifyBoardPanel(){

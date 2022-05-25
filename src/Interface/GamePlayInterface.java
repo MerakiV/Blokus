@@ -4,11 +4,11 @@ import Controller.ControllerGamePlay;
 import GamePanels.BoardPanel;
 import GamePanels.ColorPanel;
 import Players.Player;
-import Structures.Color;
 import Structures.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
 
@@ -71,9 +71,9 @@ public class GamePlayInterface extends JPanel {
         topRightX = (int)(0.94 * widthFrame - boardSize * 0.72) - 10;
         topRightY = (int) (heightFrame * 0.2);
         bottomLeftX = (int) (widthFrame * 0.06) - 10;
-        bottomLeftY = (int)(heightFrame * 0.2 + boardSize/2);
+        bottomLeftY = (int)(heightFrame * 0.25 + boardSize/2);
         bottomRightX = (int)(0.94 * widthFrame - boardSize * 0.72) - 10;
-        bottomRightY = (int)(heightFrame * 0.2 + boardSize/2);
+        bottomRightY = (int)(heightFrame * 0.25 + boardSize/2);
         boardX = (widthFrame - size.width) / 2;
         boardY = (int) (heightFrame * 0.2);
     }
@@ -82,13 +82,13 @@ public class GamePlayInterface extends JPanel {
         topLeftPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(0));
         topLeftPanel.setPreferredSize(colorPanelSize);
         this.add(topLeftPanel);
-        bottomLeftPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(2));
+        bottomLeftPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(3));
         bottomLeftPanel.setPreferredSize(colorPanelSize);
         this.add(bottomLeftPanel);
         topRightPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(1));
         topRightPanel.setPreferredSize(colorPanelSize);
         this.add(topRightPanel);
-        bottomRightPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(3));
+        bottomRightPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(2));
         bottomRightPanel.setPreferredSize(colorPanelSize);
         this.add(bottomRightPanel);
     }
@@ -116,13 +116,27 @@ public class GamePlayInterface extends JPanel {
     public void playerTurn(Graphics g){
         DrawString currentPlayer;
         if(g2p.currentPlayer2P == g2p.p1) {
-            currentPlayer = new DrawString(g, "Player 1's turn", (int) (width * 0.45), (int) (height * 0.18), 25);
-            p1Score = controller.currentPlayer.getScore();
+            currentPlayer = new DrawString(g, "Player 1 " + controller.currentColor + "'s turn", transformColor(), (int) (width * 0.4), (int) (height * 0.18), 25);
+            p1Score = g2p.p1.get2PScore();
         }else {
-            currentPlayer = new DrawString(g, "Player 2's turn", (int) (width * 0.45), (int) (height * 0.18), 25);
-            p2Score = controller.currentPlayer.getScore();
+            currentPlayer = new DrawString(g, "Player 2 " + controller.currentColor + "'s turn", transformColor(), (int) (width * 0.4), (int) (height * 0.18), 25);
+            p2Score = g2p.p2.get2PScore();
         }
         currentPlayer.paint(g);
+    }
+
+    Color transformColor(){
+        switch(controller.currentColor){
+            case RED:
+                return new Color(207, 14, 17);
+            case YELLOW:
+                return new Color(220, 184, 62);
+            case GREEN:
+                return new Color(0, 128, 0);
+            case BLUE:
+                return new Color(19, 70, 130);
+        }
+        return null;
     }
 
 
