@@ -71,6 +71,8 @@ public class GamePlayInterface extends JPanel{
 
         System.out.println(controller.game.getCurrentPlayer().toString());
         System.out.println("Finished GamePlayInterface");
+
+        controller.startGame();
     }
 
 
