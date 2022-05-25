@@ -7,6 +7,7 @@ import Players.Player;
 import Players.PlayerAI;
 import Structures.*;
 import Structures.Color;
+import Structures.Shape;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,6 +34,7 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     JFrame frame;
     Thread t;
+    Shape shape;
 
     public ControllerGamePlay(){
         initialiseGame();
@@ -90,32 +92,97 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     @Override
     public void run(){
+        endRun();
+        //noEndRun();
+    }
+
+    long refreshTime(boolean ai){
+        return ai?500:32;
+    }
+
+    public void endRun(){
+        boolean allAI = true;
+        for(Player p : game.getPlayerList()){
+            allAI = allAI && p.isAI();
+        }
+        long lag = refreshTime(allAI);
+        while (!game.hasEnded()) {
+            //System.out.println(currentPlayer.getColor() + "'s turn");
+            try {
+                t.sleep(lag);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(currentPlayer.isAI()) {
+                if(currentPlayer.checkForMoves(game.getBoard())) {
+                    System.out.println("AI playing");
+                    Move m = ((PlayerAI) currentPlayer).generateMove(game);
+                    if (m != null) {
+                        shape = m.getShape();
+                        piece = new Piece(shape);
+                        piece.setName(m.getPieceType());
+                        color = currentColor;
+                        int x = m.getTile().getX();
+                        int y = m.getTile().getY();
+                        //piece.printPiece();
+                        //System.out.println("Board tile " + x + " " + y);
+                        paintImage(y, x);
+                        put(x, y);
+                        boardPanel.repaint();
+                    }
+                } else {
+                    System.out.println("No more moves for AI " + currentPlayer.getColor());
+                }
+                nextTurn();
+                frame.repaint();
+                game.updateEnd();
+            } else { //not AI
+                if(!currentPlayer.checkForMoves(game.getBoard())){
+                    System.out.println("No more moves for Player " + currentPlayer.getColor());
+                    nextTurn();
+                    frame.repaint();
+                    game.updateEnd();
+                }
+            }
+        }
+        //game has ended
+        System.out.println("Game over");
+    }
+
+    public void noEndRun(){
+        boolean allAI = true;
+        for(Player p : game.getPlayerList()){
+            allAI = allAI && p.isAI();
+        }
+        long lag = refreshTime(allAI);
         while (true) {
             //System.out.println(currentPlayer.getColor() + "'s turn");
             try {
-                t.sleep(16);
+                t.sleep(lag);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             if(currentPlayer.isAI()) {
                 System.out.println("AI playing");
-                Move m = ((PlayerAI) currentPlayer).generateMove(game.getBoard());
+                Move m = ((PlayerAI) currentPlayer).generateMove(game);
                 if(m != null) {
-                    piece = m.getPiece();
+                    shape = m.getShape();
+                    piece = new Piece(shape);
+                    piece.setName(m.getPieceType());
                     color = currentColor;
                     int x = m.getTile().getX();
                     int y = m.getTile().getY();
                     piece.printPiece();
                     System.out.println("Board tile " + x + " " + y);
                     paintImage(y, x);
-                    //paintImage();
                     put(x, y);
                     boardPanel.repaint();
-                    frame.repaint();
                 }
                 else{
                     System.out.println("No more moves for AI");
                 }
+                nextTurn();
+                frame.repaint();
             }
         }
     }
@@ -141,11 +208,10 @@ public class ControllerGamePlay implements EventController, Runnable {
     public boolean put(int y, int x){
         if (piece != null){
             if (game.put(piece, color,y,x)){
-                System.out.println("Works");
                 piece = null;
                 color = null;
-                nextTurn();
-                System.out.println("It's " + currentColor);
+                //System.out.println("Works");
+                //System.out.println("It's " + currentColor);
                 return true;
             }else
                 System.out.println("Invalid");
@@ -155,17 +221,11 @@ public class ControllerGamePlay implements EventController, Runnable {
     public void nextTurn(){
         game.nextTurn();
         currentPlayer = game.getCurrentPlayer();
-        System.out.println("Game Next turn :" +currentPlayer.getColor());
         currentColor = game.getCurrentColor();
-        System.out.println("Game Next turn :" +currentColor);
-        game.getBoard().printBoard(0);
+        //System.out.println("Game Next turn :" +currentPlayer.getColor());
+        //System.out.println("Game Next turn :" +currentColor);
+        //game.getBoard().printBoard(game.getBoard().getCorner(currentColor));
     }
-
-    void modifyBoardPanel(){
-        replaceOriginal();
-        paintImage();
-    }
-
 
     public void paintImage(){
         Image image = getImage();

@@ -2,6 +2,7 @@ package Players;
 
 import Structures.Board;
 import Structures.Color;
+import Structures.Game;
 import Structures.Move;
 
 public class PlayerAIAlphaBeta extends PlayerAI {
@@ -25,7 +26,7 @@ public class PlayerAIAlphaBeta extends PlayerAI {
     }
 
     @Override
-    public Move generateMove(Board b){
+    public Move generateMove(Game g){
         return null;
     }
 

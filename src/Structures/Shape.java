@@ -11,8 +11,24 @@ public class Shape {
 	public int anchorX, anchorY;
 	TileType name;
 
-    // Note : 0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast
-    ArrayList<ArrayList<Tile>> avaliableCorners;
+	// Note : 0 is northeast, 1 is northwest, 2 is southwest, 3 is southeast
+	ArrayList<ArrayList<Tile>> avaliableCorners;
+
+	// Mainly for debugging purposes.
+	public static String intToDirection(int dir) {
+		switch(dir) {
+			case 0:
+				return "northwest";
+			case 1:
+				return "northeast";
+			case 2:
+				return "southeast";
+			case 3:
+				return "southwest";
+			default:
+				return "unknown";
+		}
+	}
 
 	public Shape(int l, int c, int ax, int ay, boolean [][] s) {
 		Nlin = l;
@@ -27,10 +43,10 @@ public class Shape {
 		for (int i=0; i<Nlin; i++) {
 			for (int j=0; j<Ncol; j++) {
 				if (!isEmpty(i, j)) {
-					if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(0).add(new Tile(i, j)); }
-					if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(1).add(new Tile(i, j)); }
-					if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(2).add(new Tile(i, j)); }
-					if (isEmpty(i+1, j) && isEmpty(i, j-1) && isEmpty(i+1, j-1)) { avaliableCorners.get(3).add(new Tile(i, j)); }
+					if (isEmpty(i-1, j) && isEmpty(i, j-1) && isEmpty(i-1, j-1)) { avaliableCorners.get(2).add(new Tile(i, j)); }
+					if (isEmpty(i-1, j) && isEmpty(i, j+1) && isEmpty(i-1, j+1)) { avaliableCorners.get(3).add(new Tile(i, j)); }
+					if (isEmpty(i+1, j) && isEmpty(i, j+1) && isEmpty(i+1, j+1)) { avaliableCorners.get(0).add(new Tile(i, j)); }
+					if (isEmpty(i+1, j) && isEmpty(i, j-1) && isEmpty(i+1, j-1)) { avaliableCorners.get(1).add(new Tile(i, j)); }
 				}
 			}
 		}
@@ -162,10 +178,10 @@ public class Shape {
 				} else {
 					bin = 0;
 
-					bin = bin | ((avaliableCorners.get(0).contains(new Tile(i+1, j+1))) ? 1 : 0) << 0;
-					bin = bin | ((avaliableCorners.get(1).contains(new Tile(i+1, j-1))) ? 1 : 0) << 1;
-					bin = bin | ((avaliableCorners.get(2).contains(new Tile(i-1, j-1))) ? 1 : 0) << 2;
-					bin = bin | ((avaliableCorners.get(3).contains(new Tile(i-1, j+1))) ? 1 : 0) << 3;
+					bin = bin | ((avaliableCorners.get(2).contains(new Tile(i+1, j+1))) ? 1 : 0) << 0;
+					bin = bin | ((avaliableCorners.get(3).contains(new Tile(i+1, j-1))) ? 1 : 0) << 1;
+					bin = bin | ((avaliableCorners.get(0).contains(new Tile(i-1, j-1))) ? 1 : 0) << 2;
+					bin = bin | ((avaliableCorners.get(1).contains(new Tile(i-1, j+1))) ? 1 : 0) << 3;
 
 					System.out.print((bin==0) ? "-" : Integer.toHexString(bin));
 				}

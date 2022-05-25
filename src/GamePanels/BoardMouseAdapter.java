@@ -36,6 +36,7 @@ public class BoardMouseAdapter implements MouseListener {
         int x = Integer.parseInt(split[0]);
         int y = Integer.parseInt(split[1]);
         clicked = controller.put(y,x);
+        if(clicked) controller.nextTurn();
         gamePlayInterface.repaint();
     }
 

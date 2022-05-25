@@ -1,7 +1,6 @@
 package Structures;
 
 import Players.Player;
-import Players.Player2P;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,27 +10,46 @@ import java.io.Serializable;
 
 public abstract class Game implements Serializable, Cloneable {
     Board board;
-    List<Player> players;
+    ArrayList<Player> players;
     Player currentPlayer;
     Color currentColor;
 
     History history;
 
+    boolean end;
+
     public boolean put(Piece p, Color c, int x, int y) {
-        return put(p.getShape(), p.getName(), c, x, y);
+        boolean ok = put(p.getShape(), p, c, x, y);
+        return ok;
     }
 
-    public boolean put(Shape s, PieceType pt, Color c, int x, int y){
+    public boolean put(Shape s, Piece p, Color c, int x, int y){
         int i = board.getCorner(c);
         if(board.canPut(s, i, x, y)){
             pushToPast();
             board.put(s, i, x, y);
-            currentPlayer.removePiece(pt);
+            currentPlayer.updateScore(p.getValue());
+            currentPlayer.removePiece(p.getName());
             return true;
         }
         else{
             return false;
         }
+    }
+
+    public void updateEnd(){
+        boolean e = false;
+        for(Player p : players){
+            e = e || p.hasMoves();
+        }
+        if(!e) System.out.println("No more moves for any player, game ending");
+        setEnd(!e);
+    }
+
+    public boolean hasEnded(){return end;}
+
+    public void setEnd(boolean end) {
+        this.end = end;
     }
 
     public Player getCurrentPlayer(){return currentPlayer;}
@@ -46,23 +64,35 @@ public abstract class Game implements Serializable, Cloneable {
         pushToFuture();
         GameState previous = history.undo();
         board = previous.board;
-        currentPlayer = previous.player;
+        currentPlayer = previous.getCurrentPlayer();
     }
 
     public void redo(){
         pushToPast();
         GameState next = history.redo();
         board = next.board;
-        currentPlayer = next.player;
+        currentPlayer = next.getCurrentPlayer();
     }
 
     void pushToPast(){
-        GameState gs = new GameState(board.clone(), currentPlayer.clone());
+        int pl = -1;
+        for (int i=0; i<players.size() && pl==-1; i++) {
+            if (currentPlayer==players.get(i)) {
+                pl = i;
+            }
+        }
+        GameState gs = new GameState(board.clone(), (ArrayList<Player>) players.clone(), pl);
         history.pushToPast(gs);
     }
 
     void pushToFuture(){
-        GameState gs = new GameState(board.clone(), currentPlayer.clone());
+        int pl = -1;
+        for (int i=0; i<players.size() && pl==-1; i++) {
+            if (currentPlayer==players.get(i)) {
+                pl = i;
+            }
+        }
+        GameState gs = new GameState(board.clone(), (ArrayList<Player>) players.clone(), pl);
         history.pushToFuture(gs);
     }
 
