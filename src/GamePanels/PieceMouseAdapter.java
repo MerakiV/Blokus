@@ -21,8 +21,8 @@ public class PieceMouseAdapter implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         piecePanel = (PiecePanel) e.getSource();
         int col = piecePanel.colorPanel.controller.game.getBoard().getCorner(piecePanel.colorPanel.color);
-        if (!piecePanel.colorPanel.controller.game.getPlayerList().get(col).getPieces().contains(piecePanel.piece)){
-            System.out.println("You have already placed " + piecePanel.piece.getName().name() + " on the board");
+        if (!piecePanel.colorPanel.controller.game.getPlayerList().get(col).getPieces().contains(piecePanel.piece) || (piecePanel.colorPanel.controller.game.getBoard().sumPiecePlacements(piecePanel.piece, piecePanel.colorPanel.color) == 0) || controller.currentPlayer.isAI()){
+            System.out.println("You have already placed " + piecePanel.piece.getName().name() + " on the board or it is not playable");
         } else{
             if (piecePanel.colorPanel.color == controller.currentColor){
                 if (controller.piecePanel == null){
