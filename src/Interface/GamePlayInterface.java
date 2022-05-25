@@ -125,6 +125,11 @@ public class GamePlayInterface extends JPanel {
         currentPlayer.paint(g);
     }
 
+    /*
+    *   Transform Color
+    *       takes the current color of the controller and returns the corresponding
+    *       java.awt color for string color
+    * */
     Color transformColor(){
         switch(controller.currentColor){
             case RED:
@@ -149,10 +154,12 @@ public class GamePlayInterface extends JPanel {
         bottomLeftPanel.setBounds(bottomLeftX,  bottomLeftY, colorPanelSize.width, colorPanelSize.height);
         topRightPanel.setBounds(topRightX, topRightY,  colorPanelSize.width, colorPanelSize.height);
         bottomRightPanel.setBounds(bottomRightX, bottomRightY, colorPanelSize.width, colorPanelSize.height);
+
         // Sizes
         height = frame.getHeight();
         width = frame.getWidth();
         int iconSize = clockwise.getCurrentImageWidth()/2;
+
         // Background
         backGround.drawImg(g,0, 0, width,height);
         logo.drawImg(g, (int)(width * 0.425) ,0, (int)(width * 0.15), (int)(height * 0.15));

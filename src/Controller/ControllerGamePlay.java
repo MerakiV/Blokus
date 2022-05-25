@@ -90,8 +90,8 @@ public class ControllerGamePlay implements EventController, Runnable {
                         color = currentColor;
                         int x = m.getTile().getX();
                         int y = m.getTile().getY();
-                        piece.printPiece();
-                        System.out.println("Board tile " + x + " " + y);
+                        //piece.printPiece();
+                        //System.out.println("Board tile " + x + " " + y);
                         paintImage(y, x);
                         put(x, y);
                         boardPanel.repaint();
@@ -172,10 +172,10 @@ public class ControllerGamePlay implements EventController, Runnable {
     public boolean put(int y, int x){
         if (piece != null){
             if (game.put(piece, color,y,x)){
-                System.out.println("Works");
                 piece = null;
                 color = null;
-                System.out.println("It's " + currentColor);
+                //System.out.println("Works");
+                //System.out.println("It's " + currentColor);
                 return true;
             }else
                 System.out.println("Invalid");
@@ -185,17 +185,11 @@ public class ControllerGamePlay implements EventController, Runnable {
     public void nextTurn(){
         game.nextTurn();
         currentPlayer = game.getCurrentPlayer();
-        System.out.println("Game Next turn :" +currentPlayer.getColor());
         currentColor = game.getCurrentColor();
-        System.out.println("Game Next turn :" +currentColor);
-        game.getBoard().printBoard(game.getBoard().getCorner(currentColor));
+        //System.out.println("Game Next turn :" +currentPlayer.getColor());
+        //System.out.println("Game Next turn :" +currentColor);
+        //game.getBoard().printBoard(game.getBoard().getCorner(currentColor));
     }
-
-    void modifyBoardPanel(){
-        replaceOriginal();
-        paintImage();
-    }
-
 
     public void paintImage(){
         Image image = getImage();
