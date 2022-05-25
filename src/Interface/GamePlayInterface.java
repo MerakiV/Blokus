@@ -9,15 +9,17 @@ import Structures.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.List;
 
 
-public class GamePlayInterface extends JComponent{
+public class GamePlayInterface extends JPanel{
 
     public JFrame frame;
     // Background images
-    Image backGround, logo;
+    Image backGround, logo, backGroundImg;
     // Buttons
     public HoverButton menu, hint, undo, redo;
 
@@ -29,6 +31,7 @@ public class GamePlayInterface extends JComponent{
     public BoardPanel boardPanel;
 
     public GamePlayMenu playMenu;
+    public Boolean play = false;
 
 
     // Color Panels
@@ -46,13 +49,18 @@ public class GamePlayInterface extends JComponent{
         frame = f;
         g2p = (Game2P) controller.game;
         setSize();
+
         this.setLayout(new FlowLayout());
+
         boardPanel = new BoardPanel(this, controller);
         controller.setBoardPanel(boardPanel);
         this.add(boardPanel);
         controller.setBoardPanel(boardPanel);
         backGround = new Image(frame, "images/border.png");
+        backGroundImg = new Image(frame, "images/whiteBackground.png");
         logo = new Image(frame, "images/logo.png");
+
+
         initialiseColorPanels();
         initialiseButtons();
         this.addMouseListener(new GameMouseAdapter(this, menu));
@@ -60,9 +68,6 @@ public class GamePlayInterface extends JComponent{
         this.addMouseListener(new GameMouseAdapter(this, undo));
         this.addMouseListener(new GameMouseAdapter(this, redo));
 
-        playMenu = new GamePlayMenu(frame);
-        add(playMenu);
-        playMenu.setVisible(true);
 
         System.out.println(controller.game.getCurrentPlayer().toString());
         System.out.println("Finished GamePlayInterface");
@@ -70,12 +75,47 @@ public class GamePlayInterface extends JComponent{
 
 
     public void drawMenu(Graphics g) throws IOException {
-        if (playMenu.isVisible()){
-            String bg = "images/background.png";
-            backGround = new Image(frame, bg);
-            backGround.drawImg(g, 100, 100, 400, 400);
+        if (play){
+            playMenu = new GamePlayMenu(frame, this);
+            playMenu.setBackground(null);
+            playMenu.setOpaque(false);
+//            backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
+
+            this.add(playMenu,0);
         }
     }
+
+    public void removeMenu(GamePlayMenu gM){
+        play = false;
+        gM.existeMenu = false;
+        this.remove(gM);
+        this.frame.revalidate();
+        this.frame.repaint();
+    }
+
+    private JPopupMenu createPopupMenu() {JPopupMenu popupMenu = new JPopupMenu();
+
+        JMenuItem mnuUndo = new JMenuItem( "Undo" );
+        popupMenu.add(mnuUndo);
+
+        JMenuItem mnuRedo = new JMenuItem( "Redo" );
+        popupMenu.add(mnuRedo);
+
+        popupMenu.addSeparator();
+
+        JMenuItem mnuCopy = new JMenuItem( "Copy" );
+        popupMenu.add(mnuCopy);
+
+        JMenuItem mnuCut = new JMenuItem( "Cut" );
+        popupMenu.add(mnuCut);
+
+        JMenuItem mnuPaste = new JMenuItem( "Paste" );
+        popupMenu.add(mnuPaste);
+
+
+        return popupMenu;
+    }
+
 
     private void setSize(){
         widthFrame = frame.getWidth();
@@ -139,13 +179,9 @@ public class GamePlayInterface extends JComponent{
         currentPlayer.paint(g);
     }
 
-
-    public void setMenu(Graphics g){
-
-    }
     @Override
     public void paintComponent(Graphics g) {
-//        super.paintComponent(g);
+        super.paintComponent(g);
         boardPanel.setLocation(boardX, boardY);
         topLeftPanel.setBounds(topLeftX, topLeftY, colorPanelSize.width, colorPanelSize.height);
         bottomLeftPanel.setBounds(bottomLeftX,  bottomLeftY, colorPanelSize.width, colorPanelSize.height);
@@ -168,6 +204,7 @@ public class GamePlayInterface extends JComponent{
         backGround.drawImg(g,0, 0, width,height);
         logo.drawImg(g, (int)(width * 0.425) ,0, (int)(width * 0.15), (int)(height * 0.15));
 
+
         // TODO: Undo
         // TODO: Redo
 
@@ -188,8 +225,7 @@ public class GamePlayInterface extends JComponent{
             throw new RuntimeException(e);
         }
 
-        this.requestFocus();
-        this.setVisible(true);
+
 
 
     }
