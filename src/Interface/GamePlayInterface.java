@@ -71,7 +71,7 @@ public class GamePlayInterface extends JPanel {
             playMenu = new GamePlayMenu(frame, this);
             playMenu.setBackground(null);
             playMenu.setOpaque(false);
-            backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
+//            backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
 
             this.add(playMenu,0);
         }
@@ -83,30 +83,6 @@ public class GamePlayInterface extends JPanel {
         this.remove(gM);
         this.frame.revalidate();
         this.frame.repaint();
-    }
-
-    private JPopupMenu createPopupMenu() {
-        JPopupMenu popupMenu = new JPopupMenu();
-
-        JMenuItem mnuUndo = new JMenuItem( "Undo" );
-        popupMenu.add(mnuUndo);
-
-        JMenuItem mnuRedo = new JMenuItem( "Redo" );
-        popupMenu.add(mnuRedo);
-
-        popupMenu.addSeparator();
-
-        JMenuItem mnuCopy = new JMenuItem( "Copy" );
-        popupMenu.add(mnuCopy);
-
-        JMenuItem mnuCut = new JMenuItem( "Cut" );
-        popupMenu.add(mnuCut);
-
-        JMenuItem mnuPaste = new JMenuItem( "Paste" );
-        popupMenu.add(mnuPaste);
-
-
-        return popupMenu;
     }
 
 

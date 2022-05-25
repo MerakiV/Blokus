@@ -66,7 +66,7 @@ public class HoverButton extends JPanel {
         this.rolloverImage = this.img[1];
         this.currentImage = normalImage;
         this.setBounds(x, y, normalImage.getWidth(null), normalImage.getHeight(null));
-        this.addMouseListener(new MenuMouseAdapter(this, gameMenu.game));
+        this.addMouseListener(new MenuMouseAdapter(this, gameMenu.game,gameMenu));
     }
 
     public HoverButton(TutorialInterface tutoUI, String name, int x, int y) throws IOException {
