@@ -3,14 +3,11 @@ package Interface;
 import Controller.ControllerGamePlay;
 import GamePanels.BoardPanel;
 import GamePanels.ColorPanel;
-import Players.Player;
-import Structures.*;
+import Structures.Game2P;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Color;
 import java.io.IOException;
-import java.util.List;
 
 
 public class GamePlayInterface extends JPanel {
@@ -74,7 +71,7 @@ public class GamePlayInterface extends JPanel {
             playMenu = new GamePlayMenu(frame, this);
             playMenu.setBackground(null);
             playMenu.setOpaque(false);
-//            backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
+            backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
 
             this.add(playMenu,0);
         }
@@ -88,7 +85,8 @@ public class GamePlayInterface extends JPanel {
         this.frame.repaint();
     }
 
-    private JPopupMenu createPopupMenu() {JPopupMenu popupMenu = new JPopupMenu();
+    private JPopupMenu createPopupMenu() {
+        JPopupMenu popupMenu = new JPopupMenu();
 
         JMenuItem mnuUndo = new JMenuItem( "Undo" );
         popupMenu.add(mnuUndo);
@@ -247,21 +245,14 @@ public class GamePlayInterface extends JPanel {
         width = frame.getWidth();
         int iconSize = undo.getCurrentImageWidth()/2;
 
-        // Piece Orientation Buttons
         g.drawImage(this.undo.getCurrentImage(), (int) (width * 0.55) - iconSize, (int)(height * 0.85), this);
         g.drawImage(this.redo.getCurrentImage(), (int) (width * 0.45)- iconSize, (int)(height * 0.85), this);
-        // TODO: Merge previous Menu
         g.drawImage(this.menu.getCurrentImage(), (int) (width * 0.91), (int)(height * 0.08), frame);
-        // Hint
         g.drawImage(this.hint.getCurrentImage(), (int)(width * 0.05), (int)(height * 0.08), frame);
 
         // Background
         backGround.drawImg(g,0, 0, width,height);
         logo.drawImg(g, (int)(width * 0.425) ,0, (int)(width * 0.15), (int)(height * 0.15));
-
-
-        // TODO: Undo
-        // TODO: Redo
 
         // Players
         playerTurn(g);
