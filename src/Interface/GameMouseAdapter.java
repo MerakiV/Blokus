@@ -68,6 +68,8 @@ public class GameMouseAdapter implements MouseListener {
             case MENU:
                 System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
                 System.out.println("Menu button Clicked");
+                game.play = true;
+                game.repaint();
                 break;
             case HINTS:
                 System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);

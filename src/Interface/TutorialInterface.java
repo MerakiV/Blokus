@@ -22,10 +22,10 @@ public class TutorialInterface extends JComponent {
     ScrollableLabel sc;
     JPanel panel;
 
-    public TutorialInterface(JFrame f, MenuInterface m) throws IOException {
+    public TutorialInterface(JFrame f) throws IOException {
         System.out.println("Tuto");
         frame = f;
-        menuUi = m;
+//        menuUi = m;
         String bg = "images/border.png";
         String lg = "images/LogoBlokus.png";
         backGround = new Image(frame, bg);

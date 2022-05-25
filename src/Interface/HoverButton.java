@@ -59,6 +59,19 @@ public class HoverButton extends JPanel {
         this.addMouseListener(new NGMouseAdapter(this, selectMenu));
     }
 
+    public HoverButton(GamePlayMenu gameMenu, String name, int x, int y) throws IOException {
+        System.out.println(x + " " + y);
+        this.name = name;
+        this.img = createButtonImg(name);
+        // Original Image
+        this.normalImage = this.img[0];
+        // Hovered Image
+        this.rolloverImage = this.img[1];
+        this.currentImage = normalImage;
+        this.setBounds(x, y, normalImage.getWidth(null), normalImage.getHeight(null));
+        this.addMouseListener(new MenuMouseAdapter(this, gameMenu.game));
+    }
+
     public HoverButton(TutorialInterface tutoUI, String name, int x, int y) throws IOException {
         this.name = name;
         this.img = createButtonImg(name);
@@ -73,7 +86,7 @@ public class HoverButton extends JPanel {
         this.setBounds(x, y, normalImage.getWidth(null), normalImage.getHeight(null));
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         this.setOpaque(false);
         if (enabled) {
             g.drawImage(currentImage, this.getX(), this.getY(), this.getWidth(),
