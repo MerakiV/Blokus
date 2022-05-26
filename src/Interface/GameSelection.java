@@ -171,8 +171,8 @@ public class GameSelection extends JComponent {
         int bottomBorder = (height + boardHeight) / 2 - imageSize - 20 - selectC1P1.getHeight();
         selectC1P1.setButtonBound(offsetPlayer1X, topBorder + (bottomBorder - topBorder) / 4, width / 8);
         selectC1P2.setButtonBound(offsetPlayer2X, topBorder + (bottomBorder - topBorder) / 4, width / 8);
-        selectC2P1.setButtonBound(offsetPlayer2X, bottomBorder, width / 8);
-        selectC2P2.setButtonBound(offsetPlayer1X, bottomBorder, width / 8);
+        selectC2P1.setButtonBound(offsetPlayer1X, bottomBorder, width / 8);
+        selectC2P2.setButtonBound(offsetPlayer2X, bottomBorder, width / 8);
 
         // resizing the player selection text
         int offsetPlayerText1Y = (height - boardHeight) / 2 + (imageSize + (int) (0.015 * width)) / 2;
