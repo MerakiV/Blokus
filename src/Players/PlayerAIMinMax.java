@@ -8,19 +8,27 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import Controller.ComparatorAIMinMax;
-import Structures.Board;
-import Structures.Color;
-import Structures.Game;
-import Structures.Move;
-import Structures.Piece;
-import Structures.Shape;
-import Structures.Tile;
+import Structures.*;
 
 public class PlayerAIMinMax extends PlayerAI {
 
+    void initPieces() {
+        // create list of pieces from PieceReader
+        PieceReader pRead = null;
+        try {
+            pRead = new PieceReader();
+            pieces = pRead.getPiecesList();
+        } catch (Exception e) {
+            System.err.println("FATAL ERROR : missing piece file");
+            System.exit(1);
+        }
+    }
     public PlayerAIMinMax(Color c) {
         difficultyLevel = 2;
         col = c;
+        isAI = true;
+        hasMoves = true;
+        initPieces();
     }
 
     @Override
@@ -30,14 +38,20 @@ public class PlayerAIMinMax extends PlayerAI {
 
     @Override
     public Move generateMove(Game g){
+        //g.getCurrentPlayer().getPieces().get(0).printPiece();
+
         Move m = new Move(null, null, null);
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
-            m = AlgoMinMax(m, g, true, 0);
+            g.getCurrentPlayer().getPieces().get(0).printPiece();
+            m = AlgoMinMax(m, g, true, 5);
         } else {
-            m = AlgoMinMax(m, g, false, 0);
+            m = AlgoMinMax(m, g, false, 5);
         }
-        if(m.getHeuristic() == 0)
-            return null;
+        //if(m.getHeuristic() == 0)
+            //return null;
+
+        //hasMoves = false;
+        m.getShape().printShape();
         return m;
     }
 
@@ -78,20 +92,21 @@ public class PlayerAIMinMax extends PlayerAI {
         return pq;
     }
 
-    public Move AlgoMinMax(Move move, Game config, boolean max, int depth){
-        if(isLeaf(config) || depth==0){
+    public Move AlgoMinMax(Move move, Game config, boolean max, int depth) {
+        if (isLeaf(config) || depth == 0) {
             int h = evaluation(config, max);
             move.setHeuristic(h);
             return move;
         }
-        else{
-            int ret = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE );
+        //return move;
+        else {
+            int ret = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
             PriorityQueue<Move> moves = moves(move, config, max); //children of the config object
             Move bestMove = null;
-            for(int i=0; i<=moves.size(); i++){
-                Move m = AlgoMinMax(moves.poll(), config, !max, depth-1);
+            for (int i = 0; i <= moves.size(); i++) { //<
+                Move m = AlgoMinMax(moves.poll(), config, !max, depth - 1);
                 int x = m.getHeuristic();
-                if(max ? x>ret : x<ret){
+                if (max ? x > ret : x < ret) {
                     ret = x;
                     bestMove = m;
                 }

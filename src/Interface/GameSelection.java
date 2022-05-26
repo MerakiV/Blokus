@@ -75,11 +75,11 @@ public class GameSelection extends JComponent {
                     break;
                 case "AI Medium":
                     System.out.println("P1 AI Medium");
-                    // gs2p.setP1AI(1);
+                    gs2p.setP1AI(1);
                     break;
                 case "AI Hard":
                     System.out.println("P1 AI Hard");
-                    // gs2p.setP1AI(2);
+                    gs2p.setP1AI(2);
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid player 1");
@@ -100,11 +100,11 @@ public class GameSelection extends JComponent {
                     break;
                 case "AI Medium":
                     System.out.println("P2 AI Medium");
-                    // gs2p.setP2AI(1);
+                    gs2p.setP2AI(1);
                     break;
                 case "AI Hard":
                     System.out.println("P2 AI Hard");
-                    // gs2p.setP2AI(2);
+                    gs2p.setP2AI(2);
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid player 2");
