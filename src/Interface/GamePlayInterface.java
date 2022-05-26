@@ -55,10 +55,7 @@ public class GamePlayInterface extends JPanel {
         initialiseColorPanels();
         initialiseButtons();
         // Add Listeners for Buttons
-        this.addMouseListener(new GameMouseAdapter(this, menu));
-        this.addMouseListener(new GameMouseAdapter(this, hint));
-        this.addMouseListener(new GameMouseAdapter(this, undo));
-        this.addMouseListener(new GameMouseAdapter(this, redo));
+        this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo));
 
         controller.startGame();
     }

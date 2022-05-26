@@ -14,9 +14,12 @@ public class GameMouseAdapter implements MouseListener {
     GamePlayInterface game;
     component currentComponent;
 
-    HoverButton current;
+    HoverButton menu;
+    HoverButton hint;
+    HoverButton redo;
+    HoverButton undo;
 
-    MenuInterface menu;
+//    MenuInterface menu;
 
     int positionX,positionY;
 
@@ -37,9 +40,12 @@ public class GameMouseAdapter implements MouseListener {
         game = g;
     }
 
-    GameMouseAdapter(GamePlayInterface g, HoverButton b){
+    GameMouseAdapter(GamePlayInterface g, HoverButton b1, HoverButton b2, HoverButton b3, HoverButton b4){
         game = g;
-        current = b;
+        menu = b1;
+        hint = b2;
+        redo = b3;
+        undo = b4;
 
     }
 
@@ -48,7 +54,6 @@ public class GameMouseAdapter implements MouseListener {
         positionX = e.getX();
         positionY = e.getY();
         currentComponent = checkComponent(e);
-        System.out.println(currentComponent);
         switch(currentComponent){
             case BOARD:
                 System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
@@ -76,12 +81,10 @@ public class GameMouseAdapter implements MouseListener {
                 System.out.println("Hint button Clicked");
                 break;
             case REDO:
-                System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
                 System.out.println("REDO button Clicked");
                 game.controller.command("redo");
                 break;
             case UNDO:
-                System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
                 System.out.println("UNDO button Clicked");
                 game.controller.command("undo");
                 break;
@@ -118,20 +121,20 @@ public class GameMouseAdapter implements MouseListener {
                 && game.bottomRightY <= e.getY() && (game.bottomRightY + game.colorPanelSize.height) >= e.getY()){
             return component.BOTTOMRIGHT;
         }// MENU BUTTON
-        else if (1223 <= e.getX() && (1223+current.getCurrentImageWidth()) >= e.getX()
-                && 60 <= e.getY() && (60 + current.getCurrentImageHeight())>= e.getY()){
+        else if (1223 <= e.getX() && (1223+menu.getCurrentImageWidth()) >= e.getX()
+                && 60 <= e.getY() && (60 + menu.getCurrentImageHeight())>= e.getY()){
             return component.MENU;
         } // HINT BUTTON
-        else if (67 <= e.getX() && (67+current.getCurrentImageWidth()) >= e.getX()
-                && 60 <= e.getY() && (60 + current.getCurrentImageHeight())>= e.getY()){
+        else if (67 <= e.getX() && (67+hint.getCurrentImageWidth()) >= e.getX()
+                && 60 <= e.getY() && (60 + hint.getCurrentImageHeight())>= e.getY()){
             return component.HINTS;
         } // UNDO BUTTON
-        else if (554 <= e.getX() && (554+current.getCurrentImageWidth()) >= e.getX()
-                && 642 <= e.getY() && (642 + current.getCurrentImageHeight())>= e.getY()){
+        else if (554 <= e.getX() && 654 >= e.getX()
+                && 642 <= e.getY() && 742>= e.getY()){
             return component.UNDO;
         } // REDO BUTTON
-        else if (689 <= e.getX() && (689+current.getCurrentImageWidth()) >= e.getX()
-                && 642 <= e.getY() && (642 + current.getCurrentImageHeight())>= e.getY()){
+        else if (689 <= e.getX() && (789) >= e.getX()
+                && 642 <= e.getY() && (742)>= e.getY()){
             return component.REDO;
         }
         return component.NONE;
