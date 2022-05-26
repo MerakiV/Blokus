@@ -83,10 +83,6 @@ public class HoverButton extends JPanel {
         this.setBounds(x, y, normalImage.getWidth(null), normalImage.getHeight(null));
     }
 
-    public void setButtonBound(Integer x, Integer y, Integer width, Integer height) {
-        this.setBounds(x, y, width, height);
-    }
-
     public void paint(Graphics g) {
         this.setOpaque(false);
         if (enabled) {

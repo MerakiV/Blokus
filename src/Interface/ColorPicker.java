@@ -29,13 +29,13 @@ public class ColorPicker extends JPanel {
     }
 
     public void setButtonBound(int x, int y, int width) {
-        buttonSize = (int) (width / (4 + 5 / 4.5));
+        buttonSize = (int) (width / (4 + 5 / 4));
         sepSize = (int) (buttonSize / 4.5);
         setBounds(x, y, width, buttonSize + sepSize * 2);
-        yellow.setButtonBound(x + sepSize, y + sepSize, buttonSize, buttonSize);
-        green.setButtonBound(x + buttonSize + sepSize * 2, y + sepSize, buttonSize, buttonSize);
-        red.setButtonBound(x + buttonSize * 2 + sepSize * 3, y + sepSize, buttonSize, buttonSize);
-        blue.setButtonBound(x + buttonSize * 3 + sepSize * 4, y + sepSize, buttonSize, buttonSize);
+        yellow.setBounds(x + sepSize, y + sepSize, buttonSize, buttonSize);
+        green.setBounds(x + buttonSize + sepSize * 2, y + sepSize, buttonSize, buttonSize);
+        red.setBounds(x + buttonSize * 2 + sepSize * 3, y + sepSize, buttonSize, buttonSize);
+        blue.setBounds(x + buttonSize * 3 + sepSize * 4, y + sepSize, buttonSize, buttonSize);
     }
 
     public void setCurrentColor(Color color) {
