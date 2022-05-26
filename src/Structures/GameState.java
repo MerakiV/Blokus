@@ -1,10 +1,11 @@
 package Structures;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Players.Player;
 
-public class GameState {
+public class GameState implements Serializable {
 
     Board board;
     ArrayList<Player> players;

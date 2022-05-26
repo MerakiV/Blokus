@@ -34,6 +34,8 @@ public class ControllerGamePlay implements EventController, Runnable {
     JFrame frame;
     Thread t;
 
+    Save savegame;
+
     public ControllerGamePlay(){
         initialiseGame();
         piece = null;
@@ -51,6 +53,7 @@ public class ControllerGamePlay implements EventController, Runnable {
         currentPlayer = game.getCurrentPlayer();
         currentColor = game.getCurrentColor();
         originalImages = new ArrayList<>();
+        savegame = new Save(g,"save.dat");
     }
 
     public void startGame(){
@@ -385,6 +388,10 @@ public class ControllerGamePlay implements EventController, Runnable {
                 break;
             case "hints":
                 System.out.println("hints");
+                break;
+            case "save":
+                System.out.println("Saving game...");
+                savegame.writeSave();
                 break;
             default:
                 return false;

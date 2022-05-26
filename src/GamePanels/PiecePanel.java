@@ -26,6 +26,7 @@ public class PiecePanel extends JPanel {
         colorPanel = c;
         piece = p;
         setTileSize();
+        this.setName(piece.getName().name() + " " + colorPanel.color);
         this.setLayout(new GridBagLayout());
         gridBagConstraints = new GridBagConstraints();
         if (shouldFill){
@@ -77,8 +78,8 @@ public class PiecePanel extends JPanel {
                 case WHITE:
                     return "tiles/boardTile.png";
             }
-        }
-        if (isClicked){
+        }else {
+            //System.out.println("Piece not in list : " + this.getName());
             switch(colorPanel.player.getColor()){
                 case RED:
                     return "tiles/RedHighlight.png";
@@ -112,11 +113,13 @@ public class PiecePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        //System.out.println("Repainting : " + this.getName());
         Image image = getImage();
-        g.drawImage(image, 0, 0, this.getWidth() , this.getHeight(), this);
-        if (!isClicked){
-            g.drawImage(colorPanel.colorPanelImage, 0, 0, this.getWidth() , this.getHeight(), this);
-        }
+        g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), this);
 
+        int col = colorPanel.controller.game.getBoard().getCorner(colorPanel.color);
+        if (!isClicked && colorPanel.controller.game.getPlayerList().get(col).getPieces().contains(piece)) {
+            g.drawImage(colorPanel.colorPanelImage, 0, 0, this.getWidth(), this.getHeight(), this);
+        }
     }
 }

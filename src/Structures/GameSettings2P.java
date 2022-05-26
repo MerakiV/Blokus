@@ -6,8 +6,9 @@ default colors?
  */
 
 import java.awt.desktop.SystemEventListener;
+import java.io.Serializable;
 
-public class GameSettings2P {
+public class GameSettings2P implements Serializable {
     public boolean p1Human;
     public boolean p2Human;
     public int p1AIdiff;

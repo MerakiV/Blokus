@@ -1,6 +1,8 @@
 package Structures;
 
-public class Move {
+import java.io.Serializable;
+
+public class Move implements Serializable {
     Piece piece;
     Tile tile;
 
