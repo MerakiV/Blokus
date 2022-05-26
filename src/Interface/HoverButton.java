@@ -24,7 +24,7 @@ public class HoverButton extends JPanel {
         this.rolloverImage = this.img[1];
         this.currentImage = normalImage;
         this.setBounds(x - 202, y, this.img[0].getWidth(null), this.img[0].getHeight(null));
-        System.out.println(x + " " + y);
+        //System.out.println(x + " " + y);
         this.addMouseListener(new MenuMouseAdapter(this, menuUI));
     }
 
@@ -40,7 +40,7 @@ public class HoverButton extends JPanel {
         this.currentImage = normalImage;
         this.setBounds(x, y, newS, newS);
         // this.addMouseListener(new GameMouseAdapter(gameMenu, this));
-        System.out.println(x + " " + y);
+        //System.out.println(x + " " + y);
     }
 
     // Hover Button for Game Selection
@@ -57,7 +57,7 @@ public class HoverButton extends JPanel {
     }
 
     public HoverButton(GamePlayMenu gameMenu, String name, int x, int y) throws IOException {
-        System.out.println(x + " " + y);
+        //System.out.println(x + " " + y);
         this.name = name;
         this.img = createButtonImg(name);
         // Original Image

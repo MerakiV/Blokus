@@ -18,11 +18,19 @@ public abstract class Player implements Cloneable, Serializable {
 
     public ArrayList<Piece> getPieces(){return pieces;}
 
+    public Piece getPiece(Piece p){
+        for (Piece piece: pieces){
+            if (p.getName().equals(piece.getName()))
+                return piece;
+        }
+        return p;
+    }
+
     public int getScore(){return score;}
 
     public void updateScore(int add){
         score+= add;
-        System.out.println("Player Updated score : " + score);
+        //System.out.println("Player Updated score : " + score);
     }
 
     public boolean isAI(){return isAI;}

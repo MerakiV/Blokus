@@ -4,10 +4,13 @@ import Controller.ControllerGamePlay;
 import GamePanels.BoardPanel;
 import GamePanels.ColorPanel;
 import Structures.Game2P;
+import Structures.Piece;
+import Structures.PieceReader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GamePlayInterface extends JPanel {
 
@@ -166,9 +169,9 @@ public class GamePlayInterface extends JPanel {
         DrawString currentPlayer;
         // Score of each player
         p1Score = g2p.p1.get2PScore();
-        System.out.println("P1 Score : " + p1Score);
+        //System.out.println("P1 Score : " + p1Score);
         p2Score = g2p.p2.get2PScore();
-        System.out.println("P2 Score : " + p2Score);
+        //System.out.println("P2 Score : " + p2Score);
 
         // If the current player is player 1
         if (g2p.currentPlayer2P == g2p.p1 && !controller.game.end) {
@@ -226,14 +229,13 @@ public class GamePlayInterface extends JPanel {
      * Draw Strings
      * Function that groups all the strings to be printed
      */
-    // TODO: remove /2 once score is fixed
     void drawStrings(Graphics g) {
         DrawString player1 = new DrawString(g, "Player 1", (int) (width * 0.15), (int) (height * 0.18), 25);
-        DrawString player1Score = new DrawString(g, "Score: " + p1Score/2, (int) (width * 0.3), (int) (height * 0.18),
+        DrawString player1Score = new DrawString(g, "Score: " + p1Score, (int) (width * 0.3), (int) (height * 0.18),
                 25);
         DrawString player2 = new DrawString(g, "Player 2", topRightX + colorPanelSize.width / 3, (int) (height * 0.18),
                 25);
-        DrawString player2Score = new DrawString(g, "Score: " + p2Score/2, (int) (width * 0.62), (int) (height * 0.18),
+        DrawString player2Score = new DrawString(g, "Score: " + p2Score, (int) (width * 0.62), (int) (height * 0.18),
                 25);
 
         // Bottom

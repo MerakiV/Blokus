@@ -24,8 +24,8 @@ public class PiecePanel extends JPanel {
     boolean isClicked = false;
 
     public PiecePanel(ColorPanel c, Piece p){
-        colorPanel = c;
-        piece = p;
+        this.colorPanel = c;
+        this.piece = colorPanel.player.getPiece(p);
         setTileSize();
         this.setName(piece.getName().name() + " " + colorPanel.color);
         this.setLayout(new GridBagLayout());

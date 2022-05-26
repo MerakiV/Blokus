@@ -5,14 +5,13 @@ import GamePanels.PiecePanel;
 import Interface.EventController;
 import Players.Player;
 import Players.PlayerAI;
-import Structures.*;
 import Structures.Color;
 import Structures.Shape;
+import Structures.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ public class ControllerGamePlay implements EventController, Runnable {
     public Color currentColor;
 
     public PiecePanel piecePanel;
+    public ArrayList<Piece> pieces;
 
     public BoardPanel boardPanel;
 
@@ -52,10 +52,22 @@ public class ControllerGamePlay implements EventController, Runnable {
         game = g;
         piece = null;
         color = null;
+        initPieces();
         currentPlayer = game.getCurrentPlayer();
         currentColor = game.getCurrentColor();
         originalImages = new ArrayList<>();
         saveGame = new Save(g,"save.dat");
+    }
+
+    void initPieces() {
+        PieceReader pRead;
+        try {
+            pRead = new PieceReader();
+            pieces = pRead.getPiecesList();
+        } catch (Exception e) {
+            System.err.println("FATAL ERROR : missing piece file");
+            System.exit(1);
+        }
     }
 
     public void startGame() {
@@ -309,7 +321,6 @@ public class ControllerGamePlay implements EventController, Runnable {
         // TODO: reset board and player turn to original
     }
 
-    // TODO : fix redo / undo since it doesn't work even for the text board
     void redo() {
         game.redo();
         game.getBoard().printBoard(-1);
@@ -383,6 +394,7 @@ public class ControllerGamePlay implements EventController, Runnable {
                 break;
             case "newGame":
                 System.out.println("newGame");
+                newGame();
                 break;
             case "hints":
                 System.out.println("hints");
