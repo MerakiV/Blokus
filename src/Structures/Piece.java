@@ -1,10 +1,11 @@
 package Structures;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Piece {
+public class Piece implements Serializable {
 	int disp;
 	int [] dispositionList;
 	List<Shape> shapeList;

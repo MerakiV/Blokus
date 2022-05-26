@@ -1,8 +1,9 @@
 package Structures;
 
+import java.io.Serializable;
 import java.util.Stack;
 
-public class History {
+public class History implements Serializable {
     Stack<GameState> past, future;
 
     public History() {

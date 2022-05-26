@@ -1,6 +1,8 @@
 package Players;
 
-public abstract class Player2P implements Cloneable {
+import java.io.Serializable;
+
+public abstract class Player2P implements Cloneable, Serializable {
     public Player pcol1, pcol2;
     public int score;
 

@@ -12,8 +12,20 @@ public class Save {
         filename = fn;
     }
 
-    public void WriteSave(){
-        try (FileOutputStream fos = new FileOutputStream("Save/"+filename);
+    public Save(String fn){
+        filename = fn;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void writeSave(){
+        try (FileOutputStream fos = new FileOutputStream(filename);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(game);
         } catch (IOException ex) {
@@ -21,8 +33,8 @@ public class Save {
         }
     }
 
-    public void LoadSave(){
-        try (FileInputStream fileIn = new FileInputStream("Save/"+filename);
+    public void loadSave(){
+        try (FileInputStream fileIn = new FileInputStream(filename);
              ObjectInputStream ois = new ObjectInputStream(fileIn)){
             game = (Game) ois.readObject();
         } catch (Exception ex) {

@@ -1,6 +1,8 @@
 package Structures;
 
-public class Move {
+import java.io.Serializable;
+
+public class Move implements Serializable {
     // The heuristic sums the number of cases of the player's color on the board, and the number of shapes they can still place somewhere on the board.
     // There are 400 cases on the board, and 91 total possible shapes for all the pieces.
     // 400 + 91*400 = 36 800. So the heuristic is always in the interval [-36000; 36000]

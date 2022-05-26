@@ -5,9 +5,10 @@ import Structures.Piece;
 import Structures.PieceType;
 import Structures.Board;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Player implements Cloneable {
+public abstract class Player implements Cloneable, Serializable {
     Color col;
     ArrayList<Piece> pieces;
     boolean isAI, hasMoves;

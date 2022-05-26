@@ -1,5 +1,9 @@
 package Interface;
 
+import Controller.ControllerGamePlay;
+import Structures.Game;
+import Structures.Save;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -90,6 +94,19 @@ public class MenuMouseAdapter implements MouseListener {
             case "Resume":
                 System.out.println("Remove");
                 gamePlay.removeMenu(gamePlay.playMenu);
+                break;
+            case "Continue":
+                Save savegame = new Save("save.dat");
+                savegame.loadSave();
+                Game g = savegame.getGame();
+                ControllerGamePlay control = new ControllerGamePlay(g, menuUi.frame);
+                menuUi.frame.addKeyListener(new KeyBoardAdapter(control));
+                try {
+                    game = new GamePlayInterface(menuUi.frame, control);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                changePanel(game);
                 break;
             default:
                 break;
