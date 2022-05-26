@@ -20,10 +20,8 @@ public class BoardPanel extends JPanel{
     ControllerGamePlay controller;
     JLabel label;
 
-    int widthFrame;
-    int heightFrame;
+    int widthFrame, heightFrame, tileSize;
     public int boardSize;
-    int tileSize;
     Dimension size;
     public Hashtable<String, JLabel> labels;
     public ArrayList<Icon> originalImages;
@@ -109,7 +107,7 @@ public class BoardPanel extends JPanel{
     private void setSize(){
         widthFrame = frame.getWidth();
         heightFrame = frame.getHeight();
-        boardSize = (int) (Math.min(heightFrame, widthFrame) * 0.6);
+        boardSize = (int) (Math.min(heightFrame, widthFrame) * 0.62);
         size = new Dimension(boardSize, boardSize);
         tileSize = boardSize/20;
         boardSize = tileSize*20;

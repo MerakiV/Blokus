@@ -6,6 +6,9 @@ public abstract class Player2P implements Cloneable {
 
     public void updateScore(){
         score = pcol1.score + pcol2.score;
+        System.out.println("The score has been updated: "+ score);
+        System.out.println("The pcol1 score has been updated: "+ pcol1.score);
+        System.out.println("The pcol2 score has been updated: "+ pcol2.score);
     }
 
     public int get2PScore(){

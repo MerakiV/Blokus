@@ -21,6 +21,7 @@ public abstract class Player implements Cloneable {
 
     public void updateScore(int add){
         score+= add;
+        System.out.println("Player Updated score : " + score);
     }
 
     public boolean isAI(){return isAI;}
