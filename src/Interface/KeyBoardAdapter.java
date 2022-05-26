@@ -55,6 +55,9 @@ public class KeyBoardAdapter extends KeyAdapter {
             case KeyEvent.VK_N:
                 controller.command("newGame");
                 break;
+            case KeyEvent.VK_M:
+                controller.command("save");
+                break;
         }
     }
 }

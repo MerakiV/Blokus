@@ -78,10 +78,12 @@ public class GameMouseAdapter implements MouseListener {
             case REDO:
                 System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
                 System.out.println("REDO button Clicked");
+                game.controller.command("redo");
                 break;
             case UNDO:
                 System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
                 System.out.println("UNDO button Clicked");
+                game.controller.command("undo");
                 break;
             default:
                 break;

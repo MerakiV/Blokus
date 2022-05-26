@@ -34,7 +34,7 @@ public class PieceMouseAdapter implements MouseListener {
                     }
                 }
                 piecePanel.isClicked = true;
-                System.out.println("Piece Type : " + piecePanel.piece.getName().name());
+                //System.out.println("Piece Type : " + piecePanel.piece.getName().name());
                 controller.piece = piecePanel.piece;
                 controller.color = piecePanel.colorPanel.color;
                 controller.piecePanel = piecePanel;

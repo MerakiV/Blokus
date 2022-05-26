@@ -1,5 +1,9 @@
 package Interface;
 
+import Controller.ControllerGamePlay;
+import Structures.Game;
+import Structures.Save;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -91,6 +95,19 @@ public class MenuMouseAdapter implements MouseListener {
                 System.out.println("Remove");
                 gamePlay.removeMenu(gamePlay.playMenu);
                 break;
+            case "Continue":
+                Save savegame = new Save("save.dat");
+                savegame.loadSave();
+                Game g = savegame.getGame();
+                ControllerGamePlay control = new ControllerGamePlay(g, menuUi.frame);
+                menuUi.frame.addKeyListener(new KeyBoardAdapter(control));
+                try {
+                    game = new GamePlayInterface(menuUi.frame, control);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                changePanel(game);
+                break;
             default:
                 break;
         }
@@ -119,8 +136,8 @@ public class MenuMouseAdapter implements MouseListener {
             menuUi.repaint();
 //        }
         } else if (playMenu != null){
-            System.out.println("Repaint");
-//            playMenu.repaint();
+            System.out.println("Repaint Enter");
+            playMenu.repaint();
 //            playMenu.playMenu.tutorial.repaint();
 //            switch (current.name){
 //                case "NG":
@@ -148,18 +165,20 @@ public class MenuMouseAdapter implements MouseListener {
             menuUi.repaint();
 //        }
         } else if (playMenu != null){
-            System.out.println("Repaint");
+            System.out.println("Repaint Exit");
 //            switch (current.name){
 //                case "NG":
-//                    playMenu.newgame.repaint();
+//                    HoverButton b = playMenu.newgame;
+//                    b.repaint();
 //                    break;
 //                case "Tutorial":
-//                    playMenu.tutorial.repaint();
+//                    HoverButton b2 = playMenu.tutorial;
+//                    b2.repaint();
 //                    break;
 //                default:
 //                    break;
 //            }
-//            playMenu.repaint();
+            playMenu.repaint();
             //playMenu.playMenu.tutorial.repaint();
         }
     }

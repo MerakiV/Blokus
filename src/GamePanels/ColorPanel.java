@@ -5,6 +5,8 @@ import Interface.GameMouseAdapter;
 import Interface.GamePlayInterface;
 import Players.Player;
 import Structures.Color;
+import Structures.Piece;
+import Structures.PieceReader;
 import Structures.PieceType;
 
 import javax.imageio.ImageIO;
@@ -12,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Objects;
 
@@ -29,8 +32,6 @@ public class ColorPanel extends JPanel{
     Player player;
 
     ControllerGamePlay controller;
-
-    public Hashtable<Integer, PieceType> pieceTable;
 
     public ColorPanel(GamePlayInterface g, ControllerGamePlay c, Player p) throws IOException {
         gamePlayInterface = g;
@@ -73,9 +74,9 @@ public class ColorPanel extends JPanel{
     }
 
     private void getPieces(){
-        for (int i = 0; i < player.getPieces().size(); i++){
+        for (int i = 0; i < controller.pieces.size(); i++){
             // TODO : controller
-            PiecePanel piece = new PiecePanel(this, player.getPieces().get(i));
+            PiecePanel piece = new PiecePanel(this, controller.pieces.get(i));
             piece.setPreferredSize(piecePanelSize);
             this.add(piece);
             piece.setBorder(BorderFactory.createLineBorder(java.awt.Color.black));

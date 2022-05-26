@@ -5,9 +5,10 @@ import Structures.Piece;
 import Structures.PieceType;
 import Structures.Board;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Player implements Cloneable {
+public abstract class Player implements Cloneable, Serializable {
     Color col;
     ArrayList<Piece> pieces;
     boolean isAI, hasMoves;
@@ -17,10 +18,19 @@ public abstract class Player implements Cloneable {
 
     public ArrayList<Piece> getPieces(){return pieces;}
 
+    public Piece getPiece(Piece p){
+        for (Piece piece: pieces){
+            if (p.getName().equals(piece.getName()))
+                return piece;
+        }
+        return p;
+    }
+
     public int getScore(){return score;}
 
     public void updateScore(int add){
         score+= add;
+        //System.out.println("Player Updated score : " + score);
     }
 
     public boolean isAI(){return isAI;}

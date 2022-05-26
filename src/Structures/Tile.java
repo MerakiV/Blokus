@@ -1,6 +1,8 @@
 package Structures;
 
-public class Tile {
+import java.io.Serializable;
+
+public class Tile implements Serializable {
     int x, y;
 
     public Tile(int xx, int yy) {

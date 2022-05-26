@@ -1,11 +1,12 @@
 package Structures;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 //to do: change Shape names too (and enums?)
 
-public class Shape {
+public class Shape implements Serializable {
 	public int Nlin, Ncol;
 	public boolean [][] shape; //values only 0 or 1
 	public int anchorX, anchorY;

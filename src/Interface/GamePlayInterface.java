@@ -4,10 +4,13 @@ import Controller.ControllerGamePlay;
 import GamePanels.BoardPanel;
 import GamePanels.ColorPanel;
 import Structures.Game2P;
+import Structures.Piece;
+import Structures.PieceReader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GamePlayInterface extends JPanel {
 
@@ -27,6 +30,7 @@ public class GamePlayInterface extends JPanel {
 
     public GamePlayMenu playMenu;
     public Boolean play = false;
+    public Boolean existMenu = false;
 
     // Color Panels
     ColorPanel topLeftPanel, bottomLeftPanel, topRightPanel, bottomRightPanel;
@@ -41,65 +45,84 @@ public class GamePlayInterface extends JPanel {
         g2p = (Game2P) controller.game;
         setSize();
         this.setLayout(new FlowLayout());
-        boardPanel = new BoardPanel(this, controller);
-        controller.setBoardPanel(boardPanel);
-        this.add(boardPanel);
-        controller.setBoardPanel(boardPanel);
+
+        // Images
         backGround = new Image(frame, "images/border.png");
         backGroundImg = new Image(frame, "images/whiteBackground.png");
         logo = new Image(frame, "images/logo.png");
-
+        // Initialise Panels
+        initialiseBoardPanel();
         initialiseColorPanels();
         initialiseButtons();
+        // Add Listeners for Buttons
         this.addMouseListener(new GameMouseAdapter(this, menu));
         this.addMouseListener(new GameMouseAdapter(this, hint));
         this.addMouseListener(new GameMouseAdapter(this, undo));
         this.addMouseListener(new GameMouseAdapter(this, redo));
 
-        System.out.println(controller.game.getCurrentPlayer().toString());
-        System.out.println("Finished GamePlayInterface");
         controller.startGame();
     }
 
+    /*
+    *   Initialise Board Panel
+    *       Calls functions to initialise the board on the screen
+    * */
+    public void initialiseBoardPanel(){
+        boardPanel = new BoardPanel(this, controller);
+        controller.setBoardPanel(boardPanel);
+        this.add(boardPanel);
+    }
+
     public void drawMenu(Graphics g) throws IOException {
-        if (play) {
+        if (play && !existMenu){
             playMenu = new GamePlayMenu(frame, this);
             playMenu.setBackground(null);
             playMenu.setOpaque(false);
-            // backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
+            existMenu = true;
+//            backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
 
-            this.add(playMenu, 0);
+            this.add(playMenu,0);
         }
     }
 
-    public void removeMenu(GamePlayMenu gM) {
+    public void removeMenu(GamePlayMenu gM){
         play = false;
-        gM.existeMenu = false;
+        existMenu = false;
         this.remove(gM);
         this.frame.revalidate();
         this.frame.repaint();
     }
 
     private void setSize() {
+        // Frame
         widthFrame = frame.getWidth();
         heightFrame = frame.getHeight();
-        boardSize = (int) (Math.min(heightFrame, widthFrame) * 0.6);
+
+        // Board Size
+        boardSize = (int) (Math.min(heightFrame, widthFrame) * 0.62);
         size = new Dimension(boardSize, boardSize);
-        tileSize = boardSize / 20;
-        colorPanelSize = new Dimension((int) (boardSize * 0.72), boardSize / 2); // Changes the size of components in
-                                                                                 // the colorPanel
-        topLeftX = (int) (widthFrame * 0.06) - 10;
-        topLeftY = (int) (heightFrame * 0.2);
-        topRightX = (int) (0.94 * widthFrame - boardSize * 0.72) - 10;
-        topRightY = (int) (heightFrame * 0.2);
-        bottomLeftX = (int) (widthFrame * 0.06) - 10;
-        bottomLeftY = (int) (heightFrame * 0.28 + boardSize / 2);
-        bottomRightX = (int) (0.94 * widthFrame - boardSize * 0.72) - 10;
-        bottomRightY = (int) (heightFrame * 0.28 + boardSize / 2);
         boardX = (widthFrame - size.width) / 2;
         boardY = (int) (heightFrame * 0.2);
+        tileSize = boardSize / 20;
+
+        // Color Panel Size
+        colorPanelSize = new Dimension((int) (boardSize * 0.7), (int)(boardSize*0.4));
+
+        // Color Panel Positions
+        topLeftX = (int) (widthFrame * 0.06) - 10;
+        topLeftY = (int) (heightFrame * 0.2);
+        topRightX = (int) (boardX + boardSize + widthFrame*0.01);
+        topRightY = (int) (heightFrame * 0.2);
+        bottomLeftX = (int) (widthFrame * 0.06) - 10;
+        bottomLeftY = boardY + boardSize - colorPanelSize.height;
+        bottomRightX = (int) (boardX + boardSize + widthFrame*0.01);
+        bottomRightY = boardY + boardSize - colorPanelSize.height;
     }
 
+    /*
+     *   Initialise Color Panels
+     *       Calls functions to initialise the 4 color panels on the screen
+     * */
     private void initialiseColorPanels() throws IOException {
         topLeftPanel = new ColorPanel(this, controller, controller.game.getPlayerList().get(0));
         topLeftPanel.setPreferredSize(colorPanelSize);
@@ -115,7 +138,14 @@ public class GamePlayInterface extends JPanel {
         this.add(bottomRightPanel);
     }
 
-    // TODO : icons to SVG
+    /*
+     *   Initialise Buttons
+     *       Calls functions to initialise the buttons on the screen
+     *      - Menu: Opens menu for new game, continue, restart, tutorial, quit
+     *      - Hints: Enables/disables hints for the player
+     *      - Undo: Reverts the game back to the previous turn of the player
+     *      - Redo: Replaces the undone turn
+     * */
     private void initialiseButtons() throws IOException {
         height = frame.getHeight();
         width = frame.getWidth();
@@ -130,33 +160,48 @@ public class GamePlayInterface extends JPanel {
         add(this.redo);
     }
 
+    /*
+    *   Player Turn
+    *       Draws the string above the board with the current player's turn
+    *       written in the corresponding player's color
+    * */
     public void playerTurn(Graphics g) {
         DrawString currentPlayer;
+        // Score of each player
+        p1Score = g2p.p1.get2PScore();
+        //System.out.println("P1 Score : " + p1Score);
+        p2Score = g2p.p2.get2PScore();
+        //System.out.println("P2 Score : " + p2Score);
+
+        // If the current player is player 1
         if (g2p.currentPlayer2P == g2p.p1 && !controller.game.end) {
             currentPlayer = new DrawString(g, "Player 1 " + controller.currentColor + "'s turn", transformColor(),
                     (int) (width * 0.4), (int) (height * 0.18), 25);
-            System.out.println("Size of string : " + currentPlayer.getWidth());
-            p1Score = g2p.p1.get2PScore();
             currentPlayer.paint(g);
+        // If the current player is player 2
         } else if (g2p.currentPlayer2P == g2p.p2 && !controller.game.end) {
             currentPlayer = new DrawString(g, "Player 2 " + controller.currentColor + "'s turn", transformColor(),
                     (int) (width * 0.4), (int) (height * 0.18), 25);
-            System.out.println("Size of string : " + currentPlayer.getWidth());
-            p2Score = g2p.p2.get2PScore();
-            currentPlayer.paint(g);
-        }
-        if (controller.game.end) {
-            currentPlayer = new DrawString(g, "END OF GAME", (int) (width * 0.4), (int) (height * 0.18), 25);
-            System.out.println("Size of string : " + currentPlayer.getWidth());
             currentPlayer.paint(g);
         }
     }
 
+    /*
+    *   Check End Game
+    *       If the game has ended, print end game message
+    * */
     public void checkEndGame(Graphics g) {
         if (controller.game.end) {
-            DrawString currentPlayer = new DrawString(g, "END OF GAME", transformColor(), (int) (width * 0.4),
-                    boardY + boardSize + 20, 25);
-            System.out.println("I PRINTED THE STRING");
+            DrawString currentPlayer;
+            if (p2Score < p1Score)
+                currentPlayer = new DrawString(g, "PLAYER 1 WON !!!", (int) (width * 0.45),
+                        (int) (height * 0.18), 25);
+            else if (p2Score > p1Score)
+                currentPlayer = new DrawString(g, "PLAYER 2 WON !!!", (int) (width * 0.45),
+                        (int) (height * 0.18), 25);
+             else
+                currentPlayer = new DrawString(g, "PLAYERS TIED !!!", (int) (width * 0.45),
+                        (int) (height * 0.18), 25);
             currentPlayer.paint(g);
         }
     }
@@ -182,22 +227,22 @@ public class GamePlayInterface extends JPanel {
 
     /*
      * Draw Strings
-     * Function that groups all of the strings to be printed
+     * Function that groups all the strings to be printed
      */
     void drawStrings(Graphics g) {
         DrawString player1 = new DrawString(g, "Player 1", (int) (width * 0.15), (int) (height * 0.18), 25);
-        DrawString player1Score = new DrawString(g, "Score: " + p2Score, (int) (width * 0.3), (int) (height * 0.18),
+        DrawString player1Score = new DrawString(g, "Score: " + p1Score, (int) (width * 0.3), (int) (height * 0.18),
                 25);
         DrawString player2 = new DrawString(g, "Player 2", topRightX + colorPanelSize.width / 3, (int) (height * 0.18),
                 25);
-        DrawString player2Score = new DrawString(g, "Score: " + p1Score, (int) (width * 0.62), (int) (height * 0.18),
+        DrawString player2Score = new DrawString(g, "Score: " + p2Score, (int) (width * 0.62), (int) (height * 0.18),
                 25);
 
         // Bottom
         DrawString player1bottom = new DrawString(g, "Player 1", bottomRightX + colorPanelSize.width / 3,
-                (int) (heightFrame * 0.26 + boardSize / 2), 25);
+                (int) (bottomRightY - (heightFrame *0.01) ), 25);
         DrawString player2bottom = new DrawString(g, "Player 2", (int) (width * 0.15),
-                (int) (heightFrame * 0.26 + boardSize / 2), 25);
+                (int) (bottomLeftY - (heightFrame *0.01) ), 25);
 
         player1.paint(g);
         player1Score.paint(g);
@@ -216,19 +261,16 @@ public class GamePlayInterface extends JPanel {
         topRightPanel.setBounds(topRightX, topRightY, colorPanelSize.width, colorPanelSize.height);
         bottomRightPanel.setBounds(bottomRightX, bottomRightY, colorPanelSize.width, colorPanelSize.height);
 
-        // Sizes
-        height = frame.getHeight();
-        width = frame.getWidth();
         int iconSize = undo.getCurrentImageWidth() / 2;
 
-        g.drawImage(this.undo.getCurrentImage(), (int) (width * 0.55) - iconSize, (int) (height * 0.85), this);
-        g.drawImage(this.redo.getCurrentImage(), (int) (width * 0.45) - iconSize, (int) (height * 0.85), this);
-        g.drawImage(this.menu.getCurrentImage(), (int) (width * 0.91), (int) (height * 0.08), frame);
-        g.drawImage(this.hint.getCurrentImage(), (int) (width * 0.05), (int) (height * 0.08), frame);
+        g.drawImage(this.undo.getCurrentImage(), (int) (widthFrame * 0.55) - iconSize, (int) (heightFrame * 0.85), this);
+        g.drawImage(this.redo.getCurrentImage(), (int) (widthFrame * 0.45) - iconSize, (int) (heightFrame * 0.85), this);
+        g.drawImage(this.menu.getCurrentImage(), (int) (widthFrame * 0.91), (int) (heightFrame * 0.08), frame);
+        g.drawImage(this.hint.getCurrentImage(), (int) (widthFrame * 0.05), (int) (heightFrame * 0.08), frame);
 
         // Background
-        backGround.drawImg(g, 0, 0, width, height);
-        logo.drawImg(g, (int) (width * 0.425), 0, (int) (width * 0.15), (int) (height * 0.15));
+        backGround.drawImg(g, 0, 0, widthFrame, height);
+        logo.drawImg(g, (int) (widthFrame * 0.425), 0, (int) (widthFrame * 0.15), (int) (heightFrame * 0.15));
 
         // Players
         playerTurn(g);
