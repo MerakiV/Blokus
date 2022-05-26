@@ -90,7 +90,7 @@ public class HoverButton extends JPanel {
     public void paint(Graphics g) {
         this.setOpaque(false);
         if (enabled) {
-            g.drawImage(currentImage, this.getX(), this.getY(), this.getWidth(),
+            g.drawImage(this.currentImage, this.getX(), this.getY(), this.getWidth(),
                     this.getHeight(), this);
         }
     }

@@ -27,6 +27,7 @@ public class GamePlayInterface extends JPanel {
 
     public GamePlayMenu playMenu;
     public Boolean play = false;
+    public Boolean existMenu = false;
 
     // Color Panels
     ColorPanel topLeftPanel, bottomLeftPanel, topRightPanel, bottomRightPanel;
@@ -70,19 +71,20 @@ public class GamePlayInterface extends JPanel {
     }
 
     public void drawMenu(Graphics g) throws IOException {
-        if (play) {
+        if (play && !existMenu){
             playMenu = new GamePlayMenu(frame, this);
             playMenu.setBackground(null);
             playMenu.setOpaque(false);
-            // backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
+            existMenu = true;
+//            backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
 
-            this.add(playMenu, 0);
+            this.add(playMenu,0);
         }
     }
 
-    public void removeMenu(GamePlayMenu gM) {
+    public void removeMenu(GamePlayMenu gM){
         play = false;
-        gM.existeMenu = false;
+        existMenu = false;
         this.remove(gM);
         this.frame.revalidate();
         this.frame.repaint();

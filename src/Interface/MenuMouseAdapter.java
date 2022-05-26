@@ -119,8 +119,8 @@ public class MenuMouseAdapter implements MouseListener {
             menuUi.repaint();
 //        }
         } else if (playMenu != null){
-            System.out.println("Repaint");
-//            playMenu.repaint();
+            System.out.println("Repaint Enter");
+            playMenu.repaint();
 //            playMenu.playMenu.tutorial.repaint();
 //            switch (current.name){
 //                case "NG":
@@ -148,18 +148,20 @@ public class MenuMouseAdapter implements MouseListener {
             menuUi.repaint();
 //        }
         } else if (playMenu != null){
-            System.out.println("Repaint");
+            System.out.println("Repaint Exit");
 //            switch (current.name){
 //                case "NG":
-//                    playMenu.newgame.repaint();
+//                    HoverButton b = playMenu.newgame;
+//                    b.repaint();
 //                    break;
 //                case "Tutorial":
-//                    playMenu.tutorial.repaint();
+//                    HoverButton b2 = playMenu.tutorial;
+//                    b2.repaint();
 //                    break;
 //                default:
 //                    break;
 //            }
-//            playMenu.repaint();
+            playMenu.repaint();
             //playMenu.playMenu.tutorial.repaint();
         }
     }
