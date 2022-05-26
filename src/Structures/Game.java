@@ -28,7 +28,6 @@ public abstract class Game implements Serializable, Cloneable {
         if (board.canPut(s, i, x, y)) {
             pushToPast();
             board.put(s, i, x, y);
-            currentPlayer.updateScore(s.getValue());
             currentPlayer.removePiece(pt);
             return true;
         } else {
