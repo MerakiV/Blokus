@@ -45,6 +45,7 @@ public class PlayerAIMedium extends PlayerAI {
         this.generator = new Random(s);
         difficultyLevel = 1;
         col = c;
+        int nbPuttablePieces = pieces.size();
     }
 
     @Override
@@ -134,58 +135,81 @@ public class PlayerAIMedium extends PlayerAI {
         Move res = null;
         Board b = g.getBoard();
         int x,y;
-        List<Shape> tried = new ArrayList<>();
+        List<Shape> tried;
         List<Tile> possiblePut;
         int colorCode = b.getCorner(this.col);
-        boolean notPlaced = true;
+        int nbPuttablePieces = pieces.size();
 
-        //see label of last piece
-        String name = pieces.get(pieces.size()-1).getName().toString();
-        String pieceValue;
-        if(name.contains("FIVE")) pieceValue = "FIVE";
-        else if(name.contains("FOUR")) pieceValue = "FOUR";
-        else if(name.contains("THREE")) pieceValue = "THREE";
-        else if(name.contains("TWO")) pieceValue = "TWO";
-        else if(name.contains("ONE")) pieceValue = "ONE";
-        else return null; //no remaining pieces
+        System.out.println(g.getCurrentColor());
 
-        int pieceCount = 1; //count number of pieces of same value
-        for(int i = pieces.size()-2; i>=0; i--){
-            if(pieces.get(i).getName().toString().contains(pieceValue)) {
-                System.out.println(pieces.get(i).getName().toString());
-                pieceCount++;
-                System.out.println(pieceCount);
-            }
-        }
+        while(true) {
+            //see label of last piece
+            String name = pieces.get(nbPuttablePieces - 1).getName().toString();
+            String pieceValue;
+            if (name.contains("FIVE")) pieceValue = "FIVE";
+            else if (name.contains("FOUR")) pieceValue = "FOUR";
+            else if (name.contains("THREE")) pieceValue = "THREE";
+            else if (name.contains("TWO")) pieceValue = "TWO";
+            else if (name.contains("ONE")) pieceValue = "ONE";
+            else return null; //no remaining pieces
 
+            List<Piece> listPieceValue = new ArrayList<Piece>();
+            listPieceValue.add(pieces.get(nbPuttablePieces - 1)); //list of pieces of same value
 
-        while(notPlaced) {
-            possiblePut = new ArrayList<>();
-            int idx = this.generator.nextInt(pieces.size());
-            Piece play = pieces.get(idx);
-            play.setDisp(generator.nextInt(16));
-            while(tried.contains(play.getShape())){
-                idx = this.generator.nextInt(pieces.size());
-                play = pieces.get(idx);
-                play.setDisp(generator.nextInt(16));
-            }
-            tried.add(play.getShape());
-            //test for can put
-            for (x=0; x<20; x++) {
-                for (y=0; y<20; y++) {
-                    if (b.canPut(play, colorCode, x, y)) {
-                        possiblePut.add(new Tile(x,y));
-                    }
+            //fills the list with every pieces of same value
+            int i = nbPuttablePieces - 2;
+            boolean isSameValue = true;
+            while(i >= 0 && isSameValue){
+                if (pieces.get(i).getName().toString().contains(pieceValue)) {
+                    listPieceValue.add(pieces.get(i));
+                    i--;
+                }
+                else {
+                    isSameValue = false;
                 }
             }
-            //randomly choose where to put if exists
-            if(!possiblePut.isEmpty()) {
-                int idxPut = this.generator.nextInt(possiblePut.size());
-                Tile putTile = possiblePut.get(idxPut);
-                res = new Move(play, putTile);
-                notPlaced = false;
+
+            //tries to put every piece of same value
+            while (!listPieceValue.isEmpty()) {
+                possiblePut = new ArrayList<>();
+                // choose a random piece
+                int idx = this.generator.nextInt(listPieceValue.size());
+                Piece play = listPieceValue.get(idx);
+                int countShapes = play.getShapeList().size();
+                tried = new ArrayList<>();
+
+                // tries all shapes for the randomly selected piece
+                while (countShapes != tried.size()) {
+
+                    play.setDisp(generator.nextInt(16));
+                    while (tried.contains(play.getShape())) {
+                        play.setDisp(generator.nextInt(16));
+                    }
+                    //play.getShape().printShape(); //debug
+                    tried.add(play.getShape());
+
+                    //look at every possible puts for a shape
+                    for (x = 0; x < 20; x++) {
+                        for (y = 0; y < 20; y++) {
+                            if (b.canPut(play, colorCode, x, y)) {
+                                possiblePut.add(new Tile(x, y));
+                            }
+                        }
+                    }
+
+                    //randomly choose where to put if exists
+                    if (!possiblePut.isEmpty()) {
+                        int idxPut = this.generator.nextInt(possiblePut.size());
+                        Tile putTile = possiblePut.get(idxPut);
+                        res = new Move(play, putTile);
+                        return res;
+                    }
+                    //System.out.println("COUNT SHAPES " + countShapes); //debug
+                    //System.out.println("TRIED SIZE " + tried.size()); //debug
+                }
+                listPieceValue.remove(idx);
+                nbPuttablePieces--;
             }
         }
-        return res;
     }
 }
