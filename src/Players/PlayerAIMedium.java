@@ -7,13 +7,12 @@ public class PlayerAIMedium extends PlayerAI {
     private final long seed;
     private final Random generator;
 
-    int type;
+    //int type;
 
-    public PlayerAIMedium(Color c, int t) {
+    public PlayerAIMedium(Color c) {
         isAI = true;
         hasMoves = true;
-        score = 0;
-        type = t;
+        //type = t;
         PieceReader pRead = null;
         try {
             pRead = new PieceReader();
@@ -29,7 +28,7 @@ public class PlayerAIMedium extends PlayerAI {
         col = c;
     }
 
-    public PlayerAIMedium(Color c, long s) {
+    /*public PlayerAIMedium(Color c, long s) {
         isAI = true;
         score = 0;
         PieceReader pRead = null;
@@ -45,31 +44,26 @@ public class PlayerAIMedium extends PlayerAI {
         this.generator = new Random(s);
         difficultyLevel = 1;
         col = c;
-        int nbPuttablePieces = pieces.size();
-    }
+    }*/
 
     @Override
     public void playPiece(Board b) {
-        /*
-        switch(type){
-            case 1:
-                PlayPieceByValue(g);
-                break;
-            case 2:
-                PlayPieceValueAndAvCorners(g);
-                break;
-        }
-         */
         return;
     }
 
+    private PlayerAIMedium(long s) {
+        this.seed = s;
+        this.generator = new Random(s);
+    }
     @Override
     public Player clone() {
-        return null;
+        PlayerAIMedium p2 = new PlayerAIMedium(this.seed);
+        p2.cloneFields(this);
+        return p2;
     }
 
     // Place pieces of the best value in a random order first
-    public void PlayPieceByValue(Game g){
+    /*public void PlayPieceByValue(Game g){
         Board b = g.getBoard();
         int x,y;
         List<Shape> tried = new ArrayList<>();
@@ -125,7 +119,7 @@ public class PlayerAIMedium extends PlayerAI {
                 notPlaced = false;
             }
         }
-    }
+    }*/
 
     /*public void PlayPieceValueAndAvCorners(g){
     }*/

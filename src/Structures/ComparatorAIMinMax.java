@@ -1,4 +1,4 @@
-package Controller;
+package Structures;
 
 import java.util.Comparator;
 
