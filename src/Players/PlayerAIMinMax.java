@@ -1,14 +1,16 @@
 package Players;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import Structures.ComparatorAIMinMax;
 import Structures.*;
 
 public class PlayerAIMinMax extends PlayerAI {
+
+    private final long seed;
+    private final Random generator;
+
+    List<Move> lMovesSameVal;
 
     void initPieces() {
         // create list of pieces from PieceReader
@@ -26,6 +28,8 @@ public class PlayerAIMinMax extends PlayerAI {
         col = c;
         isAI = true;
         hasMoves = true;
+        seed = System.currentTimeMillis();
+        this.generator = new Random(seed);
         initPieces();
     }
 
@@ -40,8 +44,10 @@ public class PlayerAIMinMax extends PlayerAI {
 
 
         Move m = new Move(null, null, null);
+        lMovesSameVal = new ArrayList<Move>();
+
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
-            g.getCurrentPlayer().getPieces().get(0).printPiece();
+            //g.getCurrentPlayer().getPieces().get(0).printPiece();
             m = AlgoMinMax(m, g, true, 1);
         } else {
             m = AlgoMinMax(m, g, false, 1);
@@ -93,22 +99,30 @@ public class PlayerAIMinMax extends PlayerAI {
 
     public Move AlgoMinMax(Move move, Game config, boolean max, int depth) {
         if (depth == 0 || (depth == 0 && isLeaf(config))) {
-            int h = evaluation(config, max);
+            int h = evaluation(config, move.getPieceType(), max);
             move.setHeuristic(h);
             return move;
         }
         //return move;
         else {
             int ret = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
-            PriorityQueue<Move> moves = moves(config, max); //children of the config object
+            PriorityQueue<Move> moves = moves(config, max); //children
             Move bestMove = null;
-            for (int i = 0; i <= moves.size(); i++) { //<
+            while(!moves.isEmpty()) {
                 Move m = AlgoMinMax(moves.poll(), config, !max, depth - 1);
                 int x = m.getHeuristic();
-                if (max ? x > ret : x < ret) {
+                if (max ? x > ret : x < ret) { //solved? problem: when max is true never gets into this if
                     ret = x;
                     bestMove = m;
                 }
+                if (x == ret) { //case where two pieces have the same heuristic: randomly chooses if move replaced or not
+                    lMovesSameVal.add(m);
+                    //if(this.generator.nextBoolean()) bestMove = m; //bad, last move has a probability of 0.5
+                }
+            }
+            if(moves.isEmpty()){ //decides best move every move has been tested
+                int idx = this.generator.nextInt(lMovesSameVal.size());
+                bestMove = lMovesSameVal.get(idx);
             }
             return bestMove;
         }
@@ -131,8 +145,15 @@ public class PlayerAIMinMax extends PlayerAI {
 
     }
 
-    public static int evaluation(Game config, boolean max){
+    public static int evaluation(Game config, PieceType pt, boolean max){
         //(our score - opponent score) + (our possible placements - opponent placements)
+
+        int pieceValue = 0;
+        if (pt.toString().contains("FIVE")) pieceValue = 5;
+        else if (pt.toString().contains("FOUR")) pieceValue = 4;
+        else if (pt.toString().contains("THREE")) pieceValue = 3;
+        else if (pt.toString().contains("TWO")) pieceValue = 2;
+        else if (pt.toString().contains("ONE")) pieceValue = 1;
 
         Player p1c1 = config.getPlayerList().get(0);
         Player p1c2 = config.getPlayerList().get(2);
@@ -150,10 +171,10 @@ public class PlayerAIMinMax extends PlayerAI {
         int sumPlacementsP2 = config.getBoard().sumAllPlacements(p2c1.getPieces(), p2c1.col) + config.getBoard().sumAllPlacements(p2c2.getPieces(), p2c2.col);
 
         if(max){
-            return (sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2);
+            return (sumScoreP1 + pieceValue - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2);
         }
         else{
-            return (sumScoreP2 - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1);
+            return (sumScoreP2 + pieceValue - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1);
         }
     }
 
@@ -263,10 +284,13 @@ public class PlayerAIMinMax extends PlayerAI {
 
     */
 
-    private PlayerAIMinMax() {}; // empty constructor
+    private PlayerAIMinMax(long s) {
+        this.seed = s;
+        this.generator = new Random(s);
+    }
     @Override
     public Player clone() {
-        PlayerAIMinMax p2 = new PlayerAIMinMax();
+        PlayerAIMinMax p2 = new PlayerAIMinMax(this.seed);
         p2.cloneFields(this);
         return p2;
     }
