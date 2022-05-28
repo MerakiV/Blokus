@@ -38,14 +38,15 @@ public class PlayerAIMinMax extends PlayerAI {
 
     @Override
     public Move generateMove(Game g){
-        //g.getCurrentPlayer().getPieces().get(0).printPiece();
+        g.getCurrentPlayer().getPieces().get(0).printPiece();
+
 
         Move m = new Move(null, null, null);
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
             g.getCurrentPlayer().getPieces().get(0).printPiece();
-            m = AlgoMinMax(m, g, true, 5);
+            m = AlgoMinMax(m, g, true, 1);
         } else {
-            m = AlgoMinMax(m, g, false, 5);
+            m = AlgoMinMax(m, g, false, 1);
         }
         //if(m.getHeuristic() == 0)
             //return null;
@@ -56,7 +57,7 @@ public class PlayerAIMinMax extends PlayerAI {
     }
 
     //enum algo
-    public PriorityQueue<Move> moves(Move m, Game config, boolean max) {
+    public PriorityQueue<Move> moves(Game config, boolean max) {
         PriorityQueue<Move> pq = new PriorityQueue<>(11, new ComparatorAIMinMax(config, max));
         //Game g2;
         Iterator<Piece> it1 = config.getCurrentPlayer().getPieces().iterator();
@@ -93,7 +94,7 @@ public class PlayerAIMinMax extends PlayerAI {
     }
 
     public Move AlgoMinMax(Move move, Game config, boolean max, int depth) {
-        if (isLeaf(config) || depth == 0) {
+        if (depth == 0 || (depth == 0 && isLeaf(config))) {
             int h = evaluation(config, max);
             move.setHeuristic(h);
             return move;
@@ -101,7 +102,7 @@ public class PlayerAIMinMax extends PlayerAI {
         //return move;
         else {
             int ret = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
-            PriorityQueue<Move> moves = moves(move, config, max); //children of the config object
+            PriorityQueue<Move> moves = moves(config, max); //children of the config object
             Move bestMove = null;
             for (int i = 0; i <= moves.size(); i++) { //<
                 Move m = AlgoMinMax(moves.poll(), config, !max, depth - 1);
@@ -122,7 +123,7 @@ public class PlayerAIMinMax extends PlayerAI {
         int zeroPieces = 0;
         List<Player> players = g.getPlayerList();
         int nbPlayers = players.size();
-        for(i = 0; i<=nbPlayers; i++){
+        for(i = 0; i<nbPlayers; i++){
             if (g.getBoard().canPlacePieces(players.get(i).getPieces(), players.get(i).col))
                 zeroPieces++;
             if (g.getBoard().numberOfCorners(players.get(i).getColor()) == 0)
