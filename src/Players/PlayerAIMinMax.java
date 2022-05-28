@@ -7,8 +7,12 @@ import Structures.*;
 
 public class PlayerAIMinMax extends PlayerAI {
 
+    static int MAX = Integer.MAX_VALUE; //for AlphaBeta
+    static int MIN = Integer.MIN_VALUE; //for AlphaBeta
     private final long seed;
     private final Random generator;
+
+    boolean alphaBeta = false;
 
     List<Move> lMovesBestHeur;
 
@@ -23,11 +27,12 @@ public class PlayerAIMinMax extends PlayerAI {
             System.exit(1);
         }
     }
-    public PlayerAIMinMax(Color c) {
+    public PlayerAIMinMax(Color c, boolean ab) {
         difficultyLevel = 2;
         col = c;
         isAI = true;
         hasMoves = true;
+        alphaBeta = ab;
         seed = System.currentTimeMillis();
         this.generator = new Random(seed);
         initPieces();
@@ -40,17 +45,16 @@ public class PlayerAIMinMax extends PlayerAI {
 
     @Override
     public Move generateMove(Game g){
-        g.getCurrentPlayer().getPieces().get(0).printPiece();
-
 
         Move m = new Move(null, null, null);
         lMovesBestHeur = new ArrayList<Move>();
 
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
-            //g.getCurrentPlayer().getPieces().get(0).printPiece();
-            m = AlgoMinMax(m, g, true, 1);
+            if(this.alphaBeta == true) m = AlgoAlphaBeta(m, g, true, 2, MIN, MAX);
+            else m = AlgoMinMax(m, g, true, 1);
         } else {
-            m = AlgoMinMax(m, g, false, 1);
+            if(this.alphaBeta == true) m = AlgoAlphaBeta(m, g, false, 2, MIN, MAX);
+            else m = AlgoMinMax(m, g, false, 1);
         }
         //if(m.getHeuristic() == 0)
             //return null;
@@ -98,6 +102,47 @@ public class PlayerAIMinMax extends PlayerAI {
         return lm;
     }
 
+    public Move AlgoAlphaBeta(Move move, Game config, boolean max, int depth, int alpha, int beta) {
+        if (depth == 0 || (depth == 0 && isLeaf(config))) {
+            int h = evaluation(config, move.getPieceType(), max);
+            move.setHeuristic(h);
+            return move;
+        }
+        else {
+            int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
+            List<Move> moves = moves(config, max); //children
+            Move bestMove = null;
+            while(!moves.isEmpty()) {
+                int idx1 = this.generator.nextInt(moves.size());
+                Move m = AlgoAlphaBeta(moves.remove(idx1), config, !max, depth - 1, alpha, beta);
+                int x = m.getHeuristic();
+                if (max ? x > bestHeur : x < bestHeur) {
+                    bestHeur = x;
+                    bestMove = m;
+                    lMovesBestHeur = new ArrayList<>(); //empty the list as a better heuristic has been found
+                }
+                if (x == bestHeur) {
+                    lMovesBestHeur.add(m);
+                }
+
+                if(max && bestHeur > alpha){
+                    alpha = bestHeur;
+                }
+                if(!max && bestHeur < beta){
+                    beta = bestHeur;
+                }
+                if(beta <= alpha){
+                    break;
+                }
+            }
+            if(moves.isEmpty()){ //decides best move every move has been tested //modify for alphabeta?
+                int idx2 = this.generator.nextInt(lMovesBestHeur.size());
+                bestMove = lMovesBestHeur.get(idx2);
+            }
+            return bestMove;
+        }
+    }
+
     public Move AlgoMinMax(Move move, Game config, boolean max, int depth) {
         if (depth == 0 || (depth == 0 && isLeaf(config))) {
             int h = evaluation(config, move.getPieceType(), max);
@@ -116,7 +161,7 @@ public class PlayerAIMinMax extends PlayerAI {
                 if (max ? x > bestHeur : x < bestHeur) {
                     bestHeur = x;
                     bestMove = m;
-                    lMovesBestHeur = new ArrayList<>(); //empties the list as a better heuristic has been found
+                    lMovesBestHeur = new ArrayList<>(); //empty the list as a better heuristic has been found
                 }
                 if (x == bestHeur) {
                     lMovesBestHeur.add(m);
