@@ -46,14 +46,14 @@ public class PlayerAIMinMax extends PlayerAI {
     @Override
     public Move generateMove(Game g){
 
-        Move m = new Move(null, null, null);
+        Move m = null;
         lMovesBestHeur = new ArrayList<Move>();
 
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
-            if(this.alphaBeta == true) m = AlgoAlphaBeta(m, g, true, 2, MIN, MAX);
+            if(this.alphaBeta == true) m = AlgoAlphaBeta(m, g, true, 5, MIN, MAX);
             else m = AlgoMinMax(m, g, true, 1);
         } else {
-            if(this.alphaBeta == true) m = AlgoAlphaBeta(m, g, false, 2, MIN, MAX);
+            if(this.alphaBeta == true) m = AlgoAlphaBeta(m, g, false, 5, MIN, MAX);
             else m = AlgoMinMax(m, g, false, 1);
         }
         //if(m.getHeuristic() == 0)
@@ -103,7 +103,7 @@ public class PlayerAIMinMax extends PlayerAI {
     }
 
     public Move AlgoAlphaBeta(Move move, Game config, boolean max, int depth, int alpha, int beta) {
-        if (depth == 0 || (depth == 0 && isLeaf(config))) {
+        if (depth == 0 || (move != null && isLeaf(config))) { // move!=null to avoid a crash at the very first call
             int h = evaluation(config, move.getPieceType(), max);
             move.setHeuristic(h);
             return move;
@@ -144,7 +144,7 @@ public class PlayerAIMinMax extends PlayerAI {
     }
 
     public Move AlgoMinMax(Move move, Game config, boolean max, int depth) {
-        if (depth == 0 || (depth == 0 && isLeaf(config))) {
+        if (depth == 0 || (move != null && isLeaf(config))) { // move!=null to avoid a crash at the very first call
             int h = evaluation(config, move.getPieceType(), max);
             move.setHeuristic(h);
             return move;
