@@ -10,7 +10,7 @@ public class PlayerAIMinMax extends PlayerAI {
     private final long seed;
     private final Random generator;
 
-    List<Move> lMovesSameVal;
+    List<Move> lMovesBestHeur;
 
     void initPieces() {
         // create list of pieces from PieceReader
@@ -44,7 +44,7 @@ public class PlayerAIMinMax extends PlayerAI {
 
 
         Move m = new Move(null, null, null);
-        lMovesSameVal = new ArrayList<Move>();
+        lMovesBestHeur = new ArrayList<Move>();
 
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
             //g.getCurrentPlayer().getPieces().get(0).printPiece();
@@ -61,8 +61,9 @@ public class PlayerAIMinMax extends PlayerAI {
     }
 
     //enum algo
-    public PriorityQueue<Move> moves(Game config, boolean max) {
-        PriorityQueue<Move> pq = new PriorityQueue<>(11, new ComparatorAIMinMax(config, max));
+    public List<Move> moves(Game config, boolean max) {
+        //PriorityQueue<Move> lm = new PriorityQueue<>(11, new ComparatorAIMinMax(config, max));
+        List<Move> lm = new ArrayList<Move>();
         //Game g2;
         Iterator<Piece> it1 = config.getCurrentPlayer().getPieces().iterator();
         Iterator<Shape> it2;
@@ -89,12 +90,12 @@ public class PlayerAIMinMax extends PlayerAI {
                     //g2.put(sh, pi.getName(), col, t.getX(), t.getY());
                     //pq.add(g2);
                     Move m2 = new Move(sh, pi.getName(), t);
-                    pq.add(m2);
+                    lm.add(m2);
                 }
             }
         }
 
-        return pq;
+        return lm;
     }
 
     public Move AlgoMinMax(Move move, Game config, boolean max, int depth) {
@@ -105,24 +106,27 @@ public class PlayerAIMinMax extends PlayerAI {
         }
         //return move;
         else {
-            int ret = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
-            PriorityQueue<Move> moves = moves(config, max); //children
+            int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
+            List<Move> moves = moves(config, max); //children
             Move bestMove = null;
             while(!moves.isEmpty()) {
-                Move m = AlgoMinMax(moves.poll(), config, !max, depth - 1);
+                int idx1 = this.generator.nextInt(moves.size());
+                Move m = AlgoMinMax(moves.remove(idx1), config, !max, depth - 1);
                 int x = m.getHeuristic();
-                if (max ? x > ret : x < ret) { //solved? problem: when max is true never gets into this if
-                    ret = x;
+                if (max ? x > bestHeur : x < bestHeur) {
+                    bestHeur = x;
                     bestMove = m;
+                    lMovesBestHeur = new ArrayList<>(); //empties the list as a better heuristic has been found
                 }
-                if (x == ret) { //case where two pieces have the same heuristic: randomly chooses if move replaced or not
-                    lMovesSameVal.add(m);
+                if (x == bestHeur) {
+                    lMovesBestHeur.add(m);
                     //if(this.generator.nextBoolean()) bestMove = m; //bad, last move has a probability of 0.5
                 }
             }
             if(moves.isEmpty()){ //decides best move every move has been tested
-                int idx = this.generator.nextInt(lMovesSameVal.size());
-                bestMove = lMovesSameVal.get(idx);
+                int idx2 = this.generator.nextInt(lMovesBestHeur.size());
+                bestMove = lMovesBestHeur.get(idx2);
+                //lMovesSameVal = new ArrayList<Move>(); //empty the list for next recursive calls
             }
             return bestMove;
         }
@@ -171,10 +175,11 @@ public class PlayerAIMinMax extends PlayerAI {
         int sumPlacementsP2 = config.getBoard().sumAllPlacements(p2c1.getPieces(), p2c1.col) + config.getBoard().sumAllPlacements(p2c2.getPieces(), p2c2.col);
 
         if(max){
-            return (sumScoreP1 + pieceValue - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2);
+            return ((sumScoreP1 - pieceValue) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2);
         }
         else{
-            return (sumScoreP2 + pieceValue - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1);
+            return ((sumScoreP1 + pieceValue - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2));
+            //return ((sumScoreP2 - pieceValue) - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1);
         }
     }
 
