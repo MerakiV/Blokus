@@ -4,13 +4,10 @@ import Controller.ControllerGamePlay;
 import GamePanels.BoardPanel;
 import GamePanels.ColorPanel;
 import Structures.Game2P;
-import Structures.Piece;
-import Structures.PieceReader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class GamePlayInterface extends JPanel {
 
@@ -29,8 +26,7 @@ public class GamePlayInterface extends JPanel {
     public BoardPanel boardPanel;
 
     public GamePlayMenu playMenu;
-    public Boolean play = false;
-    public Boolean existMenu = false;
+    public Boolean play = false, existMenu = false, hintsActivated = false;
 
     // Color Panels
     ColorPanel topLeftPanel, bottomLeftPanel, topRightPanel, bottomRightPanel;
@@ -45,7 +41,6 @@ public class GamePlayInterface extends JPanel {
         g2p = (Game2P) controller.game;
         setSize();
         this.setLayout(new FlowLayout());
-
         // Images
         backGround = new Image(frame, "images/border.png");
         backGroundImg = new Image(frame, "images/whiteBackground.png");
@@ -56,11 +51,12 @@ public class GamePlayInterface extends JPanel {
         initialiseButtons();
         // Add Listeners for Buttons
         this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo));
-
+        this.addMouseWheelListener(new WheelEvent(controller));
+        // Begins the game
         controller.startGame();
     }
 
-    /*
+    /**
     *   Initialise Board Panel
     *       Calls functions to initialise the board on the screen
     * */
@@ -70,14 +66,13 @@ public class GamePlayInterface extends JPanel {
         this.add(boardPanel);
     }
 
-    public void drawMenu(Graphics g) throws IOException {
+    public void drawMenu() throws IOException {
         if (play && !existMenu){
             playMenu = new GamePlayMenu(frame, this);
             playMenu.setBackground(null);
             playMenu.setOpaque(false);
             existMenu = true;
-//            backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
-
+            //backGroundImg.drawImg(g, 0, 0, frame.getWidth(), frame.getHeight());
             this.add(playMenu,0);
         }
     }
@@ -90,6 +85,10 @@ public class GamePlayInterface extends JPanel {
         this.frame.repaint();
     }
 
+    /**
+     *  Set Size
+     *      Sets the size of components
+     * */
     private void setSize() {
         // Frame
         widthFrame = frame.getWidth();
@@ -103,7 +102,7 @@ public class GamePlayInterface extends JPanel {
         tileSize = boardSize / 20;
 
         // Color Panel Size
-        colorPanelSize = new Dimension((int) (boardSize * 0.7), (int)(boardSize*0.4));
+        colorPanelSize = new Dimension((int) (boardSize * 0.7), (int)(boardSize*0.45));
 
         // Color Panel Positions
         topLeftX = (int) (widthFrame * 0.06) - 10;
@@ -116,7 +115,7 @@ public class GamePlayInterface extends JPanel {
         bottomRightY = boardY + boardSize - colorPanelSize.height;
     }
 
-    /*
+    /**
      *   Initialise Color Panels
      *       Calls functions to initialise the 4 color panels on the screen
      * */
@@ -135,7 +134,7 @@ public class GamePlayInterface extends JPanel {
         this.add(bottomRightPanel);
     }
 
-    /*
+    /**
      *   Initialise Buttons
      *       Calls functions to initialise the buttons on the screen
      *      - Menu: Opens menu for new game, continue, restart, tutorial, quit
@@ -157,7 +156,7 @@ public class GamePlayInterface extends JPanel {
         add(this.redo);
     }
 
-    /*
+    /**
     *   Player Turn
     *       Draws the string above the board with the current player's turn
     *       written in the corresponding player's color
@@ -172,18 +171,32 @@ public class GamePlayInterface extends JPanel {
 
         // If the current player is player 1
         if (g2p.currentPlayer2P == g2p.p1 && !controller.game.end) {
-            currentPlayer = new DrawString(g, "Player 1 " + controller.currentColor + "'s turn", transformColor(),
+            currentPlayer = new DrawString(g, "Player 1 " + colorBalance() + "'s turn", transformColor(),
                     (int) (width * 0.4), (int) (height * 0.18), 25);
             currentPlayer.paint(g);
         // If the current player is player 2
         } else if (g2p.currentPlayer2P == g2p.p2 && !controller.game.end) {
-            currentPlayer = new DrawString(g, "Player 2 " + controller.currentColor + "'s turn", transformColor(),
+            currentPlayer = new DrawString(g, "Player 2 " + colorBalance() + "'s turn", transformColor(),
                     (int) (width * 0.4), (int) (height * 0.18), 25);
             currentPlayer.paint(g);
         }
     }
 
-    /*
+    String colorBalance(){
+        switch(controller.currentColor){
+            case RED:
+                return "     RED";
+            case BLUE:
+                return "   BLUE";
+            case GREEN:
+                return " GREEN";
+            case YELLOW:
+                return "YELLOW";
+        }
+        return "";
+    }
+
+    /**
     *   Check End Game
     *       If the game has ended, print end game message
     * */
@@ -203,10 +216,10 @@ public class GamePlayInterface extends JPanel {
         }
     }
 
-    /*
+    /**
      * Transform Color
-     * takes the current color of the controller and returns the corresponding
-     * java.awt color for string color
+     *      takes the current color of the controller and returns the corresponding
+     *      java.awt color for string color
      */
     Color transformColor() {
         switch (controller.currentColor) {
@@ -222,9 +235,9 @@ public class GamePlayInterface extends JPanel {
         return null;
     }
 
-    /*
-     * Draw Strings
-     * Function that groups all the strings to be printed
+    /**
+     *  Draw Strings
+     *      Function that groups all the strings to be painted on the panel
      */
     void drawStrings(Graphics g) {
         DrawString player1 = new DrawString(g, "Player 1", (int) (width * 0.15), (int) (height * 0.18), 25);
@@ -253,13 +266,15 @@ public class GamePlayInterface extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         boardPanel.setLocation(boardX, boardY);
+
+        // Color Panels
         topLeftPanel.setBounds(topLeftX, topLeftY, colorPanelSize.width, colorPanelSize.height);
         bottomLeftPanel.setBounds(bottomLeftX, bottomLeftY, colorPanelSize.width, colorPanelSize.height);
         topRightPanel.setBounds(topRightX, topRightY, colorPanelSize.width, colorPanelSize.height);
         bottomRightPanel.setBounds(bottomRightX, bottomRightY, colorPanelSize.width, colorPanelSize.height);
 
+        // Buttons
         int iconSize = undo.getCurrentImageWidth() / 2;
-
         g.drawImage(this.undo.getCurrentImage(), (int) (widthFrame * 0.55) - iconSize, (int) (heightFrame * 0.85), this);
         g.drawImage(this.redo.getCurrentImage(), (int) (widthFrame * 0.45) - iconSize, (int) (heightFrame * 0.85), this);
         g.drawImage(this.menu.getCurrentImage(), (int) (widthFrame * 0.91), (int) (heightFrame * 0.08), frame);
@@ -276,7 +291,7 @@ public class GamePlayInterface extends JPanel {
         drawStrings(g);
         checkEndGame(g);
         try {
-            drawMenu(g);
+            drawMenu();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
