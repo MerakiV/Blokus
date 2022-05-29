@@ -2,9 +2,11 @@ package GamePanels;
 
 import Controller.ControllerGamePlay;
 import Interface.GamePlayInterface;
+import Interface.WheelEvent;
 import Structures.Board;
 import Structures.Color;
 import Structures.Game2P;
+import Structures.Tile;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,6 +14,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
@@ -20,7 +23,7 @@ import java.util.Hashtable;
  * */
 public class BoardPanel extends JPanel{
     public JFrame frame;
-    GamePlayInterface gamePlayInterface;
+    public GamePlayInterface gamePlayInterface;
     ControllerGamePlay controller;
     JLabel label;
 
@@ -28,9 +31,12 @@ public class BoardPanel extends JPanel{
     public int boardSize;
     Dimension size;
     public Hashtable<String, JLabel> labels;
+    public String[] tileName;
     public ArrayList<Icon> originalImages;
 
-    public boolean orientated = false;
+    public HashSet<Tile> tiles;
+
+    public boolean orientated = false, removeHint = false, isHint = false;
 
     public BoardPanel(GamePlayInterface g, ControllerGamePlay c) {
         controller = c;
@@ -43,6 +49,7 @@ public class BoardPanel extends JPanel{
         originalImages = new ArrayList<>();
         addBoardTiles();
         controller.setBoardPanel(this);
+        this.addMouseWheelListener(new WheelEvent(controller));
         // System.out.println("Board created");
     }
 
@@ -92,6 +99,34 @@ public class BoardPanel extends JPanel{
      * */
     private String getPath(int i, int j){
         //System.out.println(board.getColor(i,j));
+        if (controller.hintsActivated && isHint){
+            System.out.println("Hint activated and is hint");
+            if (removeHint)
+                return "tiles/boardTile.png";
+            switch(controller.currentColor){
+                case RED:
+                    return "tiles/RedHighlight.png";
+                case YELLOW:
+                    return "tiles/YellowHighlight.png";
+                case GREEN:
+                    return "tiles/GreenHighlight.png";
+                case BLUE:
+                    return "tiles/BlueHighlight.png";
+            }
+        } else if (controller.hintsActivated && !isHint){
+            System.out.println("Not Hint");
+            switch(controller.game.getCurrentColor()) {
+                case RED:
+                    return "tiles/RedBloc.png";
+                case YELLOW:
+                    return "tiles/YellowBloc.png";
+                case GREEN:
+                    return "tiles/GreenBloc.png";
+                case BLUE:
+                    return "tiles/BlueBloc.png";
+            }
+        }
+        System.out.println("Not Hint");
         switch(controller.game.getBoard().getColor(i,j)){
             case RED:
                 return "tiles/RedBloc.png";
@@ -134,6 +169,36 @@ public class BoardPanel extends JPanel{
         size = new Dimension(boardSize, boardSize);
         tileSize = boardSize/20;
         boardSize = tileSize*20;
+    }
+
+    public void showPositions(){
+        isHint = true;
+        if (controller.hoveredPiece != null){
+            tiles = controller.game.getBoard().fullcheck(controller.hoveredPiece, controller.currentColor);
+            for (Tile tile : tiles){
+                labels.get(tile.getY() + " " + tile.getX()).setIcon(new ImageIcon(getImage(tile.getY(), tile.getX())));
+            }
+        }
+    }
+
+    public void removePositions(){
+        removeHint = true;
+        //System.out.println("Hovered Piece : " + controller.hoveredPiece.getName().name());
+        if (controller.hoveredPiece != null){
+            System.out.println("Remove Positions");
+            for (Tile tile : tiles){
+                isHint = true;
+                if (tileName != null){
+                    if (tile.getY() == Integer.parseInt(tileName[0]) && tile.getX() == Integer.parseInt(tileName[1])){
+                        isHint = false;
+                    }
+                }
+                System.out.println(tile.getY() + " " + tile.getX());
+                labels.get(tile.getY() + " " + tile.getX()).setIcon(new ImageIcon(getImage(tile.getY(), tile.getX())));
+            }
+        }
+        isHint = false;
+        removeHint = false;
     }
 
     @Override

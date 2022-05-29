@@ -31,6 +31,8 @@ public class ControllerGamePlay implements EventController, Runnable {
     public JLabel tile;
     public ArrayList<Icon> originalImages;
 
+    public boolean hintsActivated = false;
+
     JFrame frame;
     Thread t;
     Shape shape;
@@ -198,6 +200,7 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     public boolean put(int y, int x) {
         if (piece != null) {
+            boardPanel.removePositions();
             if (game.put(piece, color, y, x)) {
                 piece = null;
                 color = null;
@@ -416,6 +419,8 @@ public class ControllerGamePlay implements EventController, Runnable {
                 break;
             case "hints":
                 System.out.println("hints");
+                hintsActivated = !hintsActivated;
+                boardPanel.repaint();
                 break;
             case "save":
                 System.out.println("Saving game...");

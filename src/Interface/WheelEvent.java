@@ -17,6 +17,11 @@ public class WheelEvent implements MouseWheelListener {
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (controller.piece != null){
+            if (controller.hintsActivated){
+                controller.boardPanel.removePositions();
+                controller.boardPanel.showPositions();
+                controller.boardPanel.repaint();
+            }
             if(e.getWheelRotation() < 0){
                 System.out.println("Mouse moved UP");
                 controller.command("counterclockwise");

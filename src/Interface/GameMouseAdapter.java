@@ -61,8 +61,9 @@ public class GameMouseAdapter implements MouseListener {
                 break;
             case HINTS:
                 // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
-                // System.out.println("Hint button Clicked");
-                game.hintsActivated = (!game.hintsActivated);
+                System.out.println("Hint button Clicked");
+                game.controller.hintsActivated = (!game.controller.hintsActivated);
+                game.boardPanel.repaint();
                 break;
             case REDO:
                 // System.out.println("REDO button Clicked");

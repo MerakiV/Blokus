@@ -44,6 +44,7 @@ public class PieceMouseAdapter implements MouseListener {
                 controller.piece = piecePanel.piece;
                 controller.color = piecePanel.colorPanel.color;
                 controller.piecePanel = piecePanel;
+                controller.boardPanel.removePositions();
                 System.out.println(controller.piece.getName().name());
                 piecePanel.repaint();
             }
@@ -74,6 +75,18 @@ public class PieceMouseAdapter implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         //System.out.println("Mouse Entered" + e.getX() + " " + e.getY());
+        piecePanel = (PiecePanel) e.getSource();
+        if (controller.piece == null || controller.piece == piecePanel.piece){
+            int col = piecePanel.colorPanel.controller.game.getBoard().getCorner(piecePanel.colorPanel.color);
+            if (piecePanel.colorPanel.controller.game.getPlayerList().get(col).getPieces().contains(piecePanel.piece) && controller.hintsActivated && !controller.currentPlayer.isAI()){
+                if (piecePanel.colorPanel.color == controller.currentColor){
+                    controller.hoveredPiece = piecePanel.piece;
+                    System.out.println("Hovered Piece : " + controller.hoveredPiece.getName().name());
+                    controller.boardPanel.showPositions();
+                    controller.boardPanel.repaint();
+                }
+            }
+        }
     }
 
 
@@ -85,6 +98,15 @@ public class PieceMouseAdapter implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         //System.out.println("Mouse Exited" + e.getX() + " " + e.getY());
+        if (controller.hintsActivated){
+            controller.boardPanel.removePositions();
+            /*if (controller.piece != null){
+                controller.hoveredPiece = controller.piece;
+                controller.boardPanel.showPositions();
+            } */
+            controller.hoveredPiece = null;
 
+            controller.boardPanel.repaint();
+        }
     }
 }
