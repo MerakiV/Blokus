@@ -113,7 +113,6 @@ public class PlayerAIMinMax extends PlayerAI {
                 it3 = hs.iterator();
                 while(it3.hasNext()) {
                     t = it3.next();
-
                     int mh;
                     List<Tile> cornerList = null;
                     int i=0;
