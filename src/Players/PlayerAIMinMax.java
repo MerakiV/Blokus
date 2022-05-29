@@ -50,7 +50,8 @@ public class PlayerAIMinMax extends PlayerAI {
         if(pieces.size() > 17){ // more than 4 times is useless
             //boolean StartPut = this.generator.nextBoolean(); // chooses if getting nearer to the center or not
             //if(StartPut){
-                return opening(g);
+                Move m = opening(g);
+                if(m != null) return m; //to cover the case a color can't reach the center if blocked
             }
 
         // MinMax and AlphaBeta //
@@ -80,7 +81,7 @@ public class PlayerAIMinMax extends PlayerAI {
                 if(mh < 15) return true;
                 break;
             case 20:
-                if(mh < 12) return true;
+                if(mh < 11) return true;
                 break;
             case 19:
                 if(mh < 8) return true;
@@ -94,7 +95,7 @@ public class PlayerAIMinMax extends PlayerAI {
 
     public List<Move> movesOpening(List<Piece> lp, int currPlayer, Board b) {
         List<Move> lm = new ArrayList<Move>();
-        Iterator<Piece> it1 = lp.iterator(); //shuffle?
+        Iterator<Piece> it1 = lp.iterator();
         Iterator<Shape> it2;
         Iterator<Tile> it3;
         HashSet<Tile> hs;
@@ -393,7 +394,7 @@ public class PlayerAIMinMax extends PlayerAI {
         int p2score1 = p2c1.getScore();
         int p2score2 = p2c2.getScore();
 
-        //apply coefficients to current player
+        //heur 2 & 3 & 4: apply coefficients to current player
         if(p1c1 == config.getCurrentPlayer()){
             p1score1 *= 2;
         } else if(p1c2 == config.getCurrentPlayer()) {
@@ -410,11 +411,16 @@ public class PlayerAIMinMax extends PlayerAI {
         int sumPlacementsP2 = config.getBoard().sumAllPlacements(p2c1.getPieces(), p2c1.col) + config.getBoard().sumAllPlacements(p2c2.getPieces(), p2c2.col);
 
         if(max){
-            return ((sumScoreP1 - pieceValue) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2);
+            return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2*2); //heur 4
+            //return ((sumScoreP1 - pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
+            //return ((sumScoreP1 - pieceValue) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 2
+            //return ((sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); // heur 1
         }
         else{
-            return ((sumScoreP1 + pieceValue - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2));
-            //return ((sumScoreP2 - pieceValue) - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1);
+            return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2*2); //heur 4
+            //return ((sumScoreP1 - pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
+            //return ((sumScoreP2 + pieceValue - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1)); //heur 2
+            //return ((sumScoreP2 - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1); // heur 1
         }
     }
 
