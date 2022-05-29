@@ -22,7 +22,7 @@ public class Image {
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(nom);
             assert in != null;
             img = ImageIO.read(in);
-            System.out.println("chargement des images ok");
+            //System.out.println("chargement des images ok");
             //fin chargement des images.
         } catch (Exception e) {
             System.out.println("erreur dans le chargement des images:" + e);

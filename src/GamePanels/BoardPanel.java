@@ -14,6 +14,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+/**
+ *  Board Panel
+ *   - Shows the board and all proper modifications as the game is being played
+ * */
 public class BoardPanel extends JPanel{
     public JFrame frame;
     GamePlayInterface gamePlayInterface;
@@ -39,9 +43,14 @@ public class BoardPanel extends JPanel{
         originalImages = new ArrayList<>();
         addBoardTiles();
         controller.setBoardPanel(this);
-        System.out.println("Board created");
+        // System.out.println("Board created");
     }
 
+    /**
+     *  Add Board Tiles
+     *      Creates and stores JLabels for each of the tiles on the board
+     *      Named using the position of the tile on the board
+     * */
     private void addBoardTiles(){
         for (int y = 0; y < 20 ; y++){
             for (int x = 0; x < 20 ; x++){
@@ -57,6 +66,11 @@ public class BoardPanel extends JPanel{
         }
     }
 
+    /**
+     *  Get Image
+     *      Input : line, column
+     *      Returns the corresponding image of the tile at the position given in input
+     **/
     private Image getImage(int i, int j) {
         BufferedImage img;
         Image resizedImage = null;
@@ -71,6 +85,11 @@ public class BoardPanel extends JPanel{
         return resizedImage;
     }
 
+    /**
+     *  Get Path
+     *      Input : line, column
+     *      Returns the path to the corresponding image in resources
+     * */
     private String getPath(int i, int j){
         //System.out.println(board.getColor(i,j));
         switch(controller.game.getBoard().getColor(i,j)){
@@ -104,6 +123,10 @@ public class BoardPanel extends JPanel{
         return null;
     }
 
+    /**
+     *  Set Size
+     *      Sets the size of components
+     * */
     private void setSize(){
         widthFrame = frame.getWidth();
         heightFrame = frame.getHeight();

@@ -1,26 +1,14 @@
 package Interface;
 
-import GamePanels.ColorPanel;
-import Structures.PieceType;
-
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.util.Hashtable;
 
 public class GameMouseAdapter implements MouseListener {
 
     GamePlayInterface game;
     component currentComponent;
 
-    HoverButton menu;
-    HoverButton hint;
-    HoverButton redo;
-    HoverButton undo;
-
-//    MenuInterface menu;
-
+    HoverButton menu, hint, redo, undo;
     int positionX,positionY;
 
     enum component {
@@ -36,17 +24,12 @@ public class GameMouseAdapter implements MouseListener {
         NONE
     }
 
-    GameMouseAdapter(GamePlayInterface g) {
-        game = g;
-    }
-
     GameMouseAdapter(GamePlayInterface g, HoverButton b1, HoverButton b2, HoverButton b3, HoverButton b4){
         game = g;
         menu = b1;
         hint = b2;
         redo = b3;
         undo = b4;
-
     }
 
     @Override
@@ -56,36 +39,37 @@ public class GameMouseAdapter implements MouseListener {
         currentComponent = checkComponent(e);
         switch(currentComponent){
             case BOARD:
-                System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
+                // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
                 break;
             case TOPLEFT:
-                topLeftClick();
+                // System.out.println("Mouse Clicked On Top Left Color Panel " + positionX + " " + positionY);
                 break;
             case TOPRIGHT:
-                System.out.println("Mouse Clicked On Top Right Color Panel " + positionX + " " + positionY);
+                // System.out.println("Mouse Clicked On Top Right Color Panel " + positionX + " " + positionY);
                 break;
             case BOTTOMLEFT:
-                System.out.println("Mouse Clicked On Bottom Left Color Panel" + positionX + " " + positionY);
+                // System.out.println("Mouse Clicked On Bottom Left Color Panel" + positionX + " " + positionY);
                 break;
             case BOTTOMRIGHT:
-                System.out.println("Mouse Clicked On Bottom right Color Panel " + positionX + " " + positionY);
+                // System.out.println("Mouse Clicked On Bottom right Color Panel " + positionX + " " + positionY);
                 break;
             case MENU:
-                System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
-                System.out.println("Menu button Clicked");
+                // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
+                // System.out.println("Menu button Clicked");
                 game.play = true;
                 game.repaint();
                 break;
             case HINTS:
-                System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
-                System.out.println("Hint button Clicked");
+                // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
+                // System.out.println("Hint button Clicked");
+                game.hintsActivated = (!game.hintsActivated);
                 break;
             case REDO:
-                System.out.println("REDO button Clicked");
+                // System.out.println("REDO button Clicked");
                 game.controller.command("redo");
                 break;
             case UNDO:
-                System.out.println("UNDO button Clicked");
+                // System.out.println("UNDO button Clicked");
                 game.controller.command("undo");
                 break;
             default:
@@ -93,14 +77,8 @@ public class GameMouseAdapter implements MouseListener {
         }
     }
 
-    public void topLeftClick(){
-        int piecePanelSize = game.topLeftPanel.piecePanelSize.height;
-        int x = positionX - game.topLeftX;
-        int y = positionY - game.topLeftY;
-
-    }
-
     public component checkComponent(MouseEvent e){
+        // BOARD
         if (game.boardX <= e.getX() && (game.boardX + game.boardPanel.boardSize) >= e.getX()
                 && game.boardY <= e.getY() && (game.boardY + game.boardPanel.boardSize) >= e.getY()){
             return component.BOARD;

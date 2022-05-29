@@ -18,11 +18,10 @@ import java.util.ArrayList;
 
 public class ControllerGamePlay implements EventController, Runnable {
     public Game game;
-    public Piece piece;
-    public Color color;
+    public Piece piece, hoveredPiece;
+    public Color color, currentColor;
 
     public Player currentPlayer;
-    public Color currentColor;
 
     public PiecePanel piecePanel;
     public ArrayList<Piece> pieces;
@@ -38,6 +37,10 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     Save saveGame;
 
+    /**
+     *  Controller Game Play
+     *      Version before color selection
+     * */
     public ControllerGamePlay() {
         initialiseGame();
         piece = null;
@@ -59,6 +62,11 @@ public class ControllerGamePlay implements EventController, Runnable {
         saveGame = new Save(g,"save.dat");
     }
 
+    /**
+     *  Initialise Pieces
+     *      creates a list of the pieces to be used to show all pieces in the color panel
+     *      when a game is continued
+     * */
     void initPieces() {
         PieceReader pRead;
         try {
@@ -177,7 +185,6 @@ public class ControllerGamePlay implements EventController, Runnable {
         System.out.println("Finished InitialiseGame");
     }
 
-    // TODO : to change once game settings completed
     public void setUpGameSettings() {
         GameSettings2P gameSettings2P = new GameSettings2P();
         gameSettings2P.setP1Color1(Structures.Color.YELLOW);
@@ -203,6 +210,10 @@ public class ControllerGamePlay implements EventController, Runnable {
         return false;
     }
 
+    /**
+     *  Next Turn
+     *      Goes to the next Player
+     **/
     public void nextTurn() {
         game.nextTurn();
         currentPlayer = game.getCurrentPlayer();
@@ -256,6 +267,10 @@ public class ControllerGamePlay implements EventController, Runnable {
         }
     }
 
+    /**
+     *  Get Image
+     *      Returns the corresponding image of the tile at the position given in input
+     **/
     private Image getImage() {
         BufferedImage img;
         int tileSize = boardPanel.boardSize / 20;
@@ -271,6 +286,10 @@ public class ControllerGamePlay implements EventController, Runnable {
         return resizedImage;
     }
 
+    /**
+     *  Get Path
+     *      Returns the path to the corresponding image in resources
+     * */
     private String getPath() {
         switch (color) {
             case RED:
@@ -296,7 +315,6 @@ public class ControllerGamePlay implements EventController, Runnable {
         String[] split = name.split(" ");
         int x = Integer.parseInt(split[0]);
         int y = Integer.parseInt(split[1]);
-        boolean[][] shape = piece.getShape().shape;
         x -= piece.getShape().anchorY;
         y -= piece.getShape().anchorX;
         if (x >= 0 && x + piece.getShape().Ncol - 1 <= 19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19) {

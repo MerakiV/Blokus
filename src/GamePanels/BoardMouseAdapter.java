@@ -30,14 +30,29 @@ public class BoardMouseAdapter implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Board tile " + tile.getName());
-
-        String[] split = tile.getName().split(" ");
-        int x = Integer.parseInt(split[0]);
-        int y = Integer.parseInt(split[1]);
-        clicked = controller.put(y,x);
-        if(clicked) controller.nextTurn();
-        gamePlayInterface.repaint();
+        if (e.getButton() == MouseEvent.BUTTON3){
+            System.out.println("Right Clicked!");
+            if (controller.piece != null){
+                controller.command("vertical");
+            } else{
+                System.out.println("No piece Selected");
+            }
+        } else if (e.getButton() == MouseEvent.BUTTON2){
+            System.out.println("Middle Clicked!");
+            if (controller.piece != null){
+                controller.command("horizontal");
+            } else{
+                System.out.println("No piece Selected");
+            }
+        } else {
+            System.out.println("Board tile " + tile.getName());
+            String[] split = tile.getName().split(" ");
+            int x = Integer.parseInt(split[0]);
+            int y = Integer.parseInt(split[1]);
+            clicked = controller.put(y, x);
+            if (clicked) controller.nextTurn();
+            gamePlayInterface.repaint();
+        }
     }
 
     // TODO : change the color values to match corners
