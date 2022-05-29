@@ -134,7 +134,7 @@ public class PlayerAIMedium extends PlayerAI {
         int colorCode = b.getCorner(this.col);
         int nbPuttablePieces = pieces.size();
 
-        System.out.println(g.getCurrentColor());
+        //System.out.println(g.getCurrentColor());
 
         while(true) {
             //see label of last piece

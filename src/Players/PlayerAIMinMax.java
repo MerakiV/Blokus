@@ -46,9 +46,16 @@ public class PlayerAIMinMax extends PlayerAI {
     @Override
     public Move generateMove(Game g){
 
-        Move m = null;
-        lMovesBestHeur = new ArrayList<Move>();
+        // At the start of the game: aim at the center of the board //
+        if(pieces.size() > 17){ // more than 4 times is useless
+            //boolean StartPut = this.generator.nextBoolean(); // chooses if getting nearer to the center or not
+            //if(StartPut){
+                return opening(g);
+            }
 
+        // MinMax and AlphaBeta //
+
+        Move m = null;
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
             if(this.alphaBeta == true) m = AlgoAlphaBeta(m, g, true, 5, MIN, MAX);
             else m = AlgoMinMax(m, g, true, 1);
@@ -56,16 +63,190 @@ public class PlayerAIMinMax extends PlayerAI {
             if(this.alphaBeta == true) m = AlgoAlphaBeta(m, g, false, 5, MIN, MAX);
             else m = AlgoMinMax(m, g, false, 1);
         }
-        //if(m.getHeuristic() == 0)
-            //return null;
 
-        //hasMoves = false;
-        m.getShape().printShape();
+        return m;
+    }
+
+    //Manhattan distance from a tile to the center of the board
+    int manhattanDist(Tile t, int centerX, int centerY){
+        return Math.abs(t.getX() - centerX) + Math.abs(t.getY() - centerY);
+    }
+
+    //Decide if for a corner tile of a shape, its Manhattan distance is enough given the number of remaining pieces
+    //for the player.
+    boolean decideManhattan(int mh){
+        switch(pieces.size()){
+            case 21:
+                if(mh < 15) return true;
+                break;
+            case 20:
+                if(mh < 12) return true;
+                break;
+            case 19:
+                if(mh < 8) return true;
+                break;
+            case 18:
+                if(mh < 4) return true;
+                break;
+        }
+        return false;
+    }
+
+    public List<Move> movesOpening(List<Piece> lp, int currPlayer, Board b) {
+        List<Move> lm = new ArrayList<Move>();
+        Iterator<Piece> it1 = lp.iterator(); //shuffle?
+        Iterator<Shape> it2;
+        Iterator<Tile> it3;
+        HashSet<Tile> hs;
+        Piece pi;
+        Shape sh;
+        Tile t;
+
+        while (it1.hasNext()) {
+            pi = it1.next();
+            it2 = pi.getShapeList().iterator();
+            while (it2.hasNext()) {
+                sh = it2.next();
+
+                hs = b.fullcheck(sh, col);
+
+                it3 = hs.iterator();
+                while(it3.hasNext()) {
+                    t = it3.next();
+
+                    int mh;
+                    List<Tile> cornerList = null;
+                    int i=0;
+                    boolean added = false;
+                    switch(currPlayer){
+                        case 0:
+                            cornerList = sh.getCornerList(0);
+                            Collections.shuffle(cornerList);
+                            while(i<cornerList.size() && !added){
+                                Tile corner = cornerList.get(i);
+                                int cornerToBoardX = t.getX() - sh.getAnchorX() + corner.getX();
+                                int cornerToBoardY = t.getY() - sh.getAnchorY() + corner.getY();
+                                Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
+                                mh = manhattanDist(cornerToBoard, 9, 9);
+                                boolean toAdd = decideManhattan(mh);
+                                if(toAdd){
+                                    Move m2 = new Move(sh, pi.getName(), t);
+                                    lm.add(m2);
+                                    added = true;
+                                }
+                                i++;
+                            }
+                            break;
+                        case 1:
+                            cornerList = sh.getCornerList(1);
+                            Collections.shuffle(cornerList);
+                            while(i<cornerList.size() && !added){ //add random
+                                Tile corner = cornerList.get(i); //verify if exists
+                                int cornerToBoardX = t.getX() - sh.getAnchorX() + corner.getX();
+                                int cornerToBoardY = t.getY() - sh.getAnchorY() + corner.getY();
+                                Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
+                                mh = manhattanDist(cornerToBoard, 9, 10);
+                                boolean toAdd = decideManhattan(mh);
+                                if(toAdd){
+                                    Move m2 = new Move(sh, pi.getName(), t);
+                                    lm.add(m2);
+                                    added = true;
+                                }
+                                i++;
+                            }
+                            break;
+                        case 2:
+                            cornerList = sh.getCornerList(2);
+                            Collections.shuffle(cornerList);
+                            while(i<cornerList.size() && !added){
+                                Tile corner = cornerList.get(i); //verify if exists
+                                int cornerToBoardX = t.getX() - sh.getAnchorX() + corner.getX();
+                                int cornerToBoardY = t.getY() - sh.getAnchorY() + corner.getY();
+                                Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
+                                mh = manhattanDist(cornerToBoard, 10, 10);
+                                boolean toAdd = decideManhattan(mh);
+                                if(toAdd){
+                                    Move m2 = new Move(sh, pi.getName(), t);
+                                    lm.add(m2);
+                                    added = true;
+                                }
+                                i++;
+                            }
+                            break;
+                        case 3:
+                            cornerList = sh.getCornerList(3);
+                            Collections.shuffle(cornerList);
+                            while(i<cornerList.size() && !added){
+                                Tile corner = cornerList.get(i); //verify if exists
+                                int cornerToBoardX = t.getX() - sh.getAnchorX() + corner.getX();
+                                int cornerToBoardY = t.getY() - sh.getAnchorY() + corner.getY();
+                                Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
+                                mh = manhattanDist(cornerToBoard, 10, 9);
+                                boolean toAdd = decideManhattan(mh);
+                                if(toAdd){
+                                    Move m2 = new Move(sh, pi.getName(), t);
+                                    lm.add(m2);
+                                    added = true;
+                                }
+                                i++;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        return lm;
+    }
+
+    Move opening(Game g) {
+        Board b = g.getBoard();
+
+        //take all pieces of value 5
+        int valFive = 0;
+        List<Piece> lp = new ArrayList<Piece>();
+        for (int i = pieces.size() - 1; i >= 0; i--) {
+            if (pieces.get(i).getName().toString().contains("FIVE")) {
+                valFive++;
+                lp.add(pieces.get(i));
+            } else {
+                break;
+            }
+        }
+
+        //search for current player
+        int i = 0;
+        boolean foundPlayer = false;
+        int currPlayer = -1;
+        while (i < 4 && !foundPlayer) {
+            if (g.getPlayerList().get(i) == g.getCurrentPlayer()) {
+                currPlayer = i;
+                foundPlayer = true;
+            }
+            i++;
+        }
+
+        //decide move randomly
+        List<Move> lm = movesOpening(lp, currPlayer, g.getBoard());
+        int idx = 0;
+        long seed2 = seed;
+        if(currPlayer != 0){
+            if(currPlayer == 1) seed2+= 500;
+            if(currPlayer == 2) seed2+= 1000;
+            if(currPlayer == 3) seed2+= 1500;
+            Random generator2 = new Random(seed2);
+            idx = generator2.nextInt(lm.size());
+        }
+        else {
+            idx = this.generator.nextInt(lm.size()); //decide a random move
+        }
+        Move m = lm.get(idx);
+
         return m;
     }
 
     //enum algo
-    public List<Move> moves(Game config, boolean max) {
+    public List<Move> moves(Game config) {
         //PriorityQueue<Move> lm = new PriorityQueue<>(11, new ComparatorAIMinMax(config, max));
         List<Move> lm = new ArrayList<Move>();
         //Game g2;
@@ -110,7 +291,7 @@ public class PlayerAIMinMax extends PlayerAI {
         }
         else {
             int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
-            List<Move> moves = moves(config, max); //children
+            List<Move> moves = moves(config); //children
             Move bestMove = null;
             while(!moves.isEmpty()) {
                 int idx1 = this.generator.nextInt(moves.size());
@@ -149,10 +330,9 @@ public class PlayerAIMinMax extends PlayerAI {
             move.setHeuristic(h);
             return move;
         }
-        //return move;
         else {
             int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
-            List<Move> moves = moves(config, max); //children
+            List<Move> moves = moves(config); //children
             Move bestMove = null;
             while(!moves.isEmpty()) {
                 int idx1 = this.generator.nextInt(moves.size());
@@ -213,6 +393,17 @@ public class PlayerAIMinMax extends PlayerAI {
         int p1score2 = p1c2.getScore();
         int p2score1 = p2c1.getScore();
         int p2score2 = p2c2.getScore();
+
+        //apply coefficients to current player
+        if(p1c1 == config.getCurrentPlayer()){
+            p1score1 *= 2;
+        } else if(p1c2 == config.getCurrentPlayer()) {
+            p1score2 *= 2;
+        } else if(p2c1 == config.getCurrentPlayer()) {
+            p2score1 *= 2;
+        } else{ //p2c2 == config.getCurrentPlayer()
+            p2score2 *= 2;
+        }
 
         int sumScoreP1 = p1score1 + p1score2;
         int sumScoreP2 = p2score1 + p2score2;
