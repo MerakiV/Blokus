@@ -47,10 +47,13 @@ public class BoardMouseAdapter implements MouseListener {
         } else {
             System.out.println("Board tile " + tile.getName());
             String[] split = tile.getName().split(" ");
+            controller.boardPanel.tileName = split;
             int x = Integer.parseInt(split[0]);
             int y = Integer.parseInt(split[1]);
             clicked = controller.put(y, x);
-            if (clicked) controller.nextTurn();
+            if (clicked) {
+                controller.nextTurn();
+            }
             gamePlayInterface.repaint();
         }
     }
@@ -172,7 +175,6 @@ public class BoardMouseAdapter implements MouseListener {
         String[] split = name.split(" ");
         int x = Integer.parseInt(split[0]);
         int y = Integer.parseInt(split[1]);
-        boolean [][] shape = controller.piece.getShape().shape;
         x -= controller.piece.getShape().anchorY ;
         y -= controller.piece.getShape().anchorX;
         if (x >=0 && x + controller.piece.getShape().Ncol - 1 <=19 && y >= 0 && y + controller.piece.getShape().Nlin - 1 <= 19){

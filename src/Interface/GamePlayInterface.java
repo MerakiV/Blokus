@@ -26,7 +26,7 @@ public class GamePlayInterface extends JPanel {
     public BoardPanel boardPanel;
 
     public GamePlayMenu playMenu;
-    public Boolean play = false, existMenu = false, hintsActivated = false;
+    public Boolean play = false, existMenu = false;
 
     // Color Panels
     ColorPanel topLeftPanel, bottomLeftPanel, topRightPanel, bottomRightPanel;
@@ -51,7 +51,6 @@ public class GamePlayInterface extends JPanel {
         initialiseButtons();
         // Add Listeners for Buttons
         this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo));
-        this.addMouseWheelListener(new WheelEvent(controller));
         // Begins the game
         controller.startGame();
     }
@@ -76,6 +75,7 @@ public class GamePlayInterface extends JPanel {
             this.add(playMenu,0);
         }
     }
+
 
     public void removeMenu(GamePlayMenu gM){
         play = false;
