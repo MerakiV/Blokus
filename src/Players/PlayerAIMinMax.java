@@ -27,6 +27,7 @@ public class PlayerAIMinMax extends PlayerAI {
             System.exit(1);
         }
     }
+    
     public PlayerAIMinMax(Color c, boolean ab) {
         difficultyLevel = 2;
         col = c;
@@ -50,7 +51,8 @@ public class PlayerAIMinMax extends PlayerAI {
         if(pieces.size() > 17){ // more than 4 times is useless
             //boolean StartPut = this.generator.nextBoolean(); // chooses if getting nearer to the center or not
             //if(StartPut){
-                return opening(g);
+                Move m = opening(g);
+                if(m != null) return m; //to cover the case a color can't reach the center if blocked
             }
 
         // MinMax and AlphaBeta //
@@ -80,7 +82,7 @@ public class PlayerAIMinMax extends PlayerAI {
                 if(mh < 15) return true;
                 break;
             case 20:
-                if(mh < 12) return true;
+                if(mh < 11) return true;
                 break;
             case 19:
                 if(mh < 8) return true;
@@ -94,7 +96,7 @@ public class PlayerAIMinMax extends PlayerAI {
 
     public List<Move> movesOpening(List<Piece> lp, int currPlayer, Board b) {
         List<Move> lm = new ArrayList<Move>();
-        Iterator<Piece> it1 = lp.iterator(); //shuffle?
+        Iterator<Piece> it1 = lp.iterator();
         Iterator<Shape> it2;
         Iterator<Tile> it3;
         HashSet<Tile> hs;
@@ -393,7 +395,7 @@ public class PlayerAIMinMax extends PlayerAI {
         int p2score1 = p2c1.getScore();
         int p2score2 = p2c2.getScore();
 
-        //apply coefficients to current player
+        //heur 2 & 3 & 4: apply coefficients to current player
         if(p1c1 == config.getCurrentPlayer()){
             p1score1 *= 2;
         } else if(p1c2 == config.getCurrentPlayer()) {
@@ -410,119 +412,18 @@ public class PlayerAIMinMax extends PlayerAI {
         int sumPlacementsP2 = config.getBoard().sumAllPlacements(p2c1.getPieces(), p2c1.col) + config.getBoard().sumAllPlacements(p2c2.getPieces(), p2c2.col);
 
         if(max){
-            return ((sumScoreP1 - pieceValue) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2);
+            return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2*2); //heur 4
+            //return ((sumScoreP1 - pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
+            //return ((sumScoreP1 - pieceValue) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 2
+            //return ((sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); // heur 1
         }
         else{
-            return ((sumScoreP1 + pieceValue - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2));
-            //return ((sumScoreP2 - pieceValue) - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1);
+            return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2*2); //heur 4
+            //return ((sumScoreP1 - pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
+            //return ((sumScoreP2 + pieceValue - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1)); //heur 2
+            //return ((sumScoreP2 - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1); // heur 1
         }
     }
-
-    /*
-
-    // returns a list of every shapes that can be put for a given corner (unused rn)
-    public Hashtable<Shape, List<Tile>> allPlacementsforCorner(Game config, List<Piece> lp, Color color, int x, int y){
-        Hashtable<Shape, List<Tile>> listPlacements = new Hashtable<>();
-        Board b = config.getBoard();
-        Iterator<Tile> it;
-        List<Tile> lt;
-        Tile t1, t2;
-        int k, ax, ay;
-        for(int ip= 0; ip < lp.size(); ip++) {
-            Piece p = lp.get(ip);
-            List<Shape> ls = p.getShapeList();
-            for(Shape s: ls) {
-                lt = new ArrayList<>();
-                for (k=0; k<4; k++) {
-                    it = s.getCornerList(k).iterator();
-                    while(it.hasNext()) {
-                        t1 = it.next();
-                        ax = x - t1.getX() + s.getAnchorX();
-                        ay = y - t1.getY() + s.getAnchorY();
-                        if (b.canPut(s, color, ax, ay)) {
-                            t2 = new Tile(ax, ay);
-                            lt.add(t2);
-                        }
-                    }
-                }
-                if(!lt.isEmpty()){
-                    listPlacements.put(s, lt);
-                }
-            }
-        }
-        return listPlacements;
-    }
-
-    // returns a list of every pieces that can be put for every corners (unused rn)
-    public Hashtable<Shape, List<Tile>> allPlacements(Game config, List<Piece> lp, Color color){
-        Hashtable<Shape, List<Tile>> listPlacements = new Hashtable<>();
-        Board b = config.getBoard();
-        Iterator<Tile> it1, it2;
-        List<Tile> lt;
-        Tile t1, t2, t3;
-        int k, ax, ay;
-        for(int ip= 0; ip < lp.size(); ip++) {
-            Piece p = lp.get(ip);
-            List<Shape> ls = p.getShapeList();
-            for(Shape s: ls) {
-                lt = new ArrayList<>();
-                for (k=0; k<4; k++) {
-                    it1 = s.getCornerList(k).iterator();
-                    while(it1.hasNext()) {
-                        t1 = it1.next();
-                        it2 = b.getCorners(color, k).iterator();
-                        while (it2.hasNext()) {
-                            t2 = it2.next();
-                            ax = t2.getX() - t1.getX() + s.getAnchorX();
-                            ay = t2.getY() - t1.getY() + s.getAnchorY();
-                            if (b.canPut(s, color, ax, ay)) {
-                                t3 = new Tile(ax, ay);
-                                lt.add(t3);
-                            }
-                        }
-                    }
-                }
-                if(!lt.isEmpty()){
-                    listPlacements.put(s, lt);
-                }
-            }
-        }
-        return listPlacements;
-    }
-
-    int sumAllPlacements(Game config, Player pl){
-        int sum = 0;
-        List<Piece> lp = pl.getPieces();
-        Color color = pl.getColor();
-        Board b = config.getBoard();
-        Iterator<Tile> it1, it2;
-        Tile t1, t2;
-        int k, ax, ay;
-        for(int ip= 0; ip <= lp.size(); ip++) {
-            Piece p = lp.get(ip);
-            List<Shape> ls = p.getShapeList();
-            for(Shape s: ls) {
-                for (k=0; k<4; k++) {
-                    it1 = s.getCornerList(k).iterator();
-                    while(it1.hasNext()) {
-                        t1 = it1.next();
-                        it2 = b.getCorners(color, k).iterator();
-                        while (it2.hasNext()) {
-                            t2 = it2.next();
-                            ax = t2.getX() - t1.getX() + s.getAnchorX();
-                            ay = t2.getY() - t1.getY() + s.getAnchorY();
-                            if (b.canPut(s, color, ax, ay)) {
-                                sum++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return sum;
-    }
-
-    */
 
     private PlayerAIMinMax(long s) {
         this.seed = s;
