@@ -73,6 +73,7 @@ public abstract class Game implements Serializable, Cloneable {
         pushToFuture();
         GameState previous = history.undo();
         board = previous.board;
+        players = previous.players;
         currentPlayer = previous.getCurrentPlayer();
     }
 
@@ -80,6 +81,7 @@ public abstract class Game implements Serializable, Cloneable {
         pushToPast();
         GameState next = history.redo();
         board = next.board;
+        players = next.players;
         currentPlayer = next.getCurrentPlayer();
     }
 
