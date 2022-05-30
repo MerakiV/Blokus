@@ -75,7 +75,6 @@ public class ColorPanel extends JPanel{
 
     private void getPieces(){
         for (int i = 0; i < controller.pieces.size(); i++){
-            // TODO : controller
             PiecePanel piece = new PiecePanel(this, controller.pieces.get(i));
             piece.setPreferredSize(piecePanelSize);
             this.add(piece);

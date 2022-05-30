@@ -2,7 +2,9 @@ package Controller;
 
 import GamePanels.BoardPanel;
 import GamePanels.PiecePanel;
+import Interface.DrawString;
 import Interface.EventController;
+import Interface.GamePlayInterface;
 import Players.Player;
 import Players.PlayerAI;
 import Structures.Color;
@@ -17,9 +19,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class ControllerGamePlay implements EventController, Runnable {
-    public Game game;
+    public Game game, originalGame;
     public Piece piece, hoveredPiece;
     public Color color, currentColor;
+    public GamePlayInterface gamePlayInterface;
 
     public Player currentPlayer;
 
@@ -32,6 +35,10 @@ public class ControllerGamePlay implements EventController, Runnable {
     public ArrayList<Icon> originalImages;
 
     public boolean hintsActivated = false;
+
+    public String errorMessage = "";
+
+    public DrawString error;
 
     JFrame frame;
     Thread t;
@@ -55,6 +62,7 @@ public class ControllerGamePlay implements EventController, Runnable {
     public ControllerGamePlay(Game g, JFrame f) {
         frame = f;
         game = g;
+        originalGame = g;
         piece = null;
         color = null;
         initPieces();
@@ -110,7 +118,6 @@ public class ControllerGamePlay implements EventController, Runnable {
             }
             if (currentPlayer.isAI()) {
                 if (currentPlayer.checkForMoves(game.getBoard())) {
-                    System.out.println("AI playing");
                     Move m = ((PlayerAI) currentPlayer).generateMove(game);
                     if (m != null) {
                         shape = m.getShape();
@@ -126,14 +133,18 @@ public class ControllerGamePlay implements EventController, Runnable {
                         boardPanel.repaint();
                     }
                 } else {
-                    System.out.println("No more moves for AI " + currentPlayer.getColor());
+                    errorMessage = "No more moves for AI " + currentPlayer.getColor();
+                    System.out.println(errorMessage);
+                    gamePlayInterface.repaint();
                 }
                 nextTurn();
                 frame.repaint();
                 game.updateEnd();
             } else { // not AI
                 if (!currentPlayer.checkForMoves(game.getBoard())) {
-                    System.out.println("No more moves for Player " + currentPlayer.getColor());
+                    errorMessage = "No more moves for Player " + currentPlayer.getColor();
+                    System.out.println(errorMessage);
+                    gamePlayInterface.repaint();
                     nextTurn();
                     frame.repaint();
                     game.updateEnd();
@@ -141,7 +152,9 @@ public class ControllerGamePlay implements EventController, Runnable {
             }
         }
         // game has ended
-        System.out.println("Game over");
+        errorMessage = "Game over";
+        System.out.println(errorMessage);
+        gamePlayInterface.repaint();
     }
 
     public void noEndRun() {
@@ -207,8 +220,12 @@ public class ControllerGamePlay implements EventController, Runnable {
                 // System.out.println("Works");
                 // System.out.println("It's " + currentColor);
                 return true;
-            } else
+            } else{
                 System.out.println("Invalid");
+                errorMessage = "Invalid piece placement";
+                gamePlayInterface.repaint();
+            }
+
         }
         return false;
     }
@@ -340,6 +357,15 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     void newGame() {
         // TODO: reset board and player turn to original
+        game = originalGame;
+        piece = null;
+        color = null;
+        initPieces();
+        currentPlayer = game.getCurrentPlayer();
+        currentColor = game.getCurrentColor();
+        originalImages = new ArrayList<>();
+        piece = hoveredPiece = null;
+        hintsActivated = false;
     }
 
     void redo() {
@@ -416,6 +442,7 @@ public class ControllerGamePlay implements EventController, Runnable {
             case "newGame":
                 System.out.println("newGame");
                 newGame();
+                boardPanel.repaint();
                 break;
             case "hints":
                 System.out.println("hints");
