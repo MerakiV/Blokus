@@ -12,9 +12,9 @@ public class PlayerAIMinMax extends PlayerAI {
     private final long seed;
     private final Random generator;
 
-    boolean alphaBeta = false;
+    Move bestM;
 
-    List<Move> lMovesBestHeur;
+    boolean isAlphaBeta = false;
 
     void initPieces() {
         // create list of pieces from PieceReader
@@ -33,7 +33,7 @@ public class PlayerAIMinMax extends PlayerAI {
         col = c;
         isAI = true;
         hasMoves = true;
-        alphaBeta = ab;
+        isAlphaBeta = ab;
         seed = System.currentTimeMillis();
         this.generator = new Random(seed);
         initPieces();
@@ -59,10 +59,17 @@ public class PlayerAIMinMax extends PlayerAI {
 
         Move m = null;
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
-            if(this.alphaBeta == true) m = AlgoAlphaBeta(m, g, true, 5, MIN, MAX);
+            //if(this.isAlphaBeta == true) m = AlgoAlphaBeta(m, g, true, 5, MIN, MAX);
+            if(this.isAlphaBeta == true){
+                AlgoAlphaBeta(m, g, true, 5, MIN, MAX);
+                return bestM;
+            }
             else m = AlgoMinMax(m, g, true, 1);
         } else {
-            if(this.alphaBeta == true) m = AlgoAlphaBeta(m, g, false, 5, MIN, MAX);
+            if(this.isAlphaBeta == true){
+                AlgoAlphaBeta(m, g, false, 5, MIN, MAX);
+                return bestM;
+            }
             else m = AlgoMinMax(m, g, false, 1);
         }
 
@@ -229,6 +236,7 @@ public class PlayerAIMinMax extends PlayerAI {
 
         //decide move randomly
         List<Move> lm = movesOpening(lp, currPlayer, g.getBoard());
+        if(lm.isEmpty()) return null;
         int idx = 0;
         long seed2 = seed;
         if(currPlayer != 0){
@@ -247,11 +255,13 @@ public class PlayerAIMinMax extends PlayerAI {
     }
 
     //enum algo
-    public List<Move> moves(Game config) {
+    public ArrayList<Move> moves(Game config) {
         //PriorityQueue<Move> lm = new PriorityQueue<>(11, new ComparatorAIMinMax(config, max));
-        List<Move> lm = new ArrayList<Move>();
+        ArrayList<Move> lm = new ArrayList<Move>();
         //Game g2;
-        Iterator<Piece> it1 = config.getCurrentPlayer().getPieces().iterator();
+        //int idx = this.generator.nextInt(pieces.size());
+        //idx = ;
+        Iterator<Piece> it1 = config.getCurrentPlayer().getPieces().iterator();;
         Iterator<Shape> it2;
         Iterator<Tile> it3;
         HashSet<Tile> hs;
@@ -273,7 +283,7 @@ public class PlayerAIMinMax extends PlayerAI {
                     t = it3.next();
                     
                     //g2 = (Game) config.clone();
-                    //g2.put(sh, pi.getName(), col, t.getX(), t.getY());
+                    //config.put(sh, pi.getName(), col, t.getX(), t.getY());
                     //pq.add(g2);
                     Move m2 = new Move(sh, pi.getName(), t);
                     lm.add(m2);
@@ -284,19 +294,99 @@ public class PlayerAIMinMax extends PlayerAI {
         return lm;
     }
 
-    public Move AlgoAlphaBeta(Move move, Game config, boolean max, int depth, int alpha, int beta) {
-        if (depth == 0 || (move != null && isLeaf(config))) { // move!=null to avoid a crash at the very first call
-            int h = evaluation(config, move.getPieceType(), max);
+    // instead of removing and then shift every element O(n), just pick a certain piece O(1)
+    public Move poll_rdm(ArrayList<Move> li) {
+        int i = generator.nextInt(li.size());
+        Move mo = li.get(i);
+        Move m_end = li.remove(li.size()-1);
+        if (i<li.size()) { li.set(i, m_end); }
+        return mo;
+    }
+
+    public int AlgoAlphaBeta(Move move, Game config, boolean max, int depth, int alpha, int beta) {
+        System.out.println("FLAG");
+        //Game g2 = config.clone();
+        //if(move !=null){
+        //config.getCurrentPlayer(); //change turn
+        //}
+        if (move != null && (depth == 0 || isLeaf(config))) { // move!=null to avoid a crash at the very first call
+            int h = evaluation(config, move, max);
+            //move.setHeuristic(h);
+            return h;
+        }
+        else {
+            int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
+            ArrayList<Move> moves = moves(config); //children
+            //Move bestMove = null;
+            //ArrayList<Move> lMovesBestHeur = null;
+            while(!moves.isEmpty()) {
+                //TODO: PLAY
+                Game g2 = config.clone();
+                Move m = poll_rdm(moves);
+                g2.put(m.getShape(), m.getPieceType(), config.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
+                g2.nextTurn();
+                // ALGO //
+                int x = AlgoAlphaBeta(m, g2, !max, depth - 1, alpha, beta); // not return m
+                // TODO: UNPLAY
+                //config = g2.clone();
+                //add index piece unmoved
+                //config.unput();
+                //config.undo();
+                //int x = m.getHeuristic();
+                if (max ? x > bestHeur : x < bestHeur) {
+                    bestHeur = x;
+                    bestM = m;
+                    //lMovesBestHeur = new ArrayList<>(); //empty the list as a better heuristic has been found
+                }
+                /*if (x == bestHeur) {
+                    lMovesBestHeur.add(m);
+                }*/
+
+                if(max && bestHeur > alpha){
+                    alpha = bestHeur;
+                }
+                if(!max && bestHeur < beta){
+                    beta = bestHeur;
+                }
+                if(beta <= alpha){
+                    break;
+                }
+            }
+            /*if(moves.isEmpty() || beta <= alpha){ //decides best move every move has been tested //modify for alphabeta?
+                int idx2 = this.generator.nextInt(lMovesBestHeur.size());
+                //bestM = lMovesBestHeur.get(idx2);
+            }*/
+            return bestHeur;
+        }
+    }
+
+    /*public Move AlgoAlphaBeta(Move move, Game config, boolean max, int depth, int alpha, int beta) {
+        System.out.println("FLAG");
+        //Game g2 = config.clone();
+        //if(move !=null){
+            //config.getCurrentPlayer(); //change turn
+        //}
+        if (move != null && (depth == 0 || isLeaf(config))) { // move!=null to avoid a crash at the very first call
+            int h = evaluation(config, move, max);
             move.setHeuristic(h);
             return move;
         }
         else {
             int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
-            List<Move> moves = moves(config); //children
+            ArrayList<Move> moves = moves(config); //children
             Move bestMove = null;
+            ArrayList<Move> lMovesBestHeur = null;
             while(!moves.isEmpty()) {
-                int idx1 = this.generator.nextInt(moves.size());
-                Move m = AlgoAlphaBeta(moves.remove(idx1), config, !max, depth - 1, alpha, beta);
+                //TODO: PLAY
+                //Game g2 = config.clone();
+                Move m = poll_rdm(moves);
+                config.put(m.getShape(), m.getPieceType(), config.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
+                config.nextTurn();
+                // ALGO //
+                m = AlgoAlphaBeta(m, config, !max, depth - 1, alpha, beta); // not return m
+                // TODO: UNPLAY
+                //config = g2.clone();
+                config.undo();
                 int x = m.getHeuristic();
                 if (max ? x > bestHeur : x < bestHeur) {
                     bestHeur = x;
@@ -317,27 +407,29 @@ public class PlayerAIMinMax extends PlayerAI {
                     break;
                 }
             }
-            if(moves.isEmpty()){ //decides best move every move has been tested //modify for alphabeta?
+            if(moves.isEmpty() || beta <= alpha){ //decides best move every move has been tested //modify for alphabeta?
                 int idx2 = this.generator.nextInt(lMovesBestHeur.size());
                 bestMove = lMovesBestHeur.get(idx2);
             }
             return bestMove;
         }
-    }
+    }*/
 
     public Move AlgoMinMax(Move move, Game config, boolean max, int depth) {
-        if (depth == 0 || (move != null && isLeaf(config))) { // move!=null to avoid a crash at the very first call
-            int h = evaluation(config, move.getPieceType(), max);
+        Game g2 = config.clone();
+        if (depth == 0 || move != null && isLeaf(g2)) { // move!=null to avoid a crash at the very first call
+            int h = evaluation(g2, move, max);
             move.setHeuristic(h);
             return move;
         }
         else {
             int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
-            List<Move> moves = moves(config); //children
+            ArrayList<Move> moves = moves(g2); //children
             Move bestMove = null;
+            ArrayList<Move> lMovesBestHeur = null;
             while(!moves.isEmpty()) {
-                int idx1 = this.generator.nextInt(moves.size());
-                Move m = AlgoMinMax(moves.remove(idx1), config, !max, depth - 1);
+                //int idx1 = this.generator.nextInt(moves.size());
+                Move m = AlgoMinMax(poll_rdm(moves), g2, !max, depth - 1);
                 int x = m.getHeuristic();
                 if (max ? x > bestHeur : x < bestHeur) {
                     bestHeur = x;
@@ -373,11 +465,16 @@ public class PlayerAIMinMax extends PlayerAI {
         }
         return zeroPieces == nbPlayers || zeroCorners == nbPlayers;
 
+        //Player p = g.getCurrentPlayer();
+        //return g.getBoard().canPlacePieces(p.getPieces(), p.col) == false;
     }
 
-    public static int evaluation(Game config, PieceType pt, boolean max){
+    public static int evaluation(Game config, Move m, boolean max){
         //(our score - opponent score) + (our possible placements - opponent placements)
+        //Game g2 = config.clone();
+        //g2.put(m.getShape(), m.getPieceType(), config.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
 
+        PieceType pt = m.getPieceType();
         int pieceValue = 0;
         if (pt.toString().contains("FIVE")) pieceValue = 5;
         else if (pt.toString().contains("FOUR")) pieceValue = 4;
@@ -412,14 +509,14 @@ public class PlayerAIMinMax extends PlayerAI {
         int sumPlacementsP2 = config.getBoard().sumAllPlacements(p2c1.getPieces(), p2c1.col) + config.getBoard().sumAllPlacements(p2c2.getPieces(), p2c2.col);
 
         if(max){
-            return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2*2); //heur 4
+            return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
             //return ((sumScoreP1 - pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
             //return ((sumScoreP1 - pieceValue) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 2
             //return ((sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); // heur 1
         }
         else{
-            return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2*2); //heur 4
-            //return ((sumScoreP1 - pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
+            return ((sumScoreP1 + pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
+            //return ((sumScoreP1 + pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
             //return ((sumScoreP2 + pieceValue - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1)); //heur 2
             //return ((sumScoreP2 - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1); // heur 1
         }
@@ -432,6 +529,7 @@ public class PlayerAIMinMax extends PlayerAI {
     @Override
     public Player clone() {
         PlayerAIMinMax p2 = new PlayerAIMinMax(this.seed);
+        p2.isAlphaBeta = this.isAlphaBeta;
         p2.cloneFields(this);
         return p2;
     }
