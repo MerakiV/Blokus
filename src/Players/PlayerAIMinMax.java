@@ -26,7 +26,7 @@ public class PlayerAIMinMax extends PlayerAI {
             System.exit(1);
         }
     }
-    
+
     public PlayerAIMinMax(Color c, boolean ab) {
         difficultyLevel = 2;
         col = c;
@@ -50,11 +50,11 @@ public class PlayerAIMinMax extends PlayerAI {
         if(pieces.size() > 17){ // more than 4 times is useless
             //boolean StartPut = this.generator.nextBoolean(); // chooses if getting nearer to the center or not
             //if(StartPut){
-                bestMove = opening(g);
-                if(bestMove != null){
-                    return bestMove; //to cover the case a color can't reach the center if blocked
-                }
+            bestMove = opening(g);
+            if(bestMove != null){
+                return bestMove; //to cover the case a color can't reach the center if blocked
             }
+        }
 
         // MinMax and AlphaBeta //
         // To explore a whole turn, the depth should be at least 4. A whole another turn is every multiple of 4
@@ -95,6 +95,24 @@ public class PlayerAIMinMax extends PlayerAI {
         return false;
     }
 
+    boolean decideDistance(int distX, int distY){
+        switch(pieces.size()){
+            case 21:
+                if(distX < 8 && distY < 8) return true;
+                break;
+            case 20:
+                if(distX < 6 && distY < 6) return true;
+                break;
+            case 19:
+                if(distX < 4 && distY < 4) return true;
+                break;
+            case 18:
+                if(distX < 2 && distY < 2) return true;
+                break;
+        }
+        return false;
+    }
+
     public List<Move> movesOpening(List<Piece> lp, int currPlayer, Board b) {
         List<Move> lm = new ArrayList<Move>();
         Iterator<Piece> it1 = lp.iterator();
@@ -119,22 +137,27 @@ public class PlayerAIMinMax extends PlayerAI {
                     int mh;
                     List<Tile> cornerList = null;
                     int i=0;
-                    boolean added = false;
+                    boolean toAdd = false;
                     switch(currPlayer){
                         case 0:
                             cornerList = sh.getCornerList(0);
                             Collections.shuffle(cornerList);
-                            while(i<cornerList.size() && !added){
+                            while(i<cornerList.size() && !toAdd){
                                 Tile corner = cornerList.get(i);
                                 int cornerToBoardX = t.getX() - sh.getAnchorX() + corner.getX();
                                 int cornerToBoardY = t.getY() - sh.getAnchorY() + corner.getY();
-                                Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
-                                mh = manhattanDist(cornerToBoard, 9, 9);
-                                boolean toAdd = decideManhattan(mh);
+
+
+                                //Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
+                                //mh = manhattanDist(cornerToBoard, 9, 9);
+                                int distX = Math.abs(cornerToBoardX - 9);
+                                int distY = Math.abs(cornerToBoardY - 9);
+
+                                //toAdd = decideManhattan(mh);
+                                toAdd = decideDistance(distX, distY);
                                 if(toAdd){
                                     Move m2 = new Move(sh, pi.getName(), t);
                                     lm.add(m2);
-                                    added = true;
                                 }
                                 i++;
                             }
@@ -142,17 +165,22 @@ public class PlayerAIMinMax extends PlayerAI {
                         case 1:
                             cornerList = sh.getCornerList(1);
                             Collections.shuffle(cornerList);
-                            while(i<cornerList.size() && !added){ //add random
+                            while(i<cornerList.size() && !toAdd){ //add random
                                 Tile corner = cornerList.get(i); //verify if exists
                                 int cornerToBoardX = t.getX() - sh.getAnchorX() + corner.getX();
                                 int cornerToBoardY = t.getY() - sh.getAnchorY() + corner.getY();
-                                Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
-                                mh = manhattanDist(cornerToBoard, 9, 10);
-                                boolean toAdd = decideManhattan(mh);
+
+                                //Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
+                                //mh = manhattanDist(cornerToBoard, 9, 10);
+                                int distX = Math.abs(cornerToBoardX - 9);
+                                int distY = Math.abs(cornerToBoardY - 10);
+
+                                //toAdd = decideManhattan(mh);
+                                toAdd = decideDistance(distX, distY);
+
                                 if(toAdd){
                                     Move m2 = new Move(sh, pi.getName(), t);
                                     lm.add(m2);
-                                    added = true;
                                 }
                                 i++;
                             }
@@ -160,17 +188,22 @@ public class PlayerAIMinMax extends PlayerAI {
                         case 2:
                             cornerList = sh.getCornerList(2);
                             Collections.shuffle(cornerList);
-                            while(i<cornerList.size() && !added){
+                            while(i<cornerList.size() && !toAdd){
                                 Tile corner = cornerList.get(i); //verify if exists
                                 int cornerToBoardX = t.getX() - sh.getAnchorX() + corner.getX();
                                 int cornerToBoardY = t.getY() - sh.getAnchorY() + corner.getY();
-                                Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
-                                mh = manhattanDist(cornerToBoard, 10, 10);
-                                boolean toAdd = decideManhattan(mh);
+
+                                //Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
+                                //mh = manhattanDist(cornerToBoard, 10, 10);
+                                int distX = Math.abs(cornerToBoardX - 10);
+                                int distY = Math.abs(cornerToBoardY - 10);
+
+                                //toAdd = decideManhattan(mh);
+                                toAdd = decideDistance(distX, distY);
+
                                 if(toAdd){
                                     Move m2 = new Move(sh, pi.getName(), t);
                                     lm.add(m2);
-                                    added = true;
                                 }
                                 i++;
                             }
@@ -178,17 +211,22 @@ public class PlayerAIMinMax extends PlayerAI {
                         case 3:
                             cornerList = sh.getCornerList(3);
                             Collections.shuffle(cornerList);
-                            while(i<cornerList.size() && !added){
+                            while(i<cornerList.size() && !toAdd){
                                 Tile corner = cornerList.get(i); //verify if exists
                                 int cornerToBoardX = t.getX() - sh.getAnchorX() + corner.getX();
                                 int cornerToBoardY = t.getY() - sh.getAnchorY() + corner.getY();
-                                Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
-                                mh = manhattanDist(cornerToBoard, 10, 9);
-                                boolean toAdd = decideManhattan(mh);
+
+                                //Tile cornerToBoard = new Tile(cornerToBoardX, cornerToBoardY);
+                                //mh = manhattanDist(cornerToBoard, 10, 9);
+                                int distX = Math.abs(cornerToBoardX - 10);
+                                int distY = Math.abs(cornerToBoardY - 9);
+
+                                //toAdd = decideManhattan(mh);
+                                toAdd = decideDistance(distX, distY);
+
                                 if(toAdd){
                                     Move m2 = new Move(sh, pi.getName(), t);
                                     lm.add(m2);
-                                    added = true;
                                 }
                                 i++;
                             }
@@ -263,19 +301,20 @@ public class PlayerAIMinMax extends PlayerAI {
         Shape sh;
         Tile t;
         Color col = config.getCurrentColor();
+        Board b = config.getBoard();
 
         while (it1.hasNext()) {
             pi = it1.next();
             it2 = pi.getShapeList().iterator();
             while (it2.hasNext()) {
                 sh = it2.next();
- 
-                hs = config.getBoard().fullcheck(sh, col);
+
+                hs = b.fullcheck(sh, col);
 
                 it3 = hs.iterator();
                 while(it3.hasNext()) {
                     t = it3.next();
-                    
+
                     //g2 = (Game) config.clone();
                     //config.put(sh, pi.getName(), col, t.getX(), t.getY());
                     //pq.add(g2);
@@ -479,7 +518,7 @@ public class PlayerAIMinMax extends PlayerAI {
         int nbPlayers = players.size();
         for(i = 0; i<nbPlayers; i++){
             //if (!g.getBoard().canPlacePieces(players.get(i).getPieces(), players.get(i).col));
-                //zeroCorners++;
+            //zeroCorners++;
             if(players.get(i).getPieces().size() == 0)
                 zeroPieces++;
             if (g.getBoard().numberOfCorners(players.get(i).getColor()) == 0)
