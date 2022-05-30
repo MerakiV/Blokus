@@ -38,8 +38,6 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     public String errorMessage = "";
 
-    public DrawString error;
-
     JFrame frame;
     Thread t;
     Shape shape;
@@ -451,8 +449,12 @@ public class ControllerGamePlay implements EventController, Runnable {
                 break;
             case "save":
                 System.out.println("Saving game...");
+                errorMessage = "Saving game...";
+                gamePlayInterface.repaint();
                 saveGame.writeSave();
                 System.out.println("Game saved...");
+                errorMessage = "Game saved...";
+                gamePlayInterface.repaint();
                 break;
             default:
                 return false;

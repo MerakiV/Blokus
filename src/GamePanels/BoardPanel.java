@@ -100,7 +100,7 @@ public class BoardPanel extends JPanel{
     private String getPath(int i, int j){
         //System.out.println(board.getColor(i,j));
         if (controller.hintsActivated && isHint){
-            System.out.println("Hint activated and is hint");
+            //System.out.println("Hint activated and is hint");
             if (removeHint)
                 return "tiles/boardTile.png";
             switch(controller.currentColor){
@@ -114,7 +114,7 @@ public class BoardPanel extends JPanel{
                     return "tiles/BlueHighlight.png";
             }
         } else if (controller.hintsActivated && !isHint){
-            System.out.println("Not Hint");
+            //System.out.println("Not Hint");
             switch(controller.game.getCurrentColor()) {
                 case RED:
                     return "tiles/RedBloc.png";
@@ -126,7 +126,7 @@ public class BoardPanel extends JPanel{
                     return "tiles/BlueBloc.png";
             }
         }
-        System.out.println("Not Hint");
+        //System.out.println("Not Hint");
         switch(controller.game.getBoard().getColor(i,j)){
             case RED:
                 return "tiles/RedBloc.png";
@@ -185,7 +185,7 @@ public class BoardPanel extends JPanel{
         removeHint = true;
         //System.out.println("Hovered Piece : " + controller.hoveredPiece.getName().name());
         if (controller.hoveredPiece != null){
-            System.out.println("Remove Positions");
+            //System.out.println("Remove Positions");
             for (Tile tile : tiles){
                 isHint = true;
                 if (tileName != null){

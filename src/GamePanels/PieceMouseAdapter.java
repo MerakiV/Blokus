@@ -94,6 +94,8 @@ public class PieceMouseAdapter implements MouseListener {
             if (piecePanel.colorPanel.controller.game.getPlayerList().get(col).getPieces().contains(piecePanel.piece) && controller.hintsActivated && !controller.currentPlayer.isAI()){
                 if (piecePanel.colorPanel.color == controller.currentColor){
                     controller.hoveredPiece = piecePanel.piece;
+                    controller.errorMessage = "Showing where to place : " + piecePanel.piece.getName().name();
+                    controller.gamePlayInterface.repaint();
                     //System.out.println("Hovered Piece : " + controller.hoveredPiece.getName().name());
                     controller.boardPanel.showPositions();
                     controller.boardPanel.repaint();
@@ -118,6 +120,8 @@ public class PieceMouseAdapter implements MouseListener {
                 controller.boardPanel.showPositions();
             } */
             controller.hoveredPiece = null;
+            controller.errorMessage = "";
+            controller.gamePlayInterface.repaint();
 
             controller.boardPanel.repaint();
         }
