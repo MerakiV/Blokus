@@ -28,19 +28,15 @@ public class HoverButton extends JPanel {
         this.addMouseListener(new MenuMouseAdapter(this, menuUI));
     }
 
-    public HoverButton(GamePlayInterface gameMenu, String name, int x, int y) throws IOException {
+    public HoverButton(GamePlayInterface gameMenu, String name, int x, int y, int width, int height) throws IOException {
         this.name = name;
         this.img = createButtonImg(name);
         // Original Image
-        int newS = (int) (gameMenu.frame.getWidth() * 0.03);
-        Image newNormal = this.img[0].getScaledInstance(newS, newS, Image.SCALE_DEFAULT);
-        this.normalImage = newNormal;
-        // Hovered Image
-        this.rolloverImage = newNormal.getScaledInstance((int) (newS * 1.1), (int) (newS * 1.1), Image.SCALE_DEFAULT);
+        this.normalImage = this.img[0];
+        this.rolloverImage = this.img[1];
         this.currentImage = normalImage;
-        this.setBounds(x, y, newS, newS);
-        // this.addMouseListener(new GameMouseAdapter(gameMenu, this));
-        //System.out.println(x + " " + y);
+        this.setBounds(x, y, width, height);
+
     }
 
     // Hover Button for Game Selection

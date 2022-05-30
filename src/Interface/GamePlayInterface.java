@@ -16,7 +16,7 @@ public class GamePlayInterface extends JPanel {
     // Background images
     Image backGround, logo, backGroundImg;
     // Buttons
-    public HoverButton menu, hint, undo, redo;
+    public HoverButton menu, hint, undo, redo, save;
 
     public int boardSize, tileSize, height, width, widthFrame, heightFrame;
     int topLeftX, topLeftY, topRightX, topRightY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY, boardX, boardY,
@@ -54,7 +54,7 @@ public class GamePlayInterface extends JPanel {
         initialiseColorPanels();
         initialiseButtons();
         // Add Listeners for Buttons
-        this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo));
+        this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo,save));
         // Begins the game
         controller.startGame();
     }
@@ -75,7 +75,7 @@ public class GamePlayInterface extends JPanel {
         initialiseColorPanels();
         initialiseButtons();
         // Add Listeners for Buttons
-        this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo));
+        this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo,save));
         // Begins the game
         controller.startGame();
     }
@@ -172,14 +172,17 @@ public class GamePlayInterface extends JPanel {
         height = frame.getHeight();
         width = frame.getWidth();
 
-        menu = new HoverButton(this, "Menu", (int) (width * 0.91), (int) (height * 0.08));
+        menu = new HoverButton(this, "Menu", (int) (width * 0.91), (int) (height * 0.08), (int) (heightFrame * 0.07), (int) (heightFrame * 0.07));
         add(this.menu);
-        hint = new HoverButton(this, "Hints", (int) (width * 0.05), (int) (height * 0.08));
+        hint = new HoverButton(this, "Hints", (int) (width * 0.05), (int) (height * 0.08), (int) (heightFrame * 0.06), (int) (heightFrame * 0.06));
         add(this.hint);
-        undo = new HoverButton(this, "Clockwise", (int) (width * 0.55) - 50, (int) (height * 0.85));
-        add(this.undo);
-        redo = new HoverButton(this, "CounterClockwise", (int) (width * 0.45) - 50, (int) (height * 0.85));
+        redo = new HoverButton(this, "Clockwise", (int) (width * 0.6 - 50), (int) (height * 0.85), (int) (heightFrame * 0.055), (int) (heightFrame * 0.055));
         add(this.redo);
+        undo = new HoverButton(this, "CounterClockwise", (int) (width * 0.45) - 50, (int) (height * 0.85), (int) (heightFrame * 0.055),(int) (heightFrame * 0.055));
+        add(this.undo);
+        save = new HoverButton(this, "Save", (int) (width * 0.5) - 40, (int) (height * 0.85), 80, 39);
+        add(this.save);
+
     }
 
     /**
@@ -296,10 +299,11 @@ public class GamePlayInterface extends JPanel {
 
         // Buttons
         int iconSize = undo.getCurrentImageWidth() / 2;
-        g.drawImage(this.undo.getCurrentImage(), (int) (widthFrame * 0.55) - iconSize, (int) (heightFrame * 0.85), this);
-        g.drawImage(this.redo.getCurrentImage(), (int) (widthFrame * 0.45) - iconSize, (int) (heightFrame * 0.85), this);
-        g.drawImage(this.menu.getCurrentImage(), (int) (widthFrame * 0.91), (int) (heightFrame * 0.08), frame);
-        g.drawImage(this.hint.getCurrentImage(), (int) (widthFrame * 0.05), (int) (heightFrame * 0.08), frame);
+        g.drawImage(this.redo.getCurrentImage(), (int) (widthFrame * 0.6 - 50), (int) (heightFrame * 0.86), (int) (heightFrame * 0.055),(int) (heightFrame * 0.055),this);
+        g.drawImage(this.undo.getCurrentImage(), (int) (widthFrame * 0.45 - 50), (int) (heightFrame * 0.86), (int) (heightFrame * 0.055), (int) (heightFrame * 0.055),this);
+        g.drawImage(this.save.getCurrentImage(), (int) (widthFrame * 0.5 - this.save.getCurrentImageWidth()/2) , (int) (heightFrame * 0.86),this);
+        g.drawImage(this.menu.getCurrentImage(), (int) (widthFrame * 0.91), (int) (heightFrame * 0.08), (int) (heightFrame * 0.06), (int) (heightFrame * 0.06),frame);
+        g.drawImage(this.hint.getCurrentImage(), (int) (widthFrame * 0.05), (int) (heightFrame * 0.08),(int) (heightFrame * 0.07), (int) (heightFrame * 0.07),frame);
 
         // Background
         backGround.drawImg(g, 0, 0, widthFrame, height);
