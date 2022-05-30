@@ -35,6 +35,13 @@ public abstract class Game implements Serializable, Cloneable {
         }
     }
 
+    //for IA MinMax
+    public void directPut(Shape s, PieceType pt, Color c, int x, int y) {
+        int i = board.getCorner(c);
+        board.put(s, i, x, y);
+        currentPlayer.removePiece(pt);
+    }
+
     public void updateEnd() {
         boolean e = false;
         for (Player p : players) {
@@ -129,6 +136,7 @@ public abstract class Game implements Serializable, Cloneable {
 
         this.currentColor = g2.currentColor;
         this.history = g2.history;
+        this.end = g2.end;
     }
 
     public void printGame(boolean boardOnly) {

@@ -61,10 +61,10 @@ public class PlayerAIMinMax extends PlayerAI {
         // The maximum depth is 84 (every player has put every piece)
 
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
-            if(this.isAlphaBeta == true) AlgoAlphaBeta(null, g, true, 1, MIN, MAX);
+            if(this.isAlphaBeta == true) AlgoAlphaBeta(null, g, true, 2, MIN, MAX);
             else AlgoMinMax(null, g, true, 1);
         } else {
-            if (this.isAlphaBeta == true) AlgoAlphaBeta(null, g, false, 1, MIN, MAX);
+            if (this.isAlphaBeta == true) AlgoAlphaBeta(null, g, false, 2, MIN, MAX);
             else AlgoMinMax(null, g, false, 1);
         }
         return bestMove;
@@ -316,7 +316,7 @@ public class PlayerAIMinMax extends PlayerAI {
                 //TODO: PLAY
                 Game g2 = config.clone();
                 Move m = poll_rdm(moves);
-                g2.put(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
+                g2.directPut(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
                 g2.nextTurn();
                 // ALGO //
                 int x = AlgoAlphaBeta(m, g2, !max, depth - 1, alpha, beta); // not return m
@@ -368,7 +368,7 @@ public class PlayerAIMinMax extends PlayerAI {
                 // No need to unplay here as it's a clone
                 Game g2 = config.clone();
                 Move m = poll_rdm(moves);
-                g2.put(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
+                g2.directPut(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
                 g2.nextTurn();
                 int x = AlgoMinMax(m, g2, !max, depth - 1);
                 if (max ? x > bestHeur : x < bestHeur) {
