@@ -553,7 +553,6 @@ public class PlayerAIMinMax extends PlayerAI {
     public Player clone() {
         PlayerAIMinMax p2 = new PlayerAIMinMax(this.seed);
         p2.isAlphaBeta = this.isAlphaBeta;
-        p2.maxDepth = this.maxDepth;
         p2.cloneFields(this);
         return p2;
     }
