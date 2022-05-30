@@ -15,8 +15,6 @@ public class PlayerAIMinMax extends PlayerAI {
 
     boolean isAlphaBeta = false;
 
-    int maxDepth = 84; //initial depth, should be of 84 as there's 84 pieces
-
     void initPieces() {
         // create list of pieces from PieceReader
         PieceReader pRead = null;
@@ -54,7 +52,6 @@ public class PlayerAIMinMax extends PlayerAI {
             //if(StartPut){
                 bestMove = opening(g);
                 if(bestMove != null){
-                    maxDepth-=4; //anticipate for MinMax and AlphaBeta
                     return bestMove; //to cover the case a color can't reach the center if blocked
                 }
             }
@@ -63,21 +60,13 @@ public class PlayerAIMinMax extends PlayerAI {
         // To explore a whole turn, the depth should be at least 4. A whole another turn is every multiple of 4
         // The maximum depth is 84 (every player has put every piece)
 
-        Move m = null;
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
-            if(this.isAlphaBeta == false) AlgoAlphaBeta(m, g, true, maxDepth, MIN, MAX);
-            else AlgoMinMax(m, g, true, maxDepth, MIN, MAX);
-        } else if(g.getPlayerList().get(1) == g.getCurrentPlayer()) {
-            if(this.isAlphaBeta == false) AlgoAlphaBeta(m, g, false, maxDepth-1, MIN, MAX);
-            else AlgoMinMax(m, g, false, maxDepth-1, MIN, MAX);
-        } else if(g.getPlayerList().get(2) == g.getCurrentPlayer()){
-            if(this.isAlphaBeta == false) AlgoAlphaBeta(m, g, true, maxDepth-2, MIN, MAX);
-            else AlgoMinMax(m, g, true, maxDepth-2, MIN, MAX);
-        } else{
-            if(this.isAlphaBeta == false) AlgoAlphaBeta(m, g, false, maxDepth-3, MIN, MAX);
-            else AlgoMinMax(m, g, false, maxDepth-3, MIN, MAX);
+            if(this.isAlphaBeta == true) AlgoAlphaBeta(null, g, true, 1, MIN, MAX);
+            else AlgoMinMax(null, g, true, 1);
+        } else {
+            if (this.isAlphaBeta == true) AlgoAlphaBeta(null, g, false, 1, MIN, MAX);
+            else AlgoMinMax(null, g, false, 1);
         }
-        maxDepth-=4;
         return bestMove;
     }
 
@@ -365,7 +354,7 @@ public class PlayerAIMinMax extends PlayerAI {
         }
     }
 
-    public int AlgoMinMax(Move move, Game config, boolean max, int depth, int alpha, int beta) {
+    public int AlgoMinMax(Move move, Game config, boolean max, int depth) {
         if (move != null && (depth == 0 || isLeaf(config))) { // move!=null to avoid a crash at the very first call
             int h = evaluation(config, move, max);
             //move.setHeuristic(h); //useless
@@ -381,7 +370,7 @@ public class PlayerAIMinMax extends PlayerAI {
                 Move m = poll_rdm(moves);
                 g2.put(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
                 g2.nextTurn();
-                int x = AlgoMinMax(m, g2, !max, depth - 1, alpha, beta);
+                int x = AlgoMinMax(m, g2, !max, depth - 1);
                 if (max ? x > bestHeur : x < bestHeur) {
                     bestHeur = x;
                     bestM = m;
@@ -489,12 +478,15 @@ public class PlayerAIMinMax extends PlayerAI {
         List<Player> players = g.getPlayerList();
         int nbPlayers = players.size();
         for(i = 0; i<nbPlayers; i++){
-            if (g.getBoard().canPlacePieces(players.get(i).getPieces(), players.get(i).col))
+            //if (!g.getBoard().canPlacePieces(players.get(i).getPieces(), players.get(i).col));
+                //zeroCorners++;
+            if(players.get(i).getPieces().size() == 0)
                 zeroPieces++;
             if (g.getBoard().numberOfCorners(players.get(i).getColor()) == 0)
                 zeroCorners++;
         }
         return zeroPieces == nbPlayers || zeroCorners == nbPlayers;
+        //return zeroCorners == nbPlayers;
 
         //Player p = g.getCurrentPlayer();
         //return g.getBoard().canPlacePieces(p.getPieces(), p.col) == false;
