@@ -5,8 +5,7 @@ import javax.swing.*;
 
 public class DrawString extends JPanel {
     String text;
-    int x;
-    int y;
+    int x, y, stringSize;
     Graphics g;
     Graphics2D g2d;
 
@@ -23,6 +22,7 @@ public class DrawString extends JPanel {
         this.y = y;
         this.g = g;
         font = new Font("ABeeZee-Regular", Font.PLAIN, fontSize);
+        getStringSize();
     }
 
     public DrawString(Graphics g, String text, Color color, int x, int y, int fontSize) {
@@ -32,6 +32,7 @@ public class DrawString extends JPanel {
         this.g = g;
         this.color = color;
         font = new Font("ABeeZee-Regular", Font.PLAIN, fontSize);
+        getStringSize();
     }
 
     public void paint(Graphics g) {
@@ -56,5 +57,9 @@ public class DrawString extends JPanel {
 
     public void setGraphics(Graphics g) {
         this.g = g;
+    }
+
+    public void getStringSize(){
+        stringSize = text.length();
     }
 }

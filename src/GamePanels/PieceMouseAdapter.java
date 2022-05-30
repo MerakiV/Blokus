@@ -28,9 +28,18 @@ public class PieceMouseAdapter implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         piecePanel = (PiecePanel) e.getSource();
         int col = piecePanel.colorPanel.controller.game.getBoard().getCorner(piecePanel.colorPanel.color);
-        if (!piecePanel.colorPanel.controller.game.getPlayerList().get(col).getPieces().contains(piecePanel.piece) || (piecePanel.colorPanel.controller.game.getBoard().sumPiecePlacements(piecePanel.piece, piecePanel.colorPanel.color) == 0) || controller.currentPlayer.isAI()){
-            // TODO: add label on the bottom of board
-            System.out.println("You have already placed " + piecePanel.piece.getName().name() + " on the board or it is not playable");
+        if (!piecePanel.colorPanel.controller.game.getPlayerList().get(col).getPieces().contains(piecePanel.piece)){
+            controller.errorMessage = "You have already placed " + piecePanel.piece.getName().name();
+            System.out.println(controller.errorMessage);
+            controller.gamePlayInterface.repaint();
+        } else if ((piecePanel.colorPanel.controller.game.getBoard().sumPiecePlacements(piecePanel.piece, piecePanel.colorPanel.color) == 0)){
+            controller.errorMessage = piecePanel.piece.getName().name() + " is not playable";
+            System.out.println(controller.errorMessage);
+            controller.gamePlayInterface.repaint();
+        } else if (controller.currentPlayer.isAI()){
+            controller.errorMessage = "You can not select an AI's piece";
+            System.out.println(controller.errorMessage);
+            controller.gamePlayInterface.repaint();
         } else{
             if (piecePanel.colorPanel.color == controller.currentColor){
                 if (controller.piecePanel != null) {
@@ -41,16 +50,20 @@ public class PieceMouseAdapter implements MouseListener {
                 }
                 piecePanel.isClicked = true;
                 //System.out.println("Piece Type : " + piecePanel.piece.getName().name());
+                controller.errorMessage = "Piece selected : " + piecePanel.piece.getName().name();
+                controller.gamePlayInterface.repaint();
                 controller.piece = piecePanel.piece;
                 controller.color = piecePanel.colorPanel.color;
                 controller.piecePanel = piecePanel;
                 controller.boardPanel.removePositions();
-                System.out.println(controller.piece.getName().name());
+                //System.out.println(controller.piece.getName().name());
                 piecePanel.repaint();
             }
             else {
                 // TODO: add label on the bottom of board
-                System.out.println("it's " +controller.currentColor +"'s turn to play,  not " + piecePanel.colorPanel.color);
+                System.out.println("It's " +controller.currentColor +"'s turn to play,  not " + piecePanel.colorPanel.color);
+                controller.errorMessage = "It's " +controller.currentColor +"'s turn to play,  not " + piecePanel.colorPanel.color;
+                controller.gamePlayInterface.repaint();
             }
         }
     }
@@ -81,7 +94,9 @@ public class PieceMouseAdapter implements MouseListener {
             if (piecePanel.colorPanel.controller.game.getPlayerList().get(col).getPieces().contains(piecePanel.piece) && controller.hintsActivated && !controller.currentPlayer.isAI()){
                 if (piecePanel.colorPanel.color == controller.currentColor){
                     controller.hoveredPiece = piecePanel.piece;
-                    System.out.println("Hovered Piece : " + controller.hoveredPiece.getName().name());
+                    controller.errorMessage = "Showing where to place : " + piecePanel.piece.getName().name();
+                    controller.gamePlayInterface.repaint();
+                    //System.out.println("Hovered Piece : " + controller.hoveredPiece.getName().name());
                     controller.boardPanel.showPositions();
                     controller.boardPanel.repaint();
                 }
@@ -105,6 +120,8 @@ public class PieceMouseAdapter implements MouseListener {
                 controller.boardPanel.showPositions();
             } */
             controller.hoveredPiece = null;
+            controller.errorMessage = "";
+            controller.gamePlayInterface.repaint();
 
             controller.boardPanel.repaint();
         }
