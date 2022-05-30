@@ -2,7 +2,6 @@ package Players;
 
 import java.util.*;
 
-import Structures.ComparatorAIMinMax;
 import Structures.*;
 
 public class PlayerAIMinMax extends PlayerAI {
@@ -12,9 +11,11 @@ public class PlayerAIMinMax extends PlayerAI {
     private final long seed;
     private final Random generator;
 
-    Move bestM;
+    Move bestMove;
 
     boolean isAlphaBeta = false;
+
+    int maxDepth = 84; //initial depth, should be of 84 as there's 84 pieces
 
     void initPieces() {
         // create list of pieces from PieceReader
@@ -51,29 +52,33 @@ public class PlayerAIMinMax extends PlayerAI {
         if(pieces.size() > 17){ // more than 4 times is useless
             //boolean StartPut = this.generator.nextBoolean(); // chooses if getting nearer to the center or not
             //if(StartPut){
-                Move m = opening(g);
-                if(m != null) return m; //to cover the case a color can't reach the center if blocked
+                bestMove = opening(g);
+                if(bestMove != null){
+                    maxDepth-=4; //anticipate for MinMax and AlphaBeta
+                    return bestMove; //to cover the case a color can't reach the center if blocked
+                }
             }
 
         // MinMax and AlphaBeta //
+        // To explore a whole turn, the depth should be at least 4. A whole another turn is every multiple of 4
+        // The maximum depth is 84 (every player has put every piece)
 
         Move m = null;
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
-            //if(this.isAlphaBeta == true) m = AlgoAlphaBeta(m, g, true, 5, MIN, MAX);
-            if(this.isAlphaBeta == true){
-                AlgoAlphaBeta(m, g, true, 5, MIN, MAX);
-                return bestM;
-            }
-            else m = AlgoMinMax(m, g, true, 1);
-        } else {
-            if(this.isAlphaBeta == true){
-                AlgoAlphaBeta(m, g, false, 5, MIN, MAX);
-                return bestM;
-            }
-            else m = AlgoMinMax(m, g, false, 1);
+            if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, true, maxDepth, MIN, MAX);
+            else AlgoMinMax(m, g, true, 7, MIN, MAX);
+        } else if(g.getPlayerList().get(1) == g.getCurrentPlayer()) {
+            if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, false, maxDepth-1, MIN, MAX);
+            else AlgoMinMax(m, g, false, 7, MIN, MAX);
+        } else if(g.getPlayerList().get(2) == g.getCurrentPlayer()){
+            if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, true, maxDepth-2, MIN, MAX);
+            else AlgoMinMax(m, g, true, 7, MIN, MAX);
+        } else{
+            if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, false, maxDepth-3, MIN, MAX);
+            else AlgoMinMax(m, g, false, 7, MIN, MAX);
         }
-
-        return m;
+        maxDepth-=4;
+        return bestMove;
     }
 
     //Manhattan distance from a tile to the center of the board
@@ -304,7 +309,6 @@ public class PlayerAIMinMax extends PlayerAI {
     }
 
     public int AlgoAlphaBeta(Move move, Game config, boolean max, int depth, int alpha, int beta) {
-        System.out.println("FLAG");
         //Game g2 = config.clone();
         //if(move !=null){
         //config.getCurrentPlayer(); //change turn
@@ -317,13 +321,13 @@ public class PlayerAIMinMax extends PlayerAI {
         else {
             int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
             ArrayList<Move> moves = moves(config); //children
-            //Move bestMove = null;
             //ArrayList<Move> lMovesBestHeur = null;
+            Move bestM = null;
             while(!moves.isEmpty()) {
                 //TODO: PLAY
                 Game g2 = config.clone();
                 Move m = poll_rdm(moves);
-                g2.put(m.getShape(), m.getPieceType(), config.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
+                g2.put(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
                 g2.nextTurn();
                 // ALGO //
                 int x = AlgoAlphaBeta(m, g2, !max, depth - 1, alpha, beta); // not return m
@@ -335,7 +339,7 @@ public class PlayerAIMinMax extends PlayerAI {
                 //int x = m.getHeuristic();
                 if (max ? x > bestHeur : x < bestHeur) {
                     bestHeur = x;
-                    bestM = m;
+                    bestM = m; //adapt to current Player?
                     //lMovesBestHeur = new ArrayList<>(); //empty the list as a better heuristic has been found
                 }
                 /*if (x == bestHeur) {
@@ -356,12 +360,37 @@ public class PlayerAIMinMax extends PlayerAI {
                 int idx2 = this.generator.nextInt(lMovesBestHeur.size());
                 //bestM = lMovesBestHeur.get(idx2);
             }*/
+            bestMove = bestM;
+            return bestHeur;
+        }
+    }
+
+    public int AlgoMinMax(Move move, Game config, boolean max, int depth, int alpha, int beta) {
+        if (move != null && (depth == 0 || isLeaf(config))) { // move!=null to avoid a crash at the very first call
+            int h = evaluation(config, move, max);
+            //move.setHeuristic(h); //useless
+            return h;
+        }
+        else {
+            int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
+            ArrayList<Move> moves = moves(config); //children
+            while(!moves.isEmpty()) {
+                // No need to unplay here as it's a clone
+                Game g2 = config.clone();
+                Move m = poll_rdm(moves);
+                g2.put(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
+                g2.nextTurn();
+                int x = AlgoMinMax(m, g2, !max, depth - 1, alpha, beta);
+                if (max ? x > bestHeur : x < bestHeur) {
+                    bestHeur = x;
+                    bestMove = m;
+                }
+            }
             return bestHeur;
         }
     }
 
     /*public Move AlgoAlphaBeta(Move move, Game config, boolean max, int depth, int alpha, int beta) {
-        System.out.println("FLAG");
         //Game g2 = config.clone();
         //if(move !=null){
             //config.getCurrentPlayer(); //change turn
@@ -415,7 +444,7 @@ public class PlayerAIMinMax extends PlayerAI {
         }
     }*/
 
-    public Move AlgoMinMax(Move move, Game config, boolean max, int depth) {
+    /*public Move AlgoMinMax(Move move, Game config, boolean max, int depth) {
         Game g2 = config.clone();
         if (depth == 0 || move != null && isLeaf(g2)) { // move!=null to avoid a crash at the very first call
             int h = evaluation(g2, move, max);
@@ -448,7 +477,7 @@ public class PlayerAIMinMax extends PlayerAI {
             }
             return bestMove;
         }
-    }
+    }*/
 
     public boolean isLeaf(Game g){
         //list of all pieces for every color are empty || no available corner for every color
