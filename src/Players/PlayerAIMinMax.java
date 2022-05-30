@@ -66,16 +66,16 @@ public class PlayerAIMinMax extends PlayerAI {
         Move m = null;
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
             if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, true, maxDepth, MIN, MAX);
-            else AlgoMinMax(m, g, true, 7, MIN, MAX);
+            else AlgoMinMax(m, g, true, maxDepth, MIN, MAX);
         } else if(g.getPlayerList().get(1) == g.getCurrentPlayer()) {
             if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, false, maxDepth-1, MIN, MAX);
-            else AlgoMinMax(m, g, false, 7, MIN, MAX);
+            else AlgoMinMax(m, g, false, maxDepth-1, MIN, MAX);
         } else if(g.getPlayerList().get(2) == g.getCurrentPlayer()){
             if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, true, maxDepth-2, MIN, MAX);
-            else AlgoMinMax(m, g, true, 7, MIN, MAX);
+            else AlgoMinMax(m, g, true, maxDepth-2, MIN, MAX);
         } else{
             if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, false, maxDepth-3, MIN, MAX);
-            else AlgoMinMax(m, g, false, 7, MIN, MAX);
+            else AlgoMinMax(m, g, false, maxDepth-3, MIN, MAX);
         }
         maxDepth-=4;
         return bestMove;
@@ -374,6 +374,7 @@ public class PlayerAIMinMax extends PlayerAI {
         else {
             int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
             ArrayList<Move> moves = moves(config); //children
+            Move bestM = null;
             while(!moves.isEmpty()) {
                 // No need to unplay here as it's a clone
                 Game g2 = config.clone();
@@ -383,9 +384,10 @@ public class PlayerAIMinMax extends PlayerAI {
                 int x = AlgoMinMax(m, g2, !max, depth - 1, alpha, beta);
                 if (max ? x > bestHeur : x < bestHeur) {
                     bestHeur = x;
-                    bestMove = m;
+                    bestM = m;
                 }
             }
+            bestMove = bestM;
             return bestHeur;
         }
     }
