@@ -93,15 +93,25 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     @Override
     public void run() {
-        endRun();
-        // noEndRun();
+        try {
+            endRun();
+            //noEndRun();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     long refreshTime(boolean ai) {
         return ai ? 500 : 32;
     }
 
-    public void endRun() {
+    synchronized Move generateMove(){
+        Move m = ((PlayerAI) currentPlayer).generateMove(game);
+        //System.out.println("Move calculated");
+        return m;
+    }
+
+    public void endRun() throws InterruptedException {
         boolean allAI = true;
         for (Player p : game.getPlayerList()) {
             allAI = allAI && p.isAI();
@@ -116,7 +126,7 @@ public class ControllerGamePlay implements EventController, Runnable {
             }
             if (currentPlayer.isAI()) {
                 if (currentPlayer.checkForMoves(game.getBoard())) {
-                    Move m = ((PlayerAI) currentPlayer).generateMove(game);
+                    Move m = generateMove();
                     if (m != null) {
                         shape = m.getShape();
                         piece = new Piece(shape);
@@ -129,6 +139,11 @@ public class ControllerGamePlay implements EventController, Runnable {
                         paintImage(y, x);
                         put(x, y);
                         boardPanel.repaint();
+                    }
+                    else{
+                        errorMessage = currentPlayer.getColor()+": Move generated is null";
+                        System.out.println(errorMessage);
+                        gamePlayInterface.repaint();
                     }
                 } else {
                     errorMessage = "No more moves for AI " + currentPlayer.getColor();
