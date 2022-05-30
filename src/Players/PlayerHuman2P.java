@@ -16,7 +16,7 @@ public class PlayerHuman2P extends Player2P {
 
     private PlayerHuman2P() {}; // empty constructor
     @Override
-    public Object clone() {
+    public Player2P clone() {
         PlayerHuman2P p2 = new PlayerHuman2P();
         p2.cloneFields(this);
         return p2;

@@ -12,7 +12,7 @@ public class PlayerAIRandom2P extends Player2P {
 
     private PlayerAIRandom2P() {}; // empty constructor
     @Override
-    public Object clone() {
+    public Player2P clone() {
         PlayerAIRandom2P p2 = new PlayerAIRandom2P();
         p2.cloneFields(this);
         return p2;

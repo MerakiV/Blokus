@@ -11,7 +11,7 @@ public class PlayerAIMinMax2P extends Player2P {
  
     private PlayerAIMinMax2P() {}; // empty constructor
     @Override
-    public Object clone() {
+    public Player2P clone() {
         PlayerAIMinMax2P p2 = new PlayerAIMinMax2P();
         p2.cloneFields(this);
         return p2;

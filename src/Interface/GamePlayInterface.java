@@ -193,21 +193,23 @@ public class GamePlayInterface extends JPanel {
     public void playerTurn(Graphics g) {
         DrawString currentPlayer;
         // Score of each player
-        p1Score = g2p.p1.get2PScore();
-        //System.out.println("P1 Score : " + p1Score);
+        p1Score = ((Game2P) (controller.game)).p1.get2PScore();
+        System.out.println("P1 Score : " + p1Score);
         p2Score = g2p.p2.get2PScore();
-        //System.out.println("P2 Score : " + p2Score);
+        System.out.println("P2 Score : " + p2Score);
 
         // If the current player is player 1
         String text;
         if (g2p.currentPlayer2P == g2p.p1 && !controller.game.end) {
             text = "Player 1 " + controller.currentColor + "'s turn";
+            System.out.println(text);
             currentPlayer = new DrawString(g, text, transformColor(),
                     (int) (width * 0.5 - (text.length()*12/2)), (int) (height * 0.18), 25);
             currentPlayer.paint(g);
         // If the current player is player 2
         } else if (g2p.currentPlayer2P == g2p.p2 && !controller.game.end) {
             text = "Player 2 " + controller.currentColor + "'s turn";
+            System.out.println(text);
             currentPlayer = new DrawString(g, text, transformColor(),
                     (int) (width * 0.5 - (text.length()*12/2)), (int) (height * 0.18), 25);
             currentPlayer.paint(g);
