@@ -8,8 +8,9 @@ public class GameMouseAdapter implements MouseListener {
     GamePlayInterface game;
     component currentComponent;
 
-    HoverButton menu, hint, redo, undo;
+    HoverButton menu, hint, redo, undo, save;
     int positionX,positionY;
+    boolean clicked = false;
 
     enum component {
         BOARD,
@@ -21,15 +22,17 @@ public class GameMouseAdapter implements MouseListener {
         HINTS,
         REDO,
         UNDO,
+        SAVE,
         NONE
     }
 
-    GameMouseAdapter(GamePlayInterface g, HoverButton b1, HoverButton b2, HoverButton b3, HoverButton b4){
+    GameMouseAdapter(GamePlayInterface g, HoverButton b1, HoverButton b2, HoverButton b3, HoverButton b4, HoverButton b5){
         game = g;
         menu = b1;
         hint = b2;
         redo = b3;
         undo = b4;
+        save = b5;
     }
 
     @Override
@@ -37,6 +40,8 @@ public class GameMouseAdapter implements MouseListener {
         positionX = e.getX();
         positionY = e.getY();
         currentComponent = checkComponent(e);
+        System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
+        System.out.println(currentComponent.name());
         switch(currentComponent){
             case BOARD:
                 // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
@@ -57,21 +62,32 @@ public class GameMouseAdapter implements MouseListener {
                 // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
                 // System.out.println("Menu button Clicked");
                 game.play = true;
+                game.controller.piece = null;
                 game.repaint();
                 break;
             case HINTS:
                 // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
                 System.out.println("Hint button Clicked");
+                clicked = !clicked;
+                if (clicked) {
+                    game.hint.currentImage = game.hint.rolloverImage;
+                } else {
+                    game.hint.currentImage = game.hint.normalImage;
+                }
                 game.controller.hintsActivated = (!game.controller.hintsActivated);
-                game.boardPanel.repaint();
+                game.repaint();
                 break;
             case REDO:
-                // System.out.println("REDO button Clicked");
+                 System.out.println("REDO button Clicked");
                 game.controller.command("redo");
                 break;
             case UNDO:
-                // System.out.println("UNDO button Clicked");
+                 System.out.println("UNDO button Clicked");
                 game.controller.command("undo");
+                break;
+            case SAVE:
+                 System.out.println("Save button Clicked");
+
                 break;
             default:
                 break;
@@ -79,6 +95,10 @@ public class GameMouseAdapter implements MouseListener {
     }
 
     public component checkComponent(MouseEvent e){
+        Integer width = game.frame.getWidth();
+        Integer height = game.frame.getHeight();
+        System.out.println(((int) (width * 0.55) - 50) + " "+ (((int) (width * 0.55) - 50 + (int) (height * 0.055))));
+        System.out.println((int) (height * 0.85) + " "+ ((int) (height * 0.85)+(int) (height * 0.055)));
         // BOARD
         if (game.boardX <= e.getX() && (game.boardX + game.boardPanel.boardSize) >= e.getX()
                 && game.boardY <= e.getY() && (game.boardY + game.boardPanel.boardSize) >= e.getY()){
@@ -107,14 +127,19 @@ public class GameMouseAdapter implements MouseListener {
         else if (67 <= e.getX() && (67+hint.getCurrentImageWidth()) >= e.getX()
                 && 60 <= e.getY() && (60 + hint.getCurrentImageHeight())>= e.getY()){
             return component.HINTS;
-        } // UNDO BUTTON
-        else if (554 <= e.getX() && 654 >= e.getX()
-                && 642 <= e.getY() && 742>= e.getY()){
-            return component.UNDO;
         } // REDO BUTTON
-        else if (689 <= e.getX() && (789) >= e.getX()
-                && 642 <= e.getY() && (742)>= e.getY()){
+        else if ((int) (width * 0.6 - 50) <= e.getX() && ((int) (width * 0.6 - 50) + (int) (height * 0.055)) >= e.getX()
+                && (int) (height * 0.85) <= e.getY() && ((int) (height * 0.85)+(int) (height * 0.055))>= e.getY()){
             return component.REDO;
+        } // UNDO BUTTON
+        else if ((int) (width * 0.45) - 50 <= e.getX() && ((int) (width * 0.45) - 50 + (int) (height * 0.055)) >= e.getX()
+                && (int) (height * 0.85) <= e.getY() && ((int) (height * 0.85)+(int) (height * 0.055))>= e.getY()){
+            return component.UNDO;
+        } // SAVE BUTTON
+        else if (((int) (width * 0.5 - 40)) <= e.getX() &&  ((int) (width * 0.5 + 40)) >= e.getX()
+                && ((int) (height * 0.85)) <= e.getY() && ((int) (height * 0.85)+ 39) >= e.getY()){
+            System.out.println("Save");
+            return component.SAVE;
         }
         return component.NONE;
     }
@@ -133,6 +158,7 @@ public class GameMouseAdapter implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
 //        System.out.println("Mouse Entered" + e.getX() + " " + e.getY());
+
     }
 
     @Override

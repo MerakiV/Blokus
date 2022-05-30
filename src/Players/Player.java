@@ -109,7 +109,7 @@ public abstract class Player implements Cloneable, Serializable {
     public abstract void playPiece(Board b);
 
     @Override
-    public Player clone() { return null; }
+    abstract public Player clone();
 
     // Can be used in subclasses' clone method.
     public void cloneFields(Player p2) {

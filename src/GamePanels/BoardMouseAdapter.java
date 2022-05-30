@@ -34,8 +34,6 @@ public class BoardMouseAdapter implements MouseListener {
             System.out.println("Right Clicked!");
             if (controller.piece != null){
                 controller.command("vertical");
-                controller.errorMessage = "Piece flipped vertically";
-                gamePlayInterface.repaint();
             } else{
                 System.out.println("No piece Selected");
                 controller.errorMessage = "No piece selected";
@@ -45,8 +43,6 @@ public class BoardMouseAdapter implements MouseListener {
             System.out.println("Middle Clicked!");
             if (controller.piece != null){
                 controller.command("horizontal");
-                controller.errorMessage = "Piece flipped horizontally";
-                gamePlayInterface.repaint();
             } else{
                 System.out.println("No piece Selected");
                 controller.errorMessage = "No piece selected";

@@ -4,6 +4,7 @@ import Controller.ControllerGamePlay;
 import GamePanels.BoardPanel;
 import GamePanels.ColorPanel;
 import Structures.Game2P;
+import Structures.GameSettings2P;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ public class GamePlayInterface extends JPanel {
     // Background images
     Image backGround, logo, backGroundImg;
     // Buttons
-    public HoverButton menu, hint, undo, redo;
+    public HoverButton menu, hint, undo, redo, save;
 
     public int boardSize, tileSize, height, width, widthFrame, heightFrame;
     int topLeftX, topLeftY, topRightX, topRightY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY, boardX, boardY,
@@ -33,13 +34,15 @@ public class GamePlayInterface extends JPanel {
 
     // Controller
     ControllerGamePlay controller;
-    Game2P g2p;
+    public Game2P g2p;
+    public GameSettings2P gs2p;
 
-    public GamePlayInterface(JFrame f, ControllerGamePlay c) throws IOException {
+    public GamePlayInterface(JFrame f, ControllerGamePlay c, GameSettings2P sp) throws IOException {
         controller = c;
         controller.gamePlayInterface = this;
         frame = f;
         g2p = (Game2P) controller.game;
+        gs2p = sp;
         setSize();
         this.setLayout(new FlowLayout());
         // Images
@@ -51,15 +54,37 @@ public class GamePlayInterface extends JPanel {
         initialiseColorPanels();
         initialiseButtons();
         // Add Listeners for Buttons
-        this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo));
+        this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo,save));
+        // Begins the game
+        controller.startGame();
+    }
+
+    public GamePlayInterface(JFrame f, ControllerGamePlay c) throws IOException {
+        controller = c;
+        controller.gamePlayInterface = this;
+        frame = f;
+        g2p = (Game2P) controller.game;
+        gs2p = g2p.gs2p;
+        setSize();
+        this.setLayout(new FlowLayout());
+        // Images
+        backGround = new Image(frame, "images/border.png");
+        backGroundImg = new Image(frame, "images/whiteBackground.png");
+        logo = new Image(frame, "images/logo.png");
+        // Initialise Panels
+        initialiseBoardPanel();
+        initialiseColorPanels();
+        initialiseButtons();
+        // Add Listeners for Buttons
+        this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo,save));
         // Begins the game
         controller.startGame();
     }
 
     /**
-    *   Initialise Board Panel
-    *       Calls functions to initialise the board on the screen
-    * */
+     *   Initialise Board Panel
+     *       Calls functions to initialise the board on the screen
+     * */
     public void initialiseBoardPanel(){
         boardPanel = new BoardPanel(this, controller);
         controller.setBoardPanel(boardPanel);
@@ -148,39 +173,44 @@ public class GamePlayInterface extends JPanel {
         height = frame.getHeight();
         width = frame.getWidth();
 
-        menu = new HoverButton(this, "Menu", (int) (width * 0.91), (int) (height * 0.08));
+        menu = new HoverButton(this, "Menu", (int) (width * 0.91), (int) (height * 0.08), (int) (heightFrame * 0.07), (int) (heightFrame * 0.07));
         add(this.menu);
-        hint = new HoverButton(this, "Hints", (int) (width * 0.05), (int) (height * 0.08));
+        hint = new HoverButton(this, "Hints", (int) (width * 0.05), (int) (height * 0.08), (int) (heightFrame * 0.06), (int) (heightFrame * 0.06));
         add(this.hint);
-        undo = new HoverButton(this, "Clockwise", (int) (width * 0.55) - 50, (int) (height * 0.85));
-        add(this.undo);
-        redo = new HoverButton(this, "CounterClockwise", (int) (width * 0.45) - 50, (int) (height * 0.85));
+        redo = new HoverButton(this, "Clockwise", (int) (width * 0.6 - 50), (int) (height * 0.85), (int) (heightFrame * 0.055), (int) (heightFrame * 0.055));
         add(this.redo);
+        undo = new HoverButton(this, "CounterClockwise", (int) (width * 0.45) - 50, (int) (height * 0.85), (int) (heightFrame * 0.055),(int) (heightFrame * 0.055));
+        add(this.undo);
+        save = new HoverButton(this, "Save", (int) (width * 0.5) - 40, (int) (height * 0.85), 80, 39);
+        add(this.save);
+
     }
 
     /**
-    *   Player Turn
-    *       Draws the string above the board with the current player's turn
-    *       written in the corresponding player's color
-    * */
+     *   Player Turn
+     *       Draws the string above the board with the current player's turn
+     *       written in the corresponding player's color
+     * */
     public void playerTurn(Graphics g) {
         DrawString currentPlayer;
         // Score of each player
-        p1Score = g2p.p1.get2PScore();
-        //System.out.println("P1 Score : " + p1Score);
+        p1Score = ((Game2P) (controller.game)).p1.get2PScore();
+        System.out.println("P1 Score : " + p1Score);
         p2Score = g2p.p2.get2PScore();
-        //System.out.println("P2 Score : " + p2Score);
+        System.out.println("P2 Score : " + p2Score);
 
         // If the current player is player 1
         String text;
         if (g2p.currentPlayer2P == g2p.p1 && !controller.game.end) {
             text = "Player 1 " + controller.currentColor + "'s turn";
+            System.out.println(text);
             currentPlayer = new DrawString(g, text, transformColor(),
                     (int) (width * 0.5 - (text.length()*12/2)), (int) (height * 0.18), 25);
             currentPlayer.paint(g);
-        // If the current player is player 2
+            // If the current player is player 2
         } else if (g2p.currentPlayer2P == g2p.p2 && !controller.game.end) {
             text = "Player 2 " + controller.currentColor + "'s turn";
+            System.out.println(text);
             currentPlayer = new DrawString(g, text, transformColor(),
                     (int) (width * 0.5 - (text.length()*12/2)), (int) (height * 0.18), 25);
             currentPlayer.paint(g);
@@ -194,9 +224,9 @@ public class GamePlayInterface extends JPanel {
 
 
     /**
-    *   Check End Game
-    *       If the game has ended, print end game message
-    * */
+     *   Check End Game
+     *       If the game has ended, print end game message
+     * */
     public void checkEndGame(Graphics g) {
         if (controller.game.end) {
             DrawString currentPlayer;
@@ -206,7 +236,7 @@ public class GamePlayInterface extends JPanel {
             else if (p2Score > p1Score)
                 currentPlayer = new DrawString(g, "PLAYER 2 WON !!!", (int) (width * 0.45),
                         (int) (height * 0.18), 25);
-             else
+            else
                 currentPlayer = new DrawString(g, "PLAYERS TIED !!!", (int) (width * 0.45),
                         (int) (height * 0.18), 25);
             currentPlayer.paint(g);
@@ -272,10 +302,11 @@ public class GamePlayInterface extends JPanel {
 
         // Buttons
         int iconSize = undo.getCurrentImageWidth() / 2;
-        g.drawImage(this.undo.getCurrentImage(), (int) (widthFrame * 0.55) - iconSize, (int) (heightFrame * 0.85), this);
-        g.drawImage(this.redo.getCurrentImage(), (int) (widthFrame * 0.45) - iconSize, (int) (heightFrame * 0.85), this);
-        g.drawImage(this.menu.getCurrentImage(), (int) (widthFrame * 0.91), (int) (heightFrame * 0.08), frame);
-        g.drawImage(this.hint.getCurrentImage(), (int) (widthFrame * 0.05), (int) (heightFrame * 0.08), frame);
+        g.drawImage(this.redo.getCurrentImage(), (int) (widthFrame * 0.6 - 50), (int) (heightFrame * 0.86), (int) (heightFrame * 0.055),(int) (heightFrame * 0.055),this);
+        g.drawImage(this.undo.getCurrentImage(), (int) (widthFrame * 0.45 - 50), (int) (heightFrame * 0.86), (int) (heightFrame * 0.055), (int) (heightFrame * 0.055),this);
+        g.drawImage(this.save.getCurrentImage(), (int) (widthFrame * 0.5 - this.save.getCurrentImageWidth()/2) , (int) (heightFrame * 0.86),this);
+        g.drawImage(this.menu.getCurrentImage(), (int) (widthFrame * 0.91), (int) (heightFrame * 0.08), (int) (heightFrame * 0.06), (int) (heightFrame * 0.06),frame);
+        g.drawImage(this.hint.getCurrentImage(), (int) (widthFrame * 0.05), (int) (heightFrame * 0.08),(int) (heightFrame * 0.07), (int) (heightFrame * 0.07),frame);
 
         // Background
         backGround.drawImg(g, 0, 0, widthFrame, height);

@@ -68,7 +68,6 @@ public class Game2P extends Game {
     }
 
     public void nextTurn() {
-        pushToPast();
         if (currentPlayer == p1.pcol1) {
             currentPlayer = p2.pcol1;
             currentPlayer2P = p2;

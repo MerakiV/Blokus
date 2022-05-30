@@ -18,9 +18,17 @@ public abstract class Player2P implements Cloneable, Serializable {
         return score;
     }
 
+    public void setPcol1(Player pcol1) {
+        this.pcol1 = pcol1;
+    }
+
+    public void setPcol2(Player pcol2) {
+        this.pcol2 = pcol2;
+    }
+
     // Must be overwritten in subclasses.
     @Override
-    public Object clone() { return null; }
+    abstract public Player2P clone();
     // Can be used in subclasses' clone method.
     public void cloneFields(Player2P p2) {
         this.pcol1 = (Player) p2.pcol1.clone();

@@ -251,6 +251,7 @@ public class ControllerGamePlay implements EventController, Runnable {
         game.nextTurn();
         currentPlayer = game.getCurrentPlayer();
         currentColor = game.getCurrentColor();
+        errorMessage = "";
         // System.out.println("Game Next turn :" +currentPlayer.getColor());
         // System.out.println("Game Next turn :" +currentColor);
         // game.getBoard().printBoard(game.getBoard().getCorner(currentColor));
@@ -383,14 +384,22 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     void redo() {
         game.redo();
+        piece = hoveredPiece = null;
+        currentPlayer = game.getCurrentPlayer();
+        currentColor = game.getCurrentColor();
         game.getBoard().printBoard(-1);
+        gamePlayInterface.repaint();
         // updateInterface();
     }
 
     void undo() {
         game.undo();
+        gamePlayInterface.g2p = (Game2P) game;
+        piece = hoveredPiece = null;
+        currentPlayer = game.getCurrentPlayer();
+        currentColor = game.getCurrentColor();
         game.getBoard().printBoard(-1);
-        // updateInterface();
+        gamePlayInterface.repaint();
     }
 
     @Override
@@ -399,34 +408,38 @@ public class ControllerGamePlay implements EventController, Runnable {
             case "clockwise":
                 boardPanel.orientated = true;
                 System.out.println("clockwise");
+                errorMessage = "Piece rotated clockwise";
                 replaceOriginal();
                 piece.rotateClockwise();
                 paintImage();
-                boardPanel.repaint();
+                gamePlayInterface.repaint();
                 break;
             case "counterclockwise":
                 boardPanel.orientated = true;
                 System.out.println("counterclockwise");
+                errorMessage = "Piece rotated counterclockwise";
                 replaceOriginal();
                 piece.rotateCounterclockwise();
                 paintImage();
-                boardPanel.repaint();
+                gamePlayInterface.repaint();
                 break;
             case "horizontal":
                 boardPanel.orientated = true;
                 System.out.println("horizontal");
+                errorMessage = "Piece flipped horizontally";
                 replaceOriginal();
                 piece.flipH();
                 paintImage();
-                boardPanel.repaint();
+                gamePlayInterface.repaint();
                 break;
             case "vertical":
                 boardPanel.orientated = true;
                 System.out.println("vertical");
+                errorMessage = "Piece flipped horizontally";
                 replaceOriginal();
                 piece.flipV();
                 paintImage();
-                boardPanel.repaint();
+                gamePlayInterface.repaint();
                 break;
             case "quit":
                 System.out.println("quit");
@@ -434,10 +447,12 @@ public class ControllerGamePlay implements EventController, Runnable {
                 break;
             case "undo":
                 System.out.println("undo");
+                errorMessage = "Undo previous move";
                 undo();
                 break;
             case "redo":
                 System.out.println("redo");
+                errorMessage = "Redo previous move";
                 redo();
                 break;
             case "pause":

@@ -131,6 +131,7 @@ public class PlayerAIRandom extends PlayerAI {
                 Tile putTile = possiblePut.get(idxPut);
                 res = new Move(play, putTile);
                 notPlaced = false;
+                return res;
             }
             allTried = (tried.size() == pieces.size());
         }
