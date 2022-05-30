@@ -65,16 +65,16 @@ public class PlayerAIMinMax extends PlayerAI {
 
         Move m = null;
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
-            if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, true, maxDepth, MIN, MAX);
+            if(this.isAlphaBeta == false) AlgoAlphaBeta(m, g, true, maxDepth, MIN, MAX);
             else AlgoMinMax(m, g, true, maxDepth, MIN, MAX);
         } else if(g.getPlayerList().get(1) == g.getCurrentPlayer()) {
-            if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, false, maxDepth-1, MIN, MAX);
+            if(this.isAlphaBeta == false) AlgoAlphaBeta(m, g, false, maxDepth-1, MIN, MAX);
             else AlgoMinMax(m, g, false, maxDepth-1, MIN, MAX);
         } else if(g.getPlayerList().get(2) == g.getCurrentPlayer()){
-            if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, true, maxDepth-2, MIN, MAX);
+            if(this.isAlphaBeta == false) AlgoAlphaBeta(m, g, true, maxDepth-2, MIN, MAX);
             else AlgoMinMax(m, g, true, maxDepth-2, MIN, MAX);
         } else{
-            if(this.isAlphaBeta == true) AlgoAlphaBeta(m, g, false, maxDepth-3, MIN, MAX);
+            if(this.isAlphaBeta == false) AlgoAlphaBeta(m, g, false, maxDepth-3, MIN, MAX);
             else AlgoMinMax(m, g, false, maxDepth-3, MIN, MAX);
         }
         maxDepth-=4;
@@ -561,6 +561,7 @@ public class PlayerAIMinMax extends PlayerAI {
     public Player clone() {
         PlayerAIMinMax p2 = new PlayerAIMinMax(this.seed);
         p2.isAlphaBeta = this.isAlphaBeta;
+        p2.maxDepth = this.maxDepth;
         p2.cloneFields(this);
         return p2;
     }
