@@ -63,6 +63,7 @@ public class GameMouseAdapter implements MouseListener {
                 // System.out.println("Menu button Clicked");
                 game.play = true;
                 game.controller.piece = null;
+                //game.controller.command("pause");
                 game.repaint();
                 break;
             case HINTS:

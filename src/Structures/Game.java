@@ -75,6 +75,8 @@ public abstract class Game implements Serializable, Cloneable {
         board = previous.board;
         players = previous.players;
         currentPlayer = previous.getCurrentPlayer();
+        currentColor = currentPlayer.getColor();
+        updatePlayer2P();
     }
 
     public void redo() {
@@ -83,36 +85,44 @@ public abstract class Game implements Serializable, Cloneable {
         board = next.board;
         players = next.players;
         currentPlayer = next.getCurrentPlayer();
+        currentColor = currentPlayer.getColor();
+        updatePlayer2P();
+    }
+
+    void updatePlayer2P(){
+        Game2P g2p = (Game2P) this;
+        g2p.p1.setPcol1(g2p.getPlayerList().get(0));
+        g2p.p1.setPcol2(g2p.getPlayerList().get(2));
+        g2p.p2.setPcol1(g2p.getPlayerList().get(1));
+        g2p.p2.setPcol2(g2p.getPlayerList().get(3));
     }
 
     void pushToPast() {
-        int pl = -1;
-        for (int i = 0; i < players.size() && pl == -1; i++) {
-            if (currentPlayer == players.get(i)) {
-                pl = i;
-            }
-        }
-        GameState gs = new GameState(board.clone(), (ArrayList<Player>) players.clone(), pl);
+//        int pl = -1;
+//        for (int i = 0; i < players.size() && pl == -1; i++) {
+//            if (currentPlayer == players.get(i)) {
+//                pl = i;
+//            }
+//        }
+        GameState gs = new GameState((Game2P) this);
         history.pushToPast(gs);
     }
 
     void pushToFuture() {
-        int pl = -1;
-        for (int i = 0; i < players.size() && pl == -1; i++) {
-            if (currentPlayer == players.get(i)) {
-                pl = i;
-            }
-        }
-        GameState gs = new GameState(board.clone(), (ArrayList<Player>) players.clone(), pl);
+//        int pl = -1;
+//        for (int i = 0; i < players.size() && pl == -1; i++) {
+//            if (currentPlayer == players.get(i)) {
+//                pl = i;
+//            }
+//        }
+        GameState gs = new GameState((Game2P) this);
         history.pushToFuture(gs);
     }
 
     public abstract void nextTurn();
 
     @Override
-    public Game clone() {
-        return null;
-    }
+    abstract public Game clone();
 
     // Can be used in subclasses' clone method.
     public void cloneFields(Game g2) {

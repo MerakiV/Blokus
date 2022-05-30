@@ -39,7 +39,7 @@ public class ControllerGamePlay implements EventController, Runnable {
     public String errorMessage = "";
 
     JFrame frame;
-    Thread t;
+    public Thread t;
     Shape shape;
 
     Save saveGame;
@@ -394,11 +394,20 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     void undo() {
         game.undo();
-        gamePlayInterface.g2p = (Game2P) game;
         piece = hoveredPiece = null;
         currentPlayer = game.getCurrentPlayer();
         currentColor = game.getCurrentColor();
+        Game2P g2p = (Game2P) game;
         game.getBoard().printBoard(-1);
+        currentPlayer.printPlayer();
+//        System.out.println("P1C1 Score: "+g2p.p1.pcol1.getScore());
+//        System.out.println("P1C2 Score: "+g2p.p1.pcol2.getScore());
+//        System.out.println("P1 Score: "+g2p.p1.get2PScore());
+//        System.out.println("P2C1 Score: "+g2p.p2.pcol1.getScore());
+//        System.out.println("P2C2 Score: "+g2p.p2.pcol2.getScore());
+//        System.out.println("P2 Score: "+g2p.p2.get2PScore());
+//        System.out.println("Current player: "+game.getCurrentColor());
+        // updateInterface();
         gamePlayInterface.repaint();
     }
 
