@@ -24,7 +24,7 @@ public class GameSelection extends JComponent {
 
     DrawString colorText11, colorText12, colorText21, colorText22, player1, player2, errorPlayText;
 
-    GameSettings2P gs2p; // TBI: connect with the game/game2P classes
+    public GameSettings2P gs2p; // TBI: connect with the game/game2P classes
 
     public GameSelection(JFrame f) throws IOException {
         frame = f;

@@ -2,6 +2,7 @@ package Interface;
 
 import Controller.ControllerGamePlay;
 import Structures.Game;
+import Structures.Game2P;
 import Structures.Save;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class MenuMouseAdapter implements MouseListener {
     GameSelection gameSelec;
 
     GamePlayInterface gamePlay;
+    GamePlayInterface gamePlay2;
 
     GamePlayMenu playMenu;
 
@@ -127,6 +129,20 @@ public class MenuMouseAdapter implements MouseListener {
                     ex.printStackTrace();
                 }
                 changePanel(game);
+                break;
+            case "Restart":
+                Game g2p = new Game2P(gamePlay.gs2p);
+                ControllerGamePlay controller = new ControllerGamePlay(g2p, gamePlay.frame);
+                gamePlay.frame.getContentPane().remove(gamePlay);
+
+                try {
+                    gamePlay2 = new GamePlayInterface(gamePlay.frame, controller, gamePlay.gs2p);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                gamePlay.frame.getContentPane().add(gamePlay2, BorderLayout.CENTER);
+                gamePlay.frame.getContentPane().invalidate();
+                gamePlay.frame.getContentPane().validate();
                 break;
             default:
                 break;

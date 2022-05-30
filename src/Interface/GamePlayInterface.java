@@ -4,6 +4,7 @@ import Controller.ControllerGamePlay;
 import GamePanels.BoardPanel;
 import GamePanels.ColorPanel;
 import Structures.Game2P;
+import Structures.GameSettings2P;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +34,30 @@ public class GamePlayInterface extends JPanel {
 
     // Controller
     ControllerGamePlay controller;
-    Game2P g2p;
+    public Game2P g2p;
+    public GameSettings2P gs2p;
+
+    public GamePlayInterface(JFrame f, ControllerGamePlay c, GameSettings2P sp) throws IOException {
+        controller = c;
+        controller.gamePlayInterface = this;
+        frame = f;
+        g2p = (Game2P) controller.game;
+        gs2p = sp;
+        setSize();
+        this.setLayout(new FlowLayout());
+        // Images
+        backGround = new Image(frame, "images/border.png");
+        backGroundImg = new Image(frame, "images/whiteBackground.png");
+        logo = new Image(frame, "images/logo.png");
+        // Initialise Panels
+        initialiseBoardPanel();
+        initialiseColorPanels();
+        initialiseButtons();
+        // Add Listeners for Buttons
+        this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo));
+        // Begins the game
+        controller.startGame();
+    }
 
     public GamePlayInterface(JFrame f, ControllerGamePlay c) throws IOException {
         controller = c;
