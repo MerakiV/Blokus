@@ -64,6 +64,7 @@ public class GamePlayInterface extends JPanel {
         controller.gamePlayInterface = this;
         frame = f;
         g2p = (Game2P) controller.game;
+        gs2p = g2p.gs2p;
         setSize();
         this.setLayout(new FlowLayout());
         // Images
