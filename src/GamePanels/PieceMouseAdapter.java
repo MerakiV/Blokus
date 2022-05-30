@@ -40,7 +40,7 @@ public class PieceMouseAdapter implements MouseListener {
             controller.errorMessage = "You can not select an AI's piece";
             System.out.println(controller.errorMessage);
             controller.gamePlayInterface.repaint();
-        } else{
+        } else if (!piecePanel.isClicked){
             if (piecePanel.colorPanel.color == controller.currentColor){
                 if (controller.piecePanel != null) {
                     if (controller.game.getPlayerList().get(col).getPieces().contains(controller.piecePanel.piece)){
@@ -65,6 +65,17 @@ public class PieceMouseAdapter implements MouseListener {
                 controller.errorMessage = "It's " +controller.currentColor +"'s turn to play,  not " + piecePanel.colorPanel.color;
                 controller.gamePlayInterface.repaint();
             }
+        } else {
+            System.out.println("This Piece Panel is already selected");
+            piecePanel.isClicked = false;
+            piecePanel.repaint();
+            controller.errorMessage = "Deselected piece : " + piecePanel.piece.getName().name();
+            controller.piece = null;
+            controller.color = piecePanel.colorPanel.color;
+            controller.piecePanel = null;
+            controller.boardPanel.removePositions();
+            //System.out.println(controller.piece.getName().name());
+            controller.gamePlayInterface.repaint();
         }
     }
 
