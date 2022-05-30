@@ -82,9 +82,9 @@ public class GamePlayInterface extends JPanel {
     }
 
     /**
-    *   Initialise Board Panel
-    *       Calls functions to initialise the board on the screen
-    * */
+     *   Initialise Board Panel
+     *       Calls functions to initialise the board on the screen
+     * */
     public void initialiseBoardPanel(){
         boardPanel = new BoardPanel(this, controller);
         controller.setBoardPanel(boardPanel);
@@ -187,10 +187,10 @@ public class GamePlayInterface extends JPanel {
     }
 
     /**
-    *   Player Turn
-    *       Draws the string above the board with the current player's turn
-    *       written in the corresponding player's color
-    * */
+     *   Player Turn
+     *       Draws the string above the board with the current player's turn
+     *       written in the corresponding player's color
+     * */
     public void playerTurn(Graphics g) {
         DrawString currentPlayer;
         // Score of each player
@@ -207,7 +207,7 @@ public class GamePlayInterface extends JPanel {
             currentPlayer = new DrawString(g, text, transformColor(),
                     (int) (width * 0.5 - (text.length()*12/2)), (int) (height * 0.18), 25);
             currentPlayer.paint(g);
-        // If the current player is player 2
+            // If the current player is player 2
         } else if (g2p.currentPlayer2P == g2p.p2 && !controller.game.end) {
             text = "Player 2 " + controller.currentColor + "'s turn";
             System.out.println(text);
@@ -224,9 +224,9 @@ public class GamePlayInterface extends JPanel {
 
 
     /**
-    *   Check End Game
-    *       If the game has ended, print end game message
-    * */
+     *   Check End Game
+     *       If the game has ended, print end game message
+     * */
     public void checkEndGame(Graphics g) {
         if (controller.game.end) {
             DrawString currentPlayer;
@@ -236,7 +236,7 @@ public class GamePlayInterface extends JPanel {
             else if (p2Score > p1Score)
                 currentPlayer = new DrawString(g, "PLAYER 2 WON !!!", (int) (width * 0.45),
                         (int) (height * 0.18), 25);
-             else
+            else
                 currentPlayer = new DrawString(g, "PLAYERS TIED !!!", (int) (width * 0.45),
                         (int) (height * 0.18), 25);
             currentPlayer.paint(g);
