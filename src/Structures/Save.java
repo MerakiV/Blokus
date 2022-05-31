@@ -33,12 +33,13 @@ public class Save {
         }
     }
 
-    public void loadSave(){
+    public void loadSave() throws InvalidClassException{
         try (FileInputStream fileIn = new FileInputStream(filename);
-             ObjectInputStream ois = new ObjectInputStream(fileIn)){
+            ObjectInputStream ois = new ObjectInputStream(fileIn)){
             game = (Game) ois.readObject();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("Catch invalid class exception");
+            //throw new InvalidClassException(ex.toString());
         }
     }
 

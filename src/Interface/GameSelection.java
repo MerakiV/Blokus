@@ -7,13 +7,10 @@ import Structures.GameSettings2P;
 
 import javax.swing.*;
 import java.awt.*;
-
-import java.io.File;
 import java.io.IOException;
 
 public class GameSelection extends JComponent {
     public JFrame frame;
-    JPanel panel;
     Image backGround, logo, board, colorSelectbg, yellow, green, blue, red, p1c1, p1c2, p2c1, p2c2;
     HoverButton playButton, backButton;
     ColorPicker selectC1P1, selectC2P1, selectC1P2, selectC2P2;
@@ -24,7 +21,7 @@ public class GameSelection extends JComponent {
 
     DrawString colorText11, colorText12, colorText21, colorText22, player1, player2, errorPlayText;
 
-    public GameSettings2P gs2p; // TBI: connect with the game/game2P classes
+    public GameSettings2P gs2p;
 
     public GameSelection(JFrame f) throws IOException {
         frame = f;
@@ -40,15 +37,6 @@ public class GameSelection extends JComponent {
         blue = new Image(frame, "tiles/blueBloc.png");
         red = new Image(frame, "tiles/redBloc.png");
         gs2p = new GameSettings2P();
-        try {
-            // create the font to use
-            Font font = Font.createFont(Font.TRUETYPE_FONT, new File("resources/font/ABeeZee-Regular.otf"));
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            // register the font
-            ge.registerFont(font);
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-        }
         initUIButton();
     }
 

@@ -25,6 +25,10 @@ public class DrawString extends JPanel {
         getStringSize();
     }
 
+    public DrawString(String text, Color color){
+        this.text = text;
+        this.color = color;
+    }
     public DrawString(Graphics g, String text, Color color, int x, int y, int fontSize) {
         this.text = text;
         this.x = x;
