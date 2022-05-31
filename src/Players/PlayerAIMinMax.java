@@ -15,6 +15,8 @@ public class PlayerAIMinMax extends PlayerAI {
 
     boolean isAlphaBeta = false;
 
+    int heur;
+
     void initPieces() {
         // create list of pieces from PieceReader
         PieceReader pRead = null;
@@ -27,12 +29,13 @@ public class PlayerAIMinMax extends PlayerAI {
         }
     }
 
-    public PlayerAIMinMax(Color c, boolean ab) {
+    public PlayerAIMinMax(Color c, boolean ab, int h) {
         difficultyLevel = 2;
         col = c;
         isAI = true;
         hasMoves = true;
         isAlphaBeta = ab;
+        heur = h;
         seed = System.currentTimeMillis();
         this.generator = new Random(seed);
         initPieces();
@@ -60,37 +63,41 @@ public class PlayerAIMinMax extends PlayerAI {
         // To explore a whole turn, the depth should be at least 3. A whole another turn is n with n%4==3
         // The maximum depth is 84 (every player has put every piece)
 
-        /*int depth = 0;
+        int depth = 0;
         if(pieces.size() > 13){
             depth = 1;
         } else if(pieces.size() > 9){
             depth = 2;
         } else if(pieces.size() > 5){
-            depth = 4;
-        } else{
-            depth = 7;
-        }*/
-
-        int sum = g.getBoard().sumAllPlacements(pieces, col);
-        int depth = 0;
-        if(sum > 300){
-            depth = 1;
-        } else if(sum > 100){
-            depth = 2;
-        } else if(sum > 80){
             depth = 3;
-        } else if(sum > 50) {
-            depth = 4;
-        } else {
+        } else{
             depth = 7;
         }
 
+        /*Player p1c1 = g.getPlayerList().get(0);
+        Player p2c1 = g.getPlayerList().get(1);
+        Player p1c2 = g.getPlayerList().get(2);
+        Player p2c2 = g.getPlayerList().get(3);
+        int sum = g.getBoard().sumAllPlacements(p1c1.getPieces(), p1c1.getColor()) + g.getBoard().sumAllPlacements(p2c1.getPieces(), p2c1.getColor()) + g.getBoard().sumAllPlacements(p1c2.getPieces(), p1c2.getColor()) + g.getBoard().sumAllPlacements(p2c2.getPieces(), p2c2.getColor());
+        int depth = 0;
+        if(sum > 600){
+            depth = 1;
+        } else if(sum > 350){
+            depth = 2;
+        } else if(sum > 200){
+            depth = 3;
+        } else if(sum > 75) {
+            depth = 4;
+        } else {
+            depth = 7;
+        }*/
+
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
             if(this.isAlphaBeta == true) AlgoAlphaBeta(null, g, true, depth, MIN, MAX);
-            else AlgoMinMax(null, g, true, 1);
+            else AlgoMiniMax(null, g, true, 1);
         } else {
             if (this.isAlphaBeta == true) AlgoAlphaBeta(null, g, false, depth, MIN, MAX);
-            else AlgoMinMax(null, g, false, 1);
+            else AlgoMiniMax(null, g, false, 1);
         }
         return bestMove;
     }
@@ -364,23 +371,19 @@ public class PlayerAIMinMax extends PlayerAI {
     }
 
     public int AlgoAlphaBeta(Move move, Game config, boolean max, int depth, int alpha, int beta) {
-        if (move != null && (depth == 0 || isLeaf(config))) { // move!=null to avoid a crash at the very first call
+        if ((depth == 0 || isLeaf(config))) {
             int h = evaluation(config, move, max);
             return h;
         }
         else {
             int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
             ArrayList<Move> moves = moves(config); //children
-            Move bestM = null;
-            while(!moves.isEmpty()) {
+            if(depth > 0 && moves.isEmpty()){ //if the current player cannot put a piece
                 Game g2 = config.clone();
-                Move m = poll_rdm(moves);
-                g2.directPut(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
                 g2.nextTurn();
-                int x = AlgoAlphaBeta(m, g2, !max, depth - 1, alpha, beta);
+                int x = AlgoAlphaBeta(null, g2, !max, depth - 1, alpha, beta);
                 if (max ? x > bestHeur : x < bestHeur) {
                     bestHeur = x;
-                    bestM = m;
                 }
                 if(max && bestHeur > alpha){
                     alpha = bestHeur;
@@ -388,16 +391,36 @@ public class PlayerAIMinMax extends PlayerAI {
                 if(!max && bestHeur < beta){
                     beta = bestHeur;
                 }
-                if(beta <= alpha){
-                    break;
-                }
             }
-            bestMove = bestM;
+            else{
+                Move bestM = null;
+                while(!moves.isEmpty()) {
+                    Game g2 = config.clone();
+                    Move m = poll_rdm(moves);
+                    g2.directPut(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
+                    g2.nextTurn();
+                    int x = AlgoAlphaBeta(m, g2, !max, depth - 1, alpha, beta);
+                    if (max ? x > bestHeur : x < bestHeur) {
+                        bestHeur = x;
+                        bestM = m;
+                    }
+                    if(max && bestHeur > alpha){
+                        alpha = bestHeur;
+                    }
+                    if(!max && bestHeur < beta){
+                        beta = bestHeur;
+                    }
+                    if(beta <= alpha){
+                        break;
+                    }
+                }
+                bestMove = bestM;
+            }
             return bestHeur;
         }
     }
 
-    public int AlgoMinMax(Move move, Game config, boolean max, int depth) {
+    public int AlgoMiniMax(Move move, Game config, boolean max, int depth) {
         if (move != null && (depth == 0 || isLeaf(config))) { // move!=null to avoid a crash at the very first call
             int h = evaluation(config, move, max);
             return h;
@@ -405,47 +428,56 @@ public class PlayerAIMinMax extends PlayerAI {
         else {
             int bestHeur = (max ? Integer.MIN_VALUE : Integer.MAX_VALUE);
             ArrayList<Move> moves = moves(config); //children
-            Move bestM = null;
-            while(!moves.isEmpty()) {
+            if(depth > 0 && moves.isEmpty()){ //if the current player cannot put a piece
                 Game g2 = config.clone();
-                Move m = poll_rdm(moves);
-                g2.directPut(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
                 g2.nextTurn();
-                int x = AlgoMinMax(m, g2, !max, depth - 1);
+                int x = AlgoMiniMax(null, g2, !max, depth - 1);
                 if (max ? x > bestHeur : x < bestHeur) {
                     bestHeur = x;
-                    bestM = m;
                 }
             }
-            bestMove = bestM;
+            else{
+                Move bestM = null;
+                while(!moves.isEmpty()) {
+                    Game g2 = config.clone();
+                    Move m = poll_rdm(moves);
+                    g2.directPut(m.getShape(), m.getPieceType(), g2.getCurrentColor(), m.getTile().getX(), m.getTile().getY());
+                    g2.nextTurn();
+                    int x = AlgoMiniMax(m, g2, !max, depth - 1);
+                    if (max ? x > bestHeur : x < bestHeur) {
+                        bestHeur = x;
+                        bestM = m;
+                    }
+                }
+                bestMove = bestM;
+            }
             return bestHeur;
         }
     }
 
     public boolean isLeaf(Game g){
         int i = 0;
-        int zeroCorners = 0;
-        int zeroPieces = 0;
+        int cannotPutPiece = 0;
         List<Player> players = g.getPlayerList();
         int nbPlayers = players.size();
         for(i = 0; i<nbPlayers; i++){
-            if(players.get(i).getPieces().size() == 0)
-                zeroPieces++;
-            if (g.getBoard().numberOfCorners(players.get(i).getColor()) == 0)
-                zeroCorners++;
+            if(players.get(i).getPieces().size() == 0 || g.getBoard().numberOfCorners(players.get(i).getColor()) == 0)
+                cannotPutPiece++;
         }
-        return zeroPieces == nbPlayers || zeroCorners == nbPlayers;
+        return cannotPutPiece == nbPlayers;
     }
 
-    public static int evaluation(Game config, Move m, boolean max){
+    public int evaluation(Game config, Move m, boolean max){
 
-        PieceType pt = m.getPieceType();
         int pieceValue = 0;
-        if (pt.toString().contains("FIVE")) pieceValue = 5;
-        else if (pt.toString().contains("FOUR")) pieceValue = 4;
-        else if (pt.toString().contains("THREE")) pieceValue = 3;
-        else if (pt.toString().contains("TWO")) pieceValue = 2;
-        else if (pt.toString().contains("ONE")) pieceValue = 1;
+        if(m != null) {
+            PieceType pt = m.getPieceType();
+            if (pt.toString().contains("FIVE")) pieceValue = 5;
+            else if (pt.toString().contains("FOUR")) pieceValue = 4;
+            else if (pt.toString().contains("THREE")) pieceValue = 3;
+            else if (pt.toString().contains("TWO")) pieceValue = 2;
+            else if (pt.toString().contains("ONE")) pieceValue = 1;
+        }
 
         Player p1c1 = config.getPlayerList().get(0);
         Player p1c2 = config.getPlayerList().get(2);
@@ -474,16 +506,16 @@ public class PlayerAIMinMax extends PlayerAI {
         int sumPlacementsP2 = config.getBoard().sumAllPlacements(p2c1.getPieces(), p2c1.col) + config.getBoard().sumAllPlacements(p2c2.getPieces(), p2c2.col);
 
         if(max){
-            return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
-            //return ((sumScoreP1 - pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
-            //return ((sumScoreP1 - pieceValue) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 2
-            //return ((sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); // heur 1
+            if(heur == 4) return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
+            else if(heur == 3) return ((sumScoreP1 - pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
+            else if(heur == 2) return ((sumScoreP1 - pieceValue) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 2
+            else return (sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); // heur 1
         }
         else{
-            return ((sumScoreP1 + pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
-            //return ((sumScoreP1 + pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
-            //return ((sumScoreP2 + pieceValue - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1)); //heur 2
-            //return ((sumScoreP2 - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1); // heur 1
+            if(heur == 4) return ((sumScoreP1 + pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
+            else if(heur == 3) return ((sumScoreP1 + pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
+            else if(heur == 2) return ((sumScoreP2 + pieceValue - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1)); //heur 2
+            else return (sumScoreP2 - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1); // heur 1
         }
     }
 
@@ -495,6 +527,7 @@ public class PlayerAIMinMax extends PlayerAI {
     public Player clone() {
         PlayerAIMinMax p2 = new PlayerAIMinMax(this.seed);
         p2.isAlphaBeta = this.isAlphaBeta;
+        p2.heur = this.heur;
         p2.cloneFields(this);
         return p2;
     }

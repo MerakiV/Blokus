@@ -87,6 +87,9 @@ public class PlayerAIRandom extends PlayerAI {
     private PlayerAIRandom(long s) {
         this.seed = s;
         this.generator = new Random(s);
+        difficultyLevel = 0;
+        isAI = true;
+        hasMoves = true;
     }
 
     @Override

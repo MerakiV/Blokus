@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import java.io.Serializable;
+import java.util.Stack;
 
 public abstract class Game implements Serializable, Cloneable {
     Board board;
@@ -26,7 +27,10 @@ public abstract class Game implements Serializable, Cloneable {
     public boolean put(Shape s, PieceType pt, Color c, int x, int y) {
         int i = board.getCorner(c);
         if (board.canPut(s, i, x, y)) {
-            pushToPast();
+            history.future.clear(); // clear future history
+            Move last = (history.past.isEmpty() ? null : history.past.peek().nextMove);
+            Move next = new Move(s,pt, new Tile(x,y));
+            pushToPast(last,next);
             board.put(s, i, x, y);
             currentPlayer.removePiece(pt);
             return true;
@@ -77,40 +81,54 @@ public abstract class Game implements Serializable, Cloneable {
     }
 
     public void undo() {
-        pushToFuture();
         GameState previous = history.undo();
+        Move lm = previous.nextMove;
+        Move nm = (history.future.isEmpty() ? null : history.future.peek().lastMove);
+        pushToFuture(lm,nm);
         board = previous.board;
         players = previous.players;
         currentPlayer = previous.getCurrentPlayer();
+        currentColor = currentPlayer.getColor();
+        update2P();
     }
 
     public void redo() {
-        pushToPast();
         GameState next = history.redo();
+        Move lm = (history.past.isEmpty() ? null : history.past.peek().nextMove);
+        Move nm = next.lastMove;
+        pushToPast(lm,nm);
         board = next.board;
         players = next.players;
         currentPlayer = next.getCurrentPlayer();
+        currentColor = currentPlayer.getColor();
+        update2P();
     }
 
-    void pushToPast() {
-        int pl = -1;
-        for (int i = 0; i < players.size() && pl == -1; i++) {
-            if (currentPlayer == players.get(i)) {
-                pl = i;
-            }
-        }
-        GameState gs = new GameState(board.clone(), (ArrayList<Player>) players.clone(), pl);
+    private void update2P(){
+        Game2P g2p = (Game2P) this;
+
+        g2p.p1.setPcol1(players.get(0));
+        g2p.p1.setPcol2(players.get(2));
+        g2p.p2.setPcol1(players.get(1));
+        g2p.p2.setPcol2(players.get(3));
+
+        g2p.p1.updateScore();
+        g2p.p2.updateScore();
+
+        System.out.println("P1 Color 1 Score : "+players.get(0).getScore());
+        System.out.println("P1 Color 2 Score : "+players.get(2).getScore());
+        System.out.println("P2 Color 1 Score : "+players.get(1).getScore());
+        System.out.println("P2 Color 2 Score : "+players.get(3).getScore());
+
+    }
+
+    void pushToPast(Move lm, Move nm) {
+        GameState gs = new GameState(this, lm, nm);
         history.pushToPast(gs);
     }
 
-    void pushToFuture() {
-        int pl = -1;
-        for (int i = 0; i < players.size() && pl == -1; i++) {
-            if (currentPlayer == players.get(i)) {
-                pl = i;
-            }
-        }
-        GameState gs = new GameState(board.clone(), (ArrayList<Player>) players.clone(), pl);
+    void pushToFuture(Move lm, Move nm) {
+        GameState gs = new GameState(this, lm, nm);
         history.pushToFuture(gs);
     }
 

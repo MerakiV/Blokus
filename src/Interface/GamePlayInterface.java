@@ -217,7 +217,7 @@ public class GamePlayInterface extends JPanel {
         // Score of each player
         p1Score = ((Game2P) (controller.game)).p1.get2PScore();
         System.out.println("P1 Score : " + p1Score);
-        p2Score = g2p.p2.get2PScore();
+        p2Score = ((Game2P) (controller.game)).p2.get2PScore();
         System.out.println("P2 Score : " + p2Score);
 
         // If the current player is player 1

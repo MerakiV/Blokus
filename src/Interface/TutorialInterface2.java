@@ -38,11 +38,18 @@ public class TutorialInterface2 extends JComponent{
         tuto2 = new Image(frame, tt2);
         tuto3 = new Image(frame, tt3);
         tuto4 = new Image(frame, tt4);
-        this.back = new HoverButton(this,"Back", (int) (frame.getWidth()*0.05), (int) (frame.getHeight()*0.08));
+        this.back = new HoverButton(this,"Back", 0,0);
         add(this.back);
         this.addMouseListener(new TutorialMouseAdapter(this));
 
 
+    }
+
+    private void resetBound() {
+        height = frame.getHeight();
+        width = frame.getWidth();
+
+        back.setBounds((int) (width * 0.05), (int) (height * 0.08), (int) (width * 0.03), (int) (width * 0.03));
     }
 
     public TutorialInterface2(JFrame j, Game2P g) throws IOException {
@@ -60,7 +67,7 @@ public class TutorialInterface2 extends JComponent{
         tuto2 = new Image(frame, tt2);
         tuto3 = new Image(frame, tt3);
         tuto4 = new Image(frame, tt4);
-        this.back = new HoverButton(this,"Back", (int) (frame.getWidth()*0.05), (int) (frame.getHeight()*0.08));
+        this.back = new HoverButton(this,"Back", 0, 0);
         add(this.back);
         this.addMouseListener(new TutorialMouseAdapter(this));
 
@@ -91,12 +98,15 @@ public class TutorialInterface2 extends JComponent{
         }
     }
 
+
+
     public void paintComponent(Graphics g) {
+        resetBound();
         height = frame.getHeight();
         width = frame.getWidth();
         backGround.drawImg(g,0, 0, width,height);
         logo.drawImg(g,(width/2)- (logo.getWidth()/2), 15, logo.getWidth(), logo.getHeight() );
-        g.drawImage(this.back.getCurrentImage(), (int) (width*0.05), (int) (height*0.08), this);
+        g.drawImage(back.getCurrentImage(), back.getX(), back.getY(), back.getWidth(), back.getHeight(), null);
 
         drawTuto1(g);
         drawTuto2(g);

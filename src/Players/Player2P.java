@@ -33,6 +33,7 @@ public abstract class Player2P implements Cloneable, Serializable {
     public void cloneFields(Player2P p2) {
         this.pcol1 = (Player) p2.pcol1.clone();
         this.pcol2 = (Player) p2.pcol2.clone();
+        this.score = p2.score;
     }
 
 }
