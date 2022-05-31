@@ -96,45 +96,107 @@ public class PlayerAIRandom extends PlayerAI {
         return p2;
     }
 
+//    @Override
+//    public Move generateMove(Game g) {
+//        Move res = null;
+//        Board b = g.getBoard();
+//        int x, y;
+//        List<Shape> tried = new ArrayList<>();
+//        List<Tile> possiblePut;
+//        int colorCode = b.getCorner(this.col);
+//        boolean notPlaced = true;
+//        boolean allTried = (tried.size() == pieces.size());
+//        while (notPlaced && !allTried) {
+//            possiblePut = new ArrayList<>();
+//            int idx = this.generator.nextInt(pieces.size());
+//            Piece play = pieces.get(idx);
+//            play.setDisp(generator.nextInt(16));
+//            while (tried.contains(play.getShape())) {
+//                idx = this.generator.nextInt(pieces.size());
+//                //play = pieces.get(idx);
+//                play.setDisp(generator.nextInt(16));
+//            }
+//            tried.add(play.getShape());
+//            // test for can put
+//            for (x = 0; x < 20; x++) {
+//                for (y = 0; y < 20; y++) {
+//                    if (b.canPut(play, colorCode, x, y)) {
+//                        possiblePut.add(new Tile(x, y));
+//                    }
+//                }
+//            }
+//            // randomly choose where to put if exists
+//            if (!possiblePut.isEmpty()) {
+//                int idxPut = this.generator.nextInt(possiblePut.size());
+//                Tile putTile = possiblePut.get(idxPut);
+//                res = new Move(play, putTile);
+//                notPlaced = false;
+//                return res;
+//            }
+//            allTried = (tried.size() == pieces.size());
+//        }
+//        return res;
+//    }
+
     @Override
     public Move generateMove(Game g) {
         Move res = null;
         Board b = g.getBoard();
         int x, y;
-        List<Shape> tried = new ArrayList<>();
+        List<Piece> pieceTried = new ArrayList<>();
+        List<Shape> tried;
         List<Tile> possiblePut;
         int colorCode = b.getCorner(this.col);
         boolean notPlaced = true;
-        boolean allTried = (tried.size() == pieces.size());
+        boolean allTried = (pieceTried.size() == pieces.size());
+
         while (notPlaced && !allTried) {
             possiblePut = new ArrayList<>();
+
+            //choose piece
             int idx = this.generator.nextInt(pieces.size());
             Piece play = pieces.get(idx);
-            play.setDisp(generator.nextInt(16));
-            while (tried.contains(play.getShape())) {
+            while (pieceTried.contains(play)) {
                 idx = this.generator.nextInt(pieces.size());
                 play = pieces.get(idx);
-                play.setDisp(generator.nextInt(16));
             }
-            tried.add(play.getShape());
-            // test for can put
-            for (x = 0; x < 20; x++) {
-                for (y = 0; y < 20; y++) {
-                    if (b.canPut(play, colorCode, x, y)) {
-                        possiblePut.add(new Tile(x, y));
+            pieceTried.add(play);
+
+            tried = new ArrayList<>();
+            boolean shapesTried = (tried.size() == play.getShapeList().size()) ;
+            while (notPlaced && !shapesTried){
+                //choose shape
+                play.setDisp(generator.nextInt(16));
+                while (tried.contains(play.getShape())) {
+                    play.setDisp(generator.nextInt(16));
+                }
+                tried.add(play.getShape());
+
+                // test for can put
+                for (x = 0; x < 20; x++) {
+                    for (y = 0; y < 20; y++) {
+                        if (b.canPut(play, colorCode, x, y)) {
+                            possiblePut.add(new Tile(x, y));
+                        }
                     }
                 }
+
+                // randomly choose where to put if exists
+                if (!possiblePut.isEmpty()) {
+                    int idxPut = this.generator.nextInt(possiblePut.size());
+                    Tile putTile = possiblePut.get(idxPut);
+                    res = new Move(play, putTile);
+                    notPlaced = false;
+                    return res;
+                }
+                shapesTried = (tried.size() == play.getShapeList().size());
             }
-            // randomly choose where to put if exists
-            if (!possiblePut.isEmpty()) {
-                int idxPut = this.generator.nextInt(possiblePut.size());
-                Tile putTile = possiblePut.get(idxPut);
-                res = new Move(play, putTile);
-                notPlaced = false;
-                return res;
-            }
-            allTried = (tried.size() == pieces.size());
+            allTried = (pieceTried.size() == pieces.size());
         }
         return res;
     }
+
 }
+
+
+

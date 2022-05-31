@@ -1,7 +1,10 @@
 package GamePanels;
 
 import Controller.ControllerGamePlay;
+import Controller.PlayerTurn;
 import Interface.GamePlayInterface;
+import Structures.Move;
+import Structures.Tile;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -49,16 +52,19 @@ public class BoardMouseAdapter implements MouseListener {
                 gamePlayInterface.repaint();
             }
         } else {
+            PlayerTurn playerTurn = this.controller.getCurrentPlayerTurn();
+            if (playerTurn == null){
+                // TODO : Define what to do on null player turn
+            }
+
             System.out.println("Board tile " + tile.getName());
             String[] split = tile.getName().split(" ");
             controller.boardPanel.tileName = split;
             int x = Integer.parseInt(split[0]);
             int y = Integer.parseInt(split[1]);
-            clicked = controller.put(y, x);
-            if (clicked) {
-                controller.nextTurn();
-            }
-            gamePlayInterface.repaint();
+
+            Move currentMove = new Move(this.controller.piece, new Tile(y, x));
+            playerTurn.setMove(currentMove);
         }
     }
 

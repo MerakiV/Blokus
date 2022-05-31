@@ -213,7 +213,7 @@ public class Board implements Cloneable, Serializable {
     // Homonymes functions that directly take colors as their arguments.
     public boolean canPut(Shape s, Color col, int ax, int ay) {
         int c = getCorner(col);
-        return ((c==-1) ? canPut(s, c, ax, ay) : false); }
+        return ((c!=-1) ? canPut(s, c, ax, ay) : false); }
     public void put(Shape s, Color col, int ax, int ay) {
         int c = getCorner(col);
         if (c!=-1) { put(s, c, ax, ay); } }

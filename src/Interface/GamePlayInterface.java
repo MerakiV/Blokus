@@ -55,9 +55,30 @@ public class GamePlayInterface extends JPanel {
         initialiseButtons();
         // Add Listeners for Buttons
         this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo,save));
+
+    }
+
+    public GamePlayInterface(JFrame f, ControllerGamePlay c, Game2P g2p) throws IOException {
+        controller = c;
+        controller.gamePlayInterface = this;
+        frame = f;
+        this.g2p = g2p;
+        setSize();
+        this.setLayout(new FlowLayout());
+        // Images
+        backGround = new Image(frame, "images/border.png");
+        backGroundImg = new Image(frame, "images/whiteBackground.png");
+        logo = new Image(frame, "images/logo.png");
+        // Initialise Panels
+        initialiseBoardPanel();
+        initialiseColorPanels();
+        initialiseButtons();
+        // Add Listeners for Buttons
+        this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo,save));
         // Begins the game
         controller.startGame();
     }
+
 
     public GamePlayInterface(JFrame f, ControllerGamePlay c) throws IOException {
         controller = c;
