@@ -26,7 +26,7 @@ public class Game2P extends Game {
                     p1 = new PlayerAIMedium2P(set.p1c1, set.p1c2);
                     break;
                 case 2:
-                    p1 = new PlayerAIMinMax2P(set.p1c1, set.p1c2, true);
+                    p1 = new PlayerAIMinMax2P(set.p1c1, set.p1c2, true, 4);
                     break;
                 default:
             }
@@ -42,7 +42,7 @@ public class Game2P extends Game {
                     p2 = new PlayerAIMedium2P(set.p2c1, set.p2c2);
                     break;
                 case 2:
-                    p2 = new PlayerAIMinMax2P(set.p2c1, set.p2c2, true);
+                    p2 = new PlayerAIMinMax2P(set.p2c1, set.p2c2, true, 4);
                     break;
                 default:
             }
@@ -99,7 +99,6 @@ public class Game2P extends Game {
             g2.currentPlayer2P = g2.p1;
         else
             g2.currentPlayer2P = g2.p2;
-
         g2.players = new ArrayList<Player>();
         g2.players.add(g2.p1.pcol1);
         g2.players.add(g2.p2.pcol1);
@@ -113,7 +112,6 @@ public class Game2P extends Game {
                 g2.currentPlayer = g2.players.get(i);
             i++;
         }
-
         g2.currentColor = currentColor;
         g2.history = history;
 

@@ -146,7 +146,6 @@ public class PlayerAIMinMax extends PlayerAI {
                 break;
             case 18:
                 if(distX < 2 && distY < 2) return true;
-                else if(distX < 3 && distY < 3) return true;
                 break;
         }
         return false;
