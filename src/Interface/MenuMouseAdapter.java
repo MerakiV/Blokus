@@ -135,7 +135,7 @@ public class MenuMouseAdapter implements MouseListener {
             case "Resume":
                 System.out.println("Remove");
                 gamePlay.removeMenu(gamePlay.playMenu);
-                this.game.controller.resumeTurn();
+                this.gamePlay.controller.resumeTurn();
                 break;
             case "Continue":
                 Save savegame = new Save("save.dat");

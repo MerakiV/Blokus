@@ -596,16 +596,19 @@ public class ControllerGamePlay implements EventController, Runnable {
     }
 
     public void resumeTurn() {
-        if(null != this.turn){
-            this.turn.resume();
-            System.out.println("Play turn resumed");
-        }
+        this.t = new Thread(this);
+        this.t.start();
+//        if(this.turn != null){
+//            this.turn.resume();
+//        }
+        System.out.println("Play turn resumed");
     }
 
     public void pauseTurn() {
-        if(null != this.turn){
+        this.t.interrupt();
+        if(this.turn != null){
             this.turn.pause();
-            System.out.println("Play turn paused");
         }
+        System.out.println("Play turn paused");
     }
 }
