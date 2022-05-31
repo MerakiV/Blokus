@@ -32,10 +32,10 @@ public class GameSelection extends JComponent {
         board = new Image(frame, "images/board.png");
         logo = new Image(frame, "images/LogoBlokus.png");
         colorSelectbg = new Image(frame, "images/colorSelectBackground.png");
-        yellow = new Image(frame, "tiles/yellowBloc.png");
-        green = new Image(frame, "tiles/greenBloc.png");
-        blue = new Image(frame, "tiles/blueBloc.png");
-        red = new Image(frame, "tiles/redBloc.png");
+        yellow = new Image(frame, "tiles/YellowBloc.png");
+        green = new Image(frame, "tiles/GreenBloc.png");
+        blue = new Image(frame, "tiles/BlueBloc.png");
+        red = new Image(frame, "tiles/RedBloc.png");
         gs2p = new GameSettings2P();
         initUIButton();
     }
@@ -170,13 +170,13 @@ public class GameSelection extends JComponent {
         selectC2P2.setButtonBound(offsetPlayer2X, topBorder + (bottomBorder - topBorder) * 7 / 8, width / 8);
 
         // resizing the color selection text
-        colorText11.setCoords(offsetPlayer1X + (int) (width * 0.015),
+        colorText11.setCoords(offsetPlayer1X + (int) (width * 0.025),
                 selectC1P1.getY() - Math.min((int) (height * 0.02), (int) (width * 0.015)));
-        colorText12.setCoords(offsetPlayer1X, selectC2P1.getY() - Math.min((int) (height * 0.02),
+        colorText12.setCoords(offsetPlayer1X + (int) (width * 0.02), selectC2P1.getY() - Math.min((int) (height * 0.02),
                 (int) (width * 0.015)));
-        colorText21.setCoords(offsetPlayer2X + (int) (width * 0.015),
+        colorText21.setCoords(offsetPlayer2X + (int) (width * 0.025),
                 selectC1P2.getY() - Math.min((int) (height * 0.02), (int) (width * 0.015)));
-        colorText22.setCoords(offsetPlayer2X, selectC2P2.getY() - Math.min((int) (height * 0.02),
+        colorText22.setCoords(offsetPlayer2X + (int) (width * 0.02), selectC2P2.getY() - Math.min((int) (height * 0.02),
                 (int) (width * 0.015)));
         colorText11.setFontSize((int) (width * 0.015));
         colorText12.setFontSize((int) (width * 0.015));
