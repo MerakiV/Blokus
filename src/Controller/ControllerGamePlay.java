@@ -2,7 +2,6 @@ package Controller;
 
 import GamePanels.BoardPanel;
 import GamePanels.PiecePanel;
-import Interface.DrawString;
 import Interface.EventController;
 import Interface.GamePlayInterface;
 import Players.Player;
@@ -43,6 +42,7 @@ public class ControllerGamePlay implements EventController, Runnable {
     Shape shape;
 
     Save saveGame;
+    private PlayerTurn turn;
 
     /**
      *  Controller Game Play
@@ -91,6 +91,10 @@ public class ControllerGamePlay implements EventController, Runnable {
         t.start();
     }
 
+    public PlayerTurn getCurrentPlayerTurn () {
+        return this.turn;
+    }
+
     @Override
     public void run() {
         try {
@@ -112,100 +116,146 @@ public class ControllerGamePlay implements EventController, Runnable {
     }
 
     public void endRun() throws InterruptedException {
-        boolean allAI = true;
-        for (Player p : game.getPlayerList()) {
-            allAI = allAI && p.isAI();
-        }
-        long lag = refreshTime(allAI);
-        while (!game.hasEnded()) {
-            // System.out.println(currentPlayer.getColor() + "'s turn");
-            try {
-                t.sleep(lag);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        while (!game.hasEnded()){
+            Player player = game.getCurrentPlayer();
+            player.checkForMoves(game.getBoard());
+            turn = new PlayerTurn(player, this.game, this);
+            turn.startTurn();
+
+            if (!turn.canExecuteMove()) {
+                // TODO : Define what to do if the current player cannot play
+                errorMessage = "No more moves for Player " + currentPlayer.getColor();
+                System.out.println(errorMessage);
             }
-            if (currentPlayer.isAI()) {
-                if (currentPlayer.checkForMoves(game.getBoard())) {
-                    Move m = generateMove();
-                    if (m != null) {
-                        shape = m.getShape();
-                        piece = new Piece(shape);
-                        piece.setName(m.getPieceType());
-                        color = currentColor;
-                        int x = m.getTile().getX();
-                        int y = m.getTile().getY();
-                        // piece.printPiece();
-                        // System.out.println("Board tile " + x + " " + y);
-                        paintImage(y, x);
-                        put(x, y);
-                        boardPanel.repaint();
+            else{
+                while (!turn.hasTerminated()) {
+                    // wait the gamer has generated a move
+
+                    long remainingDuration = turn.getRemainingTimeOfMinimalMillisecondTurnDuration();
+                    if (remainingDuration > 0)
+                    {
+                        Thread.sleep(remainingDuration);
                     }
-                    else{
-                        errorMessage = currentPlayer.getColor()+": Move generated is null";
-                        System.out.println(errorMessage);
-                        gamePlayInterface.repaint();
+                    else {
+                        // TODO : Remove it once the IHM refresh bug is resolved
+                        Thread.sleep(32);
                     }
-                } else {
-                    errorMessage = "No more moves for AI " + currentPlayer.getColor();
-                    System.out.println(errorMessage);
-                    gamePlayInterface.repaint();
+//                    System.out.println("Wait for player turn completion");
                 }
-                nextTurn();
-                frame.repaint();
-                game.updateEnd();
-            } else { // not AI
-                if (!currentPlayer.checkForMoves(game.getBoard())) {
-                    errorMessage = "No more moves for Player " + currentPlayer.getColor();
-                    System.out.println(errorMessage);
-                    gamePlayInterface.repaint();
-                    nextTurn();
-                    frame.repaint();
-                    game.updateEnd();
-                }
+
+                System.out.println("Player turn is terminated");
+
+                Move currentMove = turn.getSelectedMove();
+                Shape s = currentMove.getShape();
+                Tile t = currentMove.getTile();
+                System.out.println("Selected Move = " + currentMove);
+                put(currentMove, player.getColor());
             }
+
+            //game.getBoard().printBoard(-1);
+            turn.terminateTurn();
+            nextTurn();
+            game.updateEnd();
+            gamePlayInterface.repaint();
+            frame.repaint();
+            boardPanel.repaint();
         }
-        // game has ended
-        errorMessage = "Game over";
-        System.out.println(errorMessage);
-        gamePlayInterface.repaint();
+
+
+//        boolean allAI = true;
+//        for (Player p : game.getPlayerList()) {
+//            allAI = allAI && p.isAI();
+//        }
+//        long lag = refreshTime(allAI);
+//        while (!game.hasEnded()) {
+//            // System.out.println(currentPlayer.getColor() + "'s turn");
+//            try {
+//                t.sleep(lag);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            if (currentPlayer.isAI()) {
+//                if (currentPlayer.checkForMoves(game.getBoard())) {
+//                    Move m = generateMove();
+//                    if (m != null) {
+//                        shape = m.getShape();
+//                        piece = new Piece(shape);
+//                        piece.setName(m.getPieceType());
+//                        color = currentColor;
+//                        int x = m.getTile().getX();
+//                        int y = m.getTile().getY();
+//                        // piece.printPiece();
+//                        // System.out.println("Board tile " + x + " " + y);
+//                        paintImage(y, x);
+//                        put(x, y);
+//                        boardPanel.repaint();
+//                    }
+//                    else{
+//                        errorMessage = currentPlayer.getColor()+": Move generated is null";
+//                        System.out.println(errorMessage);
+//                        gamePlayInterface.repaint();
+//                    }
+//                } else {
+//                    errorMessage = "No more moves for AI " + currentPlayer.getColor();
+//                    System.out.println(errorMessage);
+//                    gamePlayInterface.repaint();
+//                }
+//                nextTurn();
+//                frame.repaint();
+//                game.updateEnd();
+//            } else { // not AI
+//                if (!currentPlayer.checkForMoves(game.getBoard())) {
+//                    errorMessage = "No more moves for Player " + currentPlayer.getColor();
+//                    System.out.println(errorMessage);
+//                    gamePlayInterface.repaint();
+//                    nextTurn();
+//                    frame.repaint();
+//                    game.updateEnd();
+//                }
+//            }
+//        }
+//        // game has ended
+//        errorMessage = "Game over";
+//        System.out.println(errorMessage);
+//        gamePlayInterface.repaint();
     }
 
-    public void noEndRun() {
-        boolean allAI = true;
-        for (Player p : game.getPlayerList()) {
-            allAI = allAI && p.isAI();
-        }
-        long lag = refreshTime(allAI);
-        while (true) {
-            // System.out.println(currentPlayer.getColor() + "'s turn");
-            try {
-                t.sleep(lag);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (currentPlayer.isAI()) {
-                System.out.println("AI playing");
-                Move m = ((PlayerAI) currentPlayer).generateMove(game);
-                if (m != null) {
-                    shape = m.getShape();
-                    piece = new Piece(shape);
-                    piece.setName(m.getPieceType());
-                    color = currentColor;
-                    int x = m.getTile().getX();
-                    int y = m.getTile().getY();
-                    piece.printPiece();
-                    System.out.println("Board tile " + x + " " + y);
-                    paintImage(y, x);
-                    put(x, y);
-                    boardPanel.repaint();
-                } else {
-                    System.out.println("No more moves for AI");
-                }
-                nextTurn();
-                frame.repaint();
-            }
-        }
-    }
+//    public void noEndRun() {
+//        boolean allAI = true;
+//        for (Player p : game.getPlayerList()) {
+//            allAI = allAI && p.isAI();
+//        }
+//        long lag = refreshTime(allAI);
+//        while (true) {
+//            // System.out.println(currentPlayer.getColor() + "'s turn");
+//            try {
+//                t.sleep(lag);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            if (currentPlayer.isAI()) {
+//                System.out.println("AI playing");
+//                Move m = ((PlayerAI) currentPlayer).generateMove(game);
+//                if (m != null) {
+//                    shape = m.getShape();
+//                    piece = new Piece(shape);
+//                    piece.setName(m.getPieceType());
+//                    color = currentColor;
+//                    int x = m.getTile().getX();
+//                    int y = m.getTile().getY();
+//                    piece.printPiece();
+//                    System.out.println("Board tile " + x + " " + y);
+//                    paintImage(y, x);
+//                    put(x, y);
+//                    boardPanel.repaint();
+//                } else {
+//                    System.out.println("No more moves for AI");
+//                }
+//                nextTurn();
+//                frame.repaint();
+//            }
+//        }
+//    }
 
     private void initialiseGame() {
         // Game Settings + Create Game
@@ -223,6 +273,7 @@ public class ControllerGamePlay implements EventController, Runnable {
         game = new Game2P(gameSettings2P);
         System.out.println("Finished SetUpGameSettings");
     }
+
 
     public boolean put(int y, int x) {
         if (piece != null) {
@@ -243,6 +294,27 @@ public class ControllerGamePlay implements EventController, Runnable {
         return false;
     }
 
+    public boolean put(Move m, Color c) {
+        piece = new Piece(m.getShape());
+        piece.setName(m.getPieceType());
+        this.color = c;
+        if (piece != null) {
+            boardPanel.removePositions();
+            if (game.put(piece, color, m.getTile().getX(), m.getTile().getY())) {
+                piece = null;
+                color = null;
+                // System.out.println("Works");
+                // System.out.println("It's " + currentColor);
+                return true;
+            } else{
+                System.out.println("Invalid");
+                errorMessage = "Invalid piece placement";
+                gamePlayInterface.repaint();
+            }
+        }
+        return false;
+    }
+
     /**
      *  Next Turn
      *      Goes to the next Player
@@ -258,7 +330,7 @@ public class ControllerGamePlay implements EventController, Runnable {
     }
 
     public void paintImage() {
-        Image image = getImage();
+        Image image = getImage(this.color);
         String[] split = tile.getName().split(" ");
         int x = Integer.parseInt(split[0]);
         int y = Integer.parseInt(split[1]);
@@ -281,15 +353,17 @@ public class ControllerGamePlay implements EventController, Runnable {
         }
     }
 
-    public void paintImage(int x, int y) {
-        Image image = getImage();
-        boolean[][] shape = piece.getShape().shape;
-        x -= piece.getShape().anchorY;
-        y -= piece.getShape().anchorX;
-        if (x >= 0 && x + piece.getShape().Ncol - 1 <= 19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19) {
-            for (int i = 0; i < piece.getShape().Nlin; i++) {
+    public void paintImage(Move move, Color color) {
+        int x = move.getTile().getY();
+        int y = move.getTile().getX();
+        Image image = getImage(color);
+        boolean[][] shape = move.getShape().shape;
+        x -= move.getShape().anchorY;
+        y -= move.getShape().anchorX;
+        if (x >= 0 && x + move.getShape().Ncol - 1 <= 19 && y >= 0 && y + move.getShape().Nlin - 1 <= 19) {
+            for (int i = 0; i < move.getShape().Nlin; i++) {
                 int temp = x;
-                for (int j = 0; j < piece.getShape().Ncol; j++) {
+                for (int j = 0; j < move.getShape().Ncol; j++) {
                     if (shape[i][j]) {
                         boardPanel.labels.get(temp + " " + y).setIcon(new ImageIcon(image));
                         boardPanel.labels.get(temp + " " + y).repaint();
@@ -301,16 +375,36 @@ public class ControllerGamePlay implements EventController, Runnable {
         }
     }
 
+//    public void paintImage(int x, int y) {
+//        Image image = getImage(this.color);
+//        boolean[][] shape = piece.getShape().shape;
+//        x -= piece.getShape().anchorY;
+//        y -= piece.getShape().anchorX;
+//        if (x >= 0 && x + piece.getShape().Ncol - 1 <= 19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19) {
+//            for (int i = 0; i < piece.getShape().Nlin; i++) {
+//                int temp = x;
+//                for (int j = 0; j < piece.getShape().Ncol; j++) {
+//                    if (shape[i][j]) {
+//                        boardPanel.labels.get(temp + " " + y).setIcon(new ImageIcon(image));
+//                        boardPanel.labels.get(temp + " " + y).repaint();
+//                    }
+//                    temp++;
+//                }
+//                y++;
+//            }
+//        }
+//    }
+
     /**
      *  Get Image
      *      Returns the corresponding image of the tile at the position given in input
      **/
-    private Image getImage() {
+    private Image getImage(Color color) {
         BufferedImage img;
         int tileSize = boardPanel.boardSize / 20;
         Image resizedImage = null;
         try {
-            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(getPath());
+            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(getPath(color));
             assert in != null;
             img = ImageIO.read(in);
             resizedImage = img.getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH);
@@ -324,7 +418,7 @@ public class ControllerGamePlay implements EventController, Runnable {
      *  Get Path
      *      Returns the path to the corresponding image in resources
      * */
-    private String getPath() {
+    private String getPath(Color color) {
         switch (color) {
             case RED:
                 return "tiles/RedBloc.png";
@@ -500,4 +594,17 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     }
 
+    public void resumeTurn() {
+        if(null != this.turn){
+            this.turn.resume();
+            System.out.println("Play turn resumed");
+        }
+    }
+
+    public void pauseTurn() {
+        if(null != this.turn){
+            this.turn.pause();
+            System.out.println("Play turn paused");
+        }
+    }
 }

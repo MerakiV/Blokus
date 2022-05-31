@@ -118,4 +118,8 @@ public abstract class Player implements Cloneable, Serializable {
         this.isAI = p2.isAI;
         this.score = p2.score;
     }
+
+    public boolean canMove() {
+        return this.hasMoves;
+    }
 }
