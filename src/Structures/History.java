@@ -12,7 +12,7 @@ public class History implements Serializable {
     }
 
     public boolean canUndo() {
-        return !past.empty();
+        return past.size() > 2;
     }
 
     public GameState undo() {
@@ -25,7 +25,7 @@ public class History implements Serializable {
     }
 
     public boolean canRedo() {
-        return !future.empty();
+        return future.size() > 2;
     }
 
     public GameState redo() {
