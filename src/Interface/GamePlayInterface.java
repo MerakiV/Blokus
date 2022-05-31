@@ -54,7 +54,6 @@ public class GamePlayInterface extends JPanel {
         initialiseBoardPanel();
         initialiseColorPanels();
         initialiseButtons();
-        setBound();
         // Add Listeners for Buttons
         this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo,save));
 
@@ -76,7 +75,6 @@ public class GamePlayInterface extends JPanel {
         initialiseBoardPanel();
         initialiseColorPanels();
         initialiseButtons();
-        setBound();
         // Add Listeners for Buttons
         this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo,save));
         // Begins the game
