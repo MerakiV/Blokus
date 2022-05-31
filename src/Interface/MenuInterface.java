@@ -38,13 +38,13 @@ public class MenuInterface extends JComponent {
     private void inItUIButton() throws IOException {
         x = frame.getWidth() / 2;
         y = frame.getHeight();
-        this.newGame = new HoverButton(this, "NG", x - 202, (int) (y * 0.35));
+        this.newGame = new HoverButton(this, "NG", 0, 0);
         add(this.newGame);
-        this.conti = new HoverButton(this, "Continue", x - 202, (int) (y * 0.45));
+        this.conti = new HoverButton(this, "Continue", 0, 0);
         add(this.conti);
-        this.tutorial = new HoverButton(this, "Tutorial", x - 202, (int) (y * 0.55));
+        this.tutorial = new HoverButton(this, "Tutorial", 0, 0);
         add(this.tutorial);
-        this.exit = new HoverButton(this, "Exit", x - 202, (int) (y * 0.65));
+        this.exit = new HoverButton(this, "Exit", 0, 0);
         add(this.exit);
         errorMessage = new DrawString("Could not initialise the game", new Color(207, 14, 17));
         add(this.errorMessage);
@@ -53,25 +53,22 @@ public class MenuInterface extends JComponent {
     private void resetBound() {
         x = frame.getWidth() / 2;
         y = frame.getHeight();
-        int widthImage = this.newGame.getCurrentImageWidth() / 2;
+        int widthImage = this.newGame.getWidth() / 2;
         int textPosition = (int)(13.75 * (int) (width * 0.02)/2);
-        this.newGame.setButtonBound(x - widthImage, (int) (y * 0.35));
-        this.conti.setButtonBound(x - widthImage, (int) (y * 0.47));
-        this.tutorial.setButtonBound(x - widthImage, (int) (y * 0.59));
-        this.exit.setButtonBound(x - widthImage, (int) (y * 0.71));
+        this.newGame.setBounds(x - widthImage, (int) (y * 0.35), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.conti.setBounds(x - widthImage, (int) (y * 0.47),(int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.tutorial.setBounds(x - widthImage, (int) (y * 0.59), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.exit.setBounds(x - widthImage, (int) (y * 0.71), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
         this.errorMessage.setCoords(x - textPosition, (int) (y * 0.33));
         this.errorMessage.setFontSize((int) (width * 0.02));
     }
 
     public void drawButtons(Graphics g) throws IOException {
-        x = frame.getWidth() / 2;
-        y = frame.getHeight();
-        int widthImage = this.newGame.getCurrentImageWidth() / 2;
         resetBound();
-        g.drawImage(this.newGame.getCurrentImage(), x - widthImage, (int) (y * 0.35), this);
-        g.drawImage(this.conti.getCurrentImage(), x - widthImage, (int) (y * 0.47), this);
-        g.drawImage(this.tutorial.getCurrentImage(), x - widthImage, (int) (y * 0.59), this);
-        g.drawImage(this.exit.getCurrentImage(), x - widthImage, (int) (y * 0.71), this);
+        g.drawImage(this.newGame.getCurrentImage(), newGame.getX(), newGame.getY(), newGame.getWidth(), newGame.getHeight(),this);
+        g.drawImage(this.conti.getCurrentImage(), conti.getX(), conti.getY(), conti.getWidth(), conti.getHeight(),this);
+        g.drawImage(this.tutorial.getCurrentImage(), tutorial.getX(), tutorial.getY(), tutorial.getWidth(), tutorial.getHeight(),this);
+        g.drawImage(this.exit.getCurrentImage(), exit.getX(), exit.getY(), exit.getWidth(), exit.getHeight(),this);
     }
 
     public void errorMessage(Graphics g){
