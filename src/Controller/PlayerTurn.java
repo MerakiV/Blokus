@@ -60,7 +60,7 @@ public class PlayerTurn {
             // TODO : check how to terminate correctly a thread in java.
             playerThread = null;
         }
-        this.controller.paintImage(this.selectedMove, this.player.getColor());
+        if(this.selectedMove != null) this.controller.paintImage(this.selectedMove, this.player.getColor());
     }
 
     public Move getSelectedMove() {
@@ -82,6 +82,7 @@ public class PlayerTurn {
         @Override
         public void run() {
             Move currentMove = player.generateMove(game);
+            System.out.println("Move generated");
             this.playerTurn.setMove(currentMove);
         }
     }
