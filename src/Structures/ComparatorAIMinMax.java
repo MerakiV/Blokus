@@ -1,4 +1,4 @@
-package Structures;
+/*package Structures;
 
 import java.util.Comparator;
 
@@ -39,5 +39,6 @@ public class ComparatorAIMinMax implements Comparator<Move>, Cloneable {
     private void cloneFields(ComparatorAIMinMax c2) {
         this.base = c2.base;
         this.max = c2.max;
-    }*/
+    }
 }
+*/

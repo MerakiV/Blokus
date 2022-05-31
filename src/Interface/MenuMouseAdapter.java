@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.io.InvalidClassException;
 
 import static java.lang.System.exit;
 
@@ -121,16 +122,25 @@ public class MenuMouseAdapter implements MouseListener {
                 break;
             case "Continue":
                 Save savegame = new Save("save.dat");
-                savegame.loadSave();
-                Game g = savegame.getGame();
-                ControllerGamePlay control = new ControllerGamePlay(g, menuUi.frame);
-                menuUi.frame.addKeyListener(new KeyBoardAdapter(control));
                 try {
-                    game = new GamePlayInterface(menuUi.frame, control);
+                    savegame.loadSave();
+                    Game g = savegame.getGame();
+                    if (g !=null){
+                        ControllerGamePlay control = new ControllerGamePlay(g, menuUi.frame);
+                        menuUi.frame.addKeyListener(new KeyBoardAdapter(control));
+                        game = new GamePlayInterface(menuUi.frame, control);
+                        changePanel(game);
+                    } else {
+                        System.out.println("Could not initialise the game");
+                        menuUi.error = true;
+                        menuUi.repaint();
+                    }
+                } catch (InvalidClassException ex) {
+                    System.out.println("There was an invalid class exception");
+                    //throw new RuntimeException(ex);
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    throw new RuntimeException(ex);
                 }
-                changePanel(game);
                 break;
             case "Restart":
                 Game g2p = new Game2P(gamePlay.gs2p);
