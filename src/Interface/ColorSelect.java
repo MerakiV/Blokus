@@ -3,9 +3,6 @@ package Interface;
 import java.io.IOException;
 
 import java.awt.Image;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
 
 public class ColorSelect extends HoverButton {
 
@@ -15,11 +12,8 @@ public class ColorSelect extends HoverButton {
         super(selectMenu, name, 0, 0);
         this.normalImage = super.normalImage;
         this.rolloverImage = super.rolloverImage;
-        InputStream in1 = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/" + name + "/selected.png");
-        selectedImage = ImageIO.read(in1);
-        InputStream in2 = ClassLoader.getSystemClassLoader()
-                .getResourceAsStream("buttons/" + name + "/selectedMouseOver.png");
-        rolloverSelectedImage = ImageIO.read(in2);
+        selectedImage = rolloverImage;
+        rolloverSelectedImage = rolloverImage;
     }
 
     public void setSelected(boolean selected) {
