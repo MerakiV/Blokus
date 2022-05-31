@@ -156,6 +156,8 @@ public class MenuMouseAdapter implements MouseListener {
                 gamePlay.frame.getContentPane().add(gamePlay2, BorderLayout.CENTER);
                 gamePlay.frame.getContentPane().invalidate();
                 gamePlay.frame.getContentPane().validate();
+                // Begins the game
+                controller.startGame();
                 break;
             case "Exit":
                 exit(0);

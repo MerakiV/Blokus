@@ -55,8 +55,7 @@ public class GamePlayInterface extends JPanel {
         initialiseButtons();
         // Add Listeners for Buttons
         this.addMouseListener(new GameMouseAdapter(this, menu,hint,redo,undo,save));
-        // Begins the game
-        controller.startGame();
+
     }
 
     public GamePlayInterface(JFrame f, ControllerGamePlay c) throws IOException {

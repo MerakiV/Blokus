@@ -60,6 +60,8 @@ public class NGMouseAdapter implements MouseListener {
                         selectMenu.frame.getContentPane().add(gamePlay, BorderLayout.CENTER);
                         selectMenu.frame.getContentPane().invalidate();
                         selectMenu.frame.getContentPane().validate();
+                        // Begins the game
+                        controller.startGame();
                     } else {
                         selectMenu.errorPlay();
                         selectMenu.repaint();
