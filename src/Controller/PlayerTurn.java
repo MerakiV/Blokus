@@ -30,7 +30,7 @@ public class PlayerTurn {
 
     public void startTurn(){
         if(player.isAI()){
-            playerThread = new Thread(new IaTurn((PlayerAI) this.player, this.game, this));
+            playerThread = new Thread(new AITurn((PlayerAI) this.player, this.game, this));
             playerThread.start();
         }
         this.startDateTimeInMillis = System.currentTimeMillis();
@@ -67,13 +67,21 @@ public class PlayerTurn {
         return this.selectedMove;
     }
 
-    private class IaTurn implements Runnable {
+    public void setMove(Move currentMove) {
+        this.selectedMove = currentMove;
+        if (currentMove != null && game.getBoard().canPut(currentMove.getShape(), this.player.getColor()
+                , currentMove.getTile().getX() , currentMove.getTile().getY())){
+            this.turnPlayed = true;
+        }
+    }
+
+    private class AITurn implements Runnable {
 
         private final PlayerTurn playerTurn;
         private final  PlayerAI player;
         private final Game game;
 
-        IaTurn(PlayerAI player, Game game, PlayerTurn playerTurn){
+        AITurn(PlayerAI player, Game game, PlayerTurn playerTurn){
             this.player = player;
             this.game = game;
             this.playerTurn = playerTurn;
@@ -87,11 +95,4 @@ public class PlayerTurn {
         }
     }
 
-    public void setMove(Move currentMove) {
-        this.selectedMove = currentMove;
-        if (currentMove != null && game.getBoard().canPut(currentMove.getShape(), this.player.getColor()
-                , currentMove.getTile().getX() , currentMove.getTile().getY())){
-            this.turnPlayed = true;
-        }
-    }
 }

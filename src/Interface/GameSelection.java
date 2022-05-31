@@ -25,6 +25,7 @@ public class GameSelection extends JComponent {
 
     public GameSelection(JFrame f) throws IOException {
         frame = f;
+        frame.setResizable(true);
         width = frame.getWidth();
         height = frame.getHeight();
         errorPlay = false;
@@ -78,7 +79,6 @@ public class GameSelection extends JComponent {
         selectP2.addActionListener(e -> {
             JComboBox comboBox = (JComboBox) e.getSource();
             String p2 = (String) comboBox.getSelectedItem();
-            // TBI: modify when more AI difficulty made
             switch (p2) {
                 case "Human":
                     gs2p.setP2Human();
@@ -332,8 +332,7 @@ public class GameSelection extends JComponent {
 
     public void drawBg(Graphics g) {
         backGround.drawImg(g, 0, 0, width, height);
-        logo.drawImg(g, (int) (width * 0.88) / 2, (height - boardHeight) / 2 * 2 / 5, (int) (0.12 * width),
-                (int) (0.06 * width));
+        logo.drawImg(g, (int) (width * 0.425), (int) (height * 0.1) , (int) (width * 0.15), (int) (height * 0.15));
     }
 
     public void drawBoard(Graphics g) {

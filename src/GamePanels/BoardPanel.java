@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 
@@ -98,7 +99,6 @@ public class BoardPanel extends JPanel{
      *      Returns the path to the corresponding image in resources
      * */
     private String getPath(int i, int j){
-        //System.out.println(board.getColor(i,j));
         if (controller.hintsActivated && isHint){
             //System.out.println("Hint activated and is hint");
             if (removeHint)
