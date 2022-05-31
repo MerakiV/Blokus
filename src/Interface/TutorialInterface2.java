@@ -1,5 +1,8 @@
 package Interface;
 
+import Structures.Game;
+import Structures.Game2P;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -18,10 +21,33 @@ public class TutorialInterface2 extends JComponent{
     public Boolean drawTuto2=false;
     public Boolean drawTuto3=false;
     public Boolean drawTuto4=false;
+    public Game g2p;
 
 
     public TutorialInterface2(JFrame j) throws IOException {
         frame = j;
+        String bg = "images/border.png";
+        String lg = "images/LogoBlokus.png";
+        String tt1 = "images/tuto1.png";
+        String tt2 = "images/tuto2.png";
+        String tt3 = "images/tuto3.png";
+        String tt4 = "images/tuto4.png";
+        backGround = new Image(frame, bg);
+        logo = new Image(frame, lg);
+        tuto1 = new Image(frame, tt1);
+        tuto2 = new Image(frame, tt2);
+        tuto3 = new Image(frame, tt3);
+        tuto4 = new Image(frame, tt4);
+        this.back = new HoverButton(this,"Back", (int) (frame.getWidth()*0.05), (int) (frame.getHeight()*0.08));
+        add(this.back);
+        this.addMouseListener(new TutorialMouseAdapter(this));
+
+
+    }
+
+    public TutorialInterface2(JFrame j, Game2P g) throws IOException {
+        frame = j;
+        g2p = g;
         String bg = "images/border.png";
         String lg = "images/LogoBlokus.png";
         String tt1 = "images/tuto1.png";
