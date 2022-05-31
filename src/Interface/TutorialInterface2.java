@@ -26,6 +26,7 @@ public class TutorialInterface2 extends JComponent{
 
     public TutorialInterface2(JFrame j) throws IOException {
         frame = j;
+        frame.setResizable(true);
         String bg = "images/border.png";
         String lg = "images/LogoBlokus.png";
         String tt1 = "images/tuto1.png";

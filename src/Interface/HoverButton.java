@@ -38,6 +38,15 @@ public class HoverButton extends JPanel {
         this.setBounds(x, y, width, height);
 
     }
+    public HoverButton(String name, int x, int y) throws IOException {
+        this.name = name;
+        this.img = createButtonImg(name);
+        // Original Image
+        this.normalImage = this.img[0];
+        this.rolloverImage = this.img[1];
+        this.currentImage = normalImage;
+        this.setBounds(x, y, normalImage.getWidth(null), normalImage.getHeight(null));
+    }
 
     // Hover Button for Game Selection
     public HoverButton(GameSelection selectMenu, String name, int x, int y) throws IOException {
