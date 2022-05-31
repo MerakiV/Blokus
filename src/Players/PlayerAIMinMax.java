@@ -457,17 +457,14 @@ public class PlayerAIMinMax extends PlayerAI {
 
     public boolean isLeaf(Game g){
         int i = 0;
-        int zeroCorners = 0;
-        int zeroPieces = 0;
+        int cannotPutPiece = 0;
         List<Player> players = g.getPlayerList();
         int nbPlayers = players.size();
         for(i = 0; i<nbPlayers; i++){
-            if(players.get(i).getPieces().size() == 0)
-                zeroPieces++;
-            if (g.getBoard().numberOfCorners(players.get(i).getColor()) == 0)
-                zeroCorners++;
+            if(players.get(i).getPieces().size() == 0 || g.getBoard().numberOfCorners(players.get(i).getColor()) == 0)
+                cannotPutPiece++;
         }
-        return zeroPieces == nbPlayers || zeroCorners == nbPlayers;
+        return cannotPutPiece == nbPlayers;
     }
 
     public int evaluation(Game config, Move m, boolean max){
