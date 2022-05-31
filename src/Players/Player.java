@@ -117,6 +117,7 @@ public abstract class Player implements Cloneable, Serializable {
         this.pieces = (ArrayList<Piece>) p2.pieces.clone();
         this.isAI = p2.isAI;
         this.score = p2.score;
+        this.hasMoves = p2.hasMoves;
     }
 
     public boolean canMove() {

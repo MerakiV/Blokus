@@ -488,6 +488,7 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     void undo() {
         game.undo();
+        game.undo();
         gamePlayInterface.g2p = (Game2P) game;
         piece = hoveredPiece = null;
         currentPlayer = game.getCurrentPlayer();
