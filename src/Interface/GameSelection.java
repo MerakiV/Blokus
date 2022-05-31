@@ -78,7 +78,6 @@ public class GameSelection extends JComponent {
         selectP2.addActionListener(e -> {
             JComboBox comboBox = (JComboBox) e.getSource();
             String p2 = (String) comboBox.getSelectedItem();
-            // TBI: modify when more AI difficulty made
             switch (p2) {
                 case "Human":
                     gs2p.setP2Human();

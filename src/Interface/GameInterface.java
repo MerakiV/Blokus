@@ -2,15 +2,16 @@ package Interface;
 
 import Structures.Game;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
+import java.io.*;
 
 public class GameInterface implements Runnable {
     public Game game;
     private MenuInterface menu;
 
-    public void run(){
+    public void run() {
         JFrame frame = new JFrame("Blokus");
         frame.setName("Blokus");
         frame.setTitle("Blokus");
@@ -21,11 +22,18 @@ public class GameInterface implements Runnable {
         frame.getContentPane().setBackground(Color.white);
         frame.setVisible(true);
         frame.setFocusable(true);
-
         try {
             menu = new MenuInterface(frame);
             menu.setLayout(new BorderLayout());
-        } catch (IOException e) {
+
+            // loading background music
+            File in = new File("resources/sounds/bg.wav");
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(in);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
         }
         frame.getContentPane().add(menu, BorderLayout.CENTER);
