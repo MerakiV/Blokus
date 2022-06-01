@@ -3,10 +3,9 @@ package GamePanels;
 import Controller.ControllerGamePlay;
 import Interface.GamePlayInterface;
 import Interface.WheelEvent;
-import Structures.Board;
+import Structures.*;
 import Structures.Color;
-import Structures.Game2P;
-import Structures.Tile;
+import Structures.Shape;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -84,6 +83,20 @@ public class BoardPanel extends JPanel{
         Image resizedImage = null;
         try {
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(getPath(i,j));
+            assert in != null;
+            img = ImageIO.read(in);
+            resizedImage = img.getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH);
+        } catch (Exception e) {
+            System.out.println("erreur dans le chargement des images:" + e);
+        }
+        return resizedImage;
+    }
+
+    private Image getImage(String path) {
+        BufferedImage img;
+        Image resizedImage = null;
+        try {
+            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(path);
             assert in != null;
             img = ImageIO.read(in);
             resizedImage = img.getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH);
@@ -199,6 +212,53 @@ public class BoardPanel extends JPanel{
         }
         isHint = false;
         removeHint = false;
+    }
+
+
+    public void redo(GameState next){
+        Tile tile = next.lastMove.getTile();
+        System.out.println(tile.getX() + " " + tile.getY());
+        Shape shape = next.lastMove.getShape();
+        System.out.println(shape.anchorX + " " + shape.anchorY);
+
+        int x = tile.getX() - shape.anchorX;
+        int y = tile.getY() - shape.anchorY;
+
+        for (int i = 0; i < shape.Nlin; i++){
+            int temp = y;
+            for (int j = 0; j < shape.Ncol; j++){
+                if (!shape.isEmpty(i,j)){
+                    JLabel label = labels.get(temp + " " + x);
+                    label.setIcon(new ImageIcon(getImage(x, temp)));
+                    label.repaint();
+                }
+                temp++;
+            }
+            x++;
+        }
+    }
+
+    public void undo(GameState previous){
+        Tile tile = previous.nextMove.getTile();
+        System.out.println(tile.getX() + " " + tile.getY());
+        Shape shape = previous.nextMove.getShape();
+        System.out.println(shape.anchorX + " " + shape.anchorY);
+
+        int x = tile.getX() - shape.anchorX;
+        int y = tile.getY() - shape.anchorY;
+
+        for (int i = 0; i < shape.Nlin; i++){
+            int temp = y;
+            for (int j = 0; j < shape.Ncol; j++){
+                if (!shape.isEmpty(i,j)){
+                    JLabel label = labels.get(temp + " " + x);
+                    label.setIcon(new ImageIcon(getImage("tiles/boardTile.png")));
+                    label.repaint();
+                }
+                temp++;
+            }
+            x++;
+        }
     }
 
     @Override

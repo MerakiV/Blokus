@@ -30,7 +30,7 @@ public class ColorPanel extends JPanel{
     // Color Panel Variables
     public Color color;
     Player player;
-
+    public Hashtable<String, PiecePanel> piecePanels;
     ControllerGamePlay controller;
 
     public ColorPanel(GamePlayInterface g, ControllerGamePlay c, Player p) throws IOException {
@@ -38,6 +38,7 @@ public class ColorPanel extends JPanel{
         controller = c;
         player = p;
         frame = g.frame;
+        piecePanels = new Hashtable<>();
         initialiseColorPanel();
         getColorSize();
         this.setLayout(new GridLayout(4,6));
@@ -78,6 +79,7 @@ public class ColorPanel extends JPanel{
             PiecePanel piece = new PiecePanel(this, controller.pieces.get(i));
             piece.setPreferredSize(piecePanelSize);
             this.add(piece);
+            piecePanels.put(piece.getName(), piece);
             piece.setBorder(BorderFactory.createLineBorder(java.awt.Color.black));
             piece.addMouseListener(new PieceMouseAdapter(controller));
         }

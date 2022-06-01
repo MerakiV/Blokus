@@ -6,7 +6,7 @@ import Structures.Game;
 import Structures.Move;
 
 public class PlayerTurn {
-    private final Game game ;
+    public final Game game ;
     private final Player player;
     boolean turnPlayed;
     private Thread playerThread;
@@ -68,10 +68,24 @@ public class PlayerTurn {
     }
 
     public void setMove(Move currentMove) {
+        //System.out.println("Going into set Move");
         this.selectedMove = currentMove;
         if (currentMove != null && game.getBoard().canPut(currentMove.getShape(), this.player.getColor()
                 , currentMove.getTile().getX() , currentMove.getTile().getY())){
             this.turnPlayed = true;
+            //System.out.println("Setting Move Completed");
+        } else {
+            if (currentMove == null)
+                System.out.println("Current Move = null");
+            if (!game.getBoard().canPut(currentMove.getShape(), this.player.getColor()
+                    , currentMove.getTile().getX() , currentMove.getTile().getY())){
+                System.out.println(currentMove.getPieceType().name());
+                System.out.println(this.player.getColor().name());
+                System.out.println(currentMove.getTile().getX() + " " + currentMove.getTile().getY());
+                System.out.println("Cannot put piece");
+            }
+            System.out.println("Setting Move FAILED !!!!!!!!!!!!");
+
         }
     }
 
