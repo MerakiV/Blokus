@@ -19,6 +19,7 @@ public class MenuInterface extends JComponent {
     public MenuInterface(JFrame f) throws IOException {
         frame = f;
         frame.setResizable(true);
+        // Charge images
         String bg = "images/background.png";
         backGround = new Image(frame, bg);
         whiteBack = new Image(frame, "images/whiteBackground.png");
@@ -36,6 +37,9 @@ public class MenuInterface extends JComponent {
         inItUIButton();
     }
 
+    /**
+     *  Create and Initialise buttons
+     * */
     private void inItUIButton() throws IOException {
         x = frame.getWidth() / 2;
         y = frame.getHeight();
@@ -51,6 +55,9 @@ public class MenuInterface extends JComponent {
         add(this.errorMessage);
     }
 
+    /**
+     *  Reset the bounds for those created buttons in order to put them in a correct position
+     * */
     private void resetBound() {
         x = frame.getWidth() / 2;
         y = frame.getHeight();
@@ -66,6 +73,7 @@ public class MenuInterface extends JComponent {
 
     public void drawButtons(Graphics g) throws IOException {
         resetBound();
+        // g.drawImage(image, x, y, width, height)
         g.drawImage(this.newGame.getCurrentImage(), newGame.getX(), newGame.getY(), newGame.getWidth(), newGame.getHeight(),this);
         g.drawImage(this.conti.getCurrentImage(), conti.getX(), conti.getY(), conti.getWidth(), conti.getHeight(),this);
         g.drawImage(this.tutorial.getCurrentImage(), tutorial.getX(), tutorial.getY(), tutorial.getWidth(), tutorial.getHeight(),this);

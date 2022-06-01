@@ -34,7 +34,7 @@ public class TutorialInterface extends JComponent {
         this.back = new HoverButton(this,"Back", (int) (frame.getWidth()*0.05), (int) (frame.getHeight()*0.08));
         add(this.back);
 
-        panel=new JPanel();//创建一个普通面板
+        panel=new JPanel();
         panel.setBounds((frame.getWidth()/2) - ( (int) (frame.getWidth()*0.7)/2),(frame.getHeight()/2) - ( (int) (frame.getHeight()*0.7)/2),(int) (frame.getWidth()*0.7),(int) (frame.getHeight()*0.7));//设置普通面板位置和大小，不能省略
         panel.setLayout(new BorderLayout());
         ii = new ImageIcon("resources/images/tuto.png");

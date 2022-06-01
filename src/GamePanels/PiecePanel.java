@@ -105,11 +105,12 @@ public class PiecePanel extends JPanel {
                     break;
             }
             if (colorPanel.controller.game.getBoard().sumPiecePlacements(piece, colorPanel.color) == 0){
+                System.out.println("Not playable");
                 return "tiles/GreyBloc.png";
             }
             return path;
         } else {
-            System.out.println("Piece not in list : " + this.getName() + " " + piece);
+            //System.out.println("Piece not in list : " + this.getName() + " " + piece);
             switch(colorPanel.player.getColor()){
                 case RED:
                     return "tiles/RedHighlight.png";

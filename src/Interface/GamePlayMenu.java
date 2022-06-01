@@ -24,6 +24,9 @@ public class GamePlayMenu extends JPanel {
         gameMenuinItUIButton();
     }
 
+    /**
+     *  Create and Initialise buttons
+     * */
     private void gameMenuinItUIButton() throws IOException {
         this.newgame = new HoverButton(this, "NG", 0, 0);
         add(this.newgame);
@@ -37,6 +40,9 @@ public class GamePlayMenu extends JPanel {
         add(this.exit);
     }
 
+    /**
+     *  Reset the bounds for those created buttons in order to put them in a correct position
+     * */
     private void resetBound() {
         Integer x = frame.getWidth() / 2;
         Integer y = frame.getHeight();

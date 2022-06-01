@@ -17,6 +17,9 @@ public class HoverButton extends JPanel {
 
     public String name;
 
+    /**
+     *  HoverButton on MenuInterface
+     * */
     public HoverButton(MenuInterface menuUI, String name, int x, int y) throws IOException {
         this.name = name;
         this.img = createButtonImg(name);
@@ -28,6 +31,9 @@ public class HoverButton extends JPanel {
         this.addMouseListener(new MenuMouseAdapter(this, menuUI));
     }
 
+    /**
+     *  HoverButton on GamePlayInterface
+     * */
     public HoverButton(GamePlayInterface gameMenu, String name, int x, int y, int width, int height) throws IOException {
         this.name = name;
         this.img = createButtonImg(name);
@@ -38,6 +44,7 @@ public class HoverButton extends JPanel {
         this.setBounds(x, y, width, height);
 
     }
+
     public HoverButton(String name, int x, int y) throws IOException {
         this.name = name;
         this.img = createButtonImg(name);
@@ -48,7 +55,9 @@ public class HoverButton extends JPanel {
         this.setBounds(x, y, normalImage.getWidth(null), normalImage.getHeight(null));
     }
 
-    // Hover Button for Game Selection
+    /**
+     *  HoverButton on GameSelection
+     * */
     public HoverButton(GameSelection selectMenu, String name, int x, int y) throws IOException {
         this.name = name;
         this.img = createButtonImg(name);
@@ -61,6 +70,9 @@ public class HoverButton extends JPanel {
         this.addMouseListener(new NGMouseAdapter(this, selectMenu));
     }
 
+    /**
+     *  HoverButton on GamePlayMenu
+     * */
     public HoverButton(GamePlayMenu gameMenu, String name, int x, int y) throws IOException {
         //System.out.println(x + " " + y);
         this.name = name;
@@ -74,6 +86,9 @@ public class HoverButton extends JPanel {
         this.addMouseListener(new MenuMouseAdapter(this, gameMenu.game, gameMenu));
     }
 
+    /**
+     *  HoverButton on TutorialInterface
+     * */
     public HoverButton(TutorialInterface tutoUI, String name, int x, int y) throws IOException {
         this.name = name;
         this.img = createButtonImg(name);
@@ -84,6 +99,9 @@ public class HoverButton extends JPanel {
         this.addMouseListener(new MenuMouseAdapter(this, tutoUI));
     }
 
+    /**
+     *  HoverButton on TutorialInterface2 (current one)
+     * */
     public HoverButton(TutorialInterface2 tutoUI, String name, int x, int y) throws IOException {
         this.name = name;
         this.img = createButtonImg(name);

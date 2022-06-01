@@ -8,7 +8,6 @@ import Interface.GamePlayInterface;
 import Players.Player;
 import Players.PlayerAI;
 import Structures.Color;
-import Structures.Shape;
 import Structures.*;
 
 import javax.imageio.ImageIO;
@@ -420,15 +419,19 @@ public class ControllerGamePlay implements EventController, Runnable {
         if (canUndo()){
             game.undo();
             boardPanel.undo(game.previous);
+            ColorPanel colorPanel = gamePlayInterface.getColorPanel();
+            colorPanel.piecePanels.get(game.previous.nextMove.getPieceType() + " " + game.getCurrentColor()).isClicked = false;
             game.undo();
             boardPanel.undo(game.previous);
+            color = game.getCurrentColor();
+            colorPanel = gamePlayInterface.getColorPanel();
+            colorPanel.piecePanels.get(game.previous.nextMove.getPieceType() + " " + game.getCurrentColor()).isClicked = false;
             gamePlayInterface.g2p = (Game2P) game;
             piece = hoveredPiece = null;
             currentPlayer = game.getCurrentPlayer();
             currentColor = game.getCurrentColor();
             game.getBoard().printBoard(-1);
             turn = new PlayerTurn(currentPlayer, this.game, this);
-            System.out.println("Current player : " + currentPlayer.getColor().name());
             turn.startTurn();
         } else{
             errorMessage = "Unable to Undo";
