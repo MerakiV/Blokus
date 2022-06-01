@@ -233,7 +233,7 @@ public class GamePlayInterface extends JPanel {
     }
 
     private void setCurrentPlayer(){
-        currentPlayer.getStringSize();
+        currentPlayer.setStringSize();
         if(currentPlayer.stringSize == 19) // RED
             currentPlayer.setCoords((int) (widthFrame * 0.41), (int) (heightFrame * 0.18));
         if(currentPlayer.stringSize == 20) // BLUE
@@ -247,7 +247,7 @@ public class GamePlayInterface extends JPanel {
     }
 
     private void setError(){
-        errorMessage.getStringSize();
+        errorMessage.setStringSize();
         System.out.println("String size : " + errorMessage.stringSize);
         if (errorMessage.stringSize == 14 || errorMessage.stringSize == 15)
             errorMessage.setCoords((int) (widthFrame * 0.43), (int) (heightFrame * 0.85));
