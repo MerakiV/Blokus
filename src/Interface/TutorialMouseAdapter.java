@@ -12,6 +12,7 @@ public class TutorialMouseAdapter implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        // Calculate all the borders
         Integer borderWidth1 = (int) (tuto2.frame.getWidth()*0.145);
         Integer borderWidth2 = borderWidth1 + (int)((int) (tuto2.frame.getWidth()*0.73)*0.22);
         Integer borderWidth3 = borderWidth2 + (int)((int) (tuto2.frame.getWidth()*0.73)*0.22);
@@ -20,8 +21,7 @@ public class TutorialMouseAdapter implements MouseListener {
         Integer borderHeight1 = (int) (tuto2.frame.getHeight()*0.172);
         Integer borderHeight2 =  borderHeight1 + (int) ((int) (tuto2.frame.getHeight()*0.74)*0.0794);
 
-        System.out.println(borderWidth4+" "+borderWidth5);
-        System.out.println("Mouse Clicked On Board " + e.getX() + " " + e.getY());
+        // for 'How to play' page
         if (borderWidth1 <= e.getX() && borderWidth2 >= e.getX()
                 && borderHeight1 <= e.getY() &&  borderHeight2 >= e.getY()){
             tuto2.drawTuto1 = true;
@@ -29,22 +29,24 @@ public class TutorialMouseAdapter implements MouseListener {
             tuto2.drawTuto3 = false;
             tuto2.drawTuto4 = false;
             tuto2.repaint();
-        } else if(borderWidth2 <= e.getX() && borderWidth3 >= e.getX()
+        } // for 'End of game' page
+        else if(borderWidth2 <= e.getX() && borderWidth3 >= e.getX()
                 && borderHeight1 <= e.getY() && borderHeight2 >= e.getY()){
             tuto2.drawTuto2 = true;
             tuto2.drawTuto1 = false;
             tuto2.drawTuto3 = false;
             tuto2.drawTuto4 = false;
             tuto2.repaint();
-        } else if(borderWidth3 <= e.getX() && borderWidth4 >= e.getX()
+        } // for 'Shortcut 1' page
+        else if(borderWidth3 <= e.getX() && borderWidth4 >= e.getX()
                 && borderHeight1 <= e.getY() && borderHeight2 >= e.getY()){
             tuto2.drawTuto2 = false;
             tuto2.drawTuto1 = false;
             tuto2.drawTuto3 = true;
             tuto2.drawTuto4 = false;
-
             tuto2.repaint();
-        } else if(borderWidth4 <= e.getX() && borderWidth5 >= e.getX()
+        } // for 'Shortcut 2' page
+        else if(borderWidth4 <= e.getX() && borderWidth5 >= e.getX()
                 && borderHeight1 <= e.getY() && borderHeight2 >= e.getY()){
             tuto2.drawTuto2 = false;
             tuto2.drawTuto1 = false;
