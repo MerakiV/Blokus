@@ -33,7 +33,7 @@ public class ControllerGamePlay implements EventController, Runnable {
     public JLabel tile;
     public ArrayList<Icon> originalImages;
 
-    public boolean hintsActivated = false;
+    public boolean hintsActivated = false, maximized = false;
 
     public String errorMessage = "";
 
@@ -533,14 +533,8 @@ public class ControllerGamePlay implements EventController, Runnable {
                     pausedAI = true;
                 }
                 break;
-            case "fullscreen":
-                System.out.println("fullscreen");
-                break;
             case "ia":
                 System.out.println("ia");
-                break;
-            case "next":
-                System.out.println("next");
                 break;
             case "newGame":
                 System.out.println("newGame");
@@ -550,7 +544,11 @@ public class ControllerGamePlay implements EventController, Runnable {
             case "hints":
                 System.out.println("hints");
                 hintsActivated = !hintsActivated;
-                boardPanel.repaint();
+                if (hintsActivated)
+                    errorMessage = "Hints are now activated";
+                else
+                    errorMessage = "Hints are now deactivated";
+                gamePlayInterface.repaint();
                 break;
             case "save":
                 System.out.println("Saving game...");

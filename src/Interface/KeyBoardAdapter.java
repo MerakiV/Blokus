@@ -46,11 +46,8 @@ public class KeyBoardAdapter extends KeyAdapter {
             case KeyEvent.VK_R:
                 controller.command("redo");
                 break;
-            case KeyEvent.VK_I:
-                controller.command("ia");
-                break;
-            case KeyEvent.VK_ESCAPE:
-                controller.command("fullscreen");
+            case KeyEvent.VK_H:
+                controller.command("hints");
                 break;
             case KeyEvent.VK_N:
                 controller.command("newGame");
