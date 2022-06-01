@@ -1,6 +1,7 @@
 package Structures;
 
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.*;
 import java.io.File;
 
@@ -22,7 +23,6 @@ public class PieceReader {
 
 
     Scanner sc;
-    File f;
     String token = null;
     String [] tokenArgs;
 
@@ -33,8 +33,8 @@ public class PieceReader {
     char currentChar;
 
     public PieceReader() throws FileNotFoundException {
-        f = new File("resources/pieces/normal.txt");
-        sc = new Scanner(f);
+        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("pieces/normal.txt");
+        sc = new Scanner(in);
         readPieces();
     }
 
