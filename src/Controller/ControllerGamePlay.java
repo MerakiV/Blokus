@@ -479,7 +479,6 @@ public class ControllerGamePlay implements EventController, Runnable {
      *      Starts a new game using the same settings as the current game
      * */
     void newGame() {
-        // TODO: reset board and player turn to original
         game = originalGame;
         piece = null;
         color = null;
@@ -531,13 +530,7 @@ public class ControllerGamePlay implements EventController, Runnable {
     void undo() {
         if (canUndo()){
             game.undo();
-            // TODO : auto deselect the pieces
-            // TODO : continue - why pieces are shown as not playable
             boardPanel.undo(game.previous);
-            /*ColorPanel colorPanel = gamePlayInterface.returnColorPanel(currentPlayer);
-            System.out.println( "Previous last name pieceType : " + game.previous.lastMove.getPieceType().name());
-            piecePanel = colorPanel.piecePanels.get(game.previous.lastMove.getPieceType().name() + " " + currentColor);
-            piecePanel.isClicked = false;*/
             game.undo();
             boardPanel.undo(game.previous);
             gamePlayInterface.g2p = (Game2P) game;
