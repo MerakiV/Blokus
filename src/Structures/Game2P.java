@@ -26,7 +26,7 @@ public class Game2P extends Game {
                     p1 = new PlayerAIMedium2P(set.p1c1, set.p1c2, 0);
                     break;
                 case 2:
-                    p1 = new PlayerAIMinMax2P(set.p1c1, set.p1c2, true, 5);
+                    p1 = new PlayerAIMinMax2P(set.p1c1, set.p1c2, true, 4);
                     break;
                 default:
             }

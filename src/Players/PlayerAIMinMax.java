@@ -506,15 +506,15 @@ public class PlayerAIMinMax extends PlayerAI {
         int sumPlacementsP2 = config.getBoard().sumAllPlacements(p2c1.getPieces(), p2c1.col) + config.getBoard().sumAllPlacements(p2c2.getPieces(), p2c2.col);
 
         if(max){
-            if(heur == 5) return ((sumScoreP1*4 + pieceValue*16) - sumScoreP2*4) + (sumPlacementsP1 - sumPlacementsP2/2); //heur 5
+            //if(heur == 5) return ((sumScoreP1*4 + pieceValue*16) - sumScoreP2*4) + (sumPlacementsP1 - sumPlacementsP2/2); //heur 5
             if(heur == 4) return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
             else if(heur == 3) return ((sumScoreP1 - pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
             else if(heur == 2) return ((sumScoreP1 - pieceValue) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 2
             else return (sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); // heur 1
         }
         else{
-            if(heur == 5) return ((sumScoreP1*4 + pieceValue*16) - sumScoreP2*4) + (sumPlacementsP1 - sumPlacementsP2*2); //heur 5
-            else if(heur == 4) return ((sumScoreP1 + pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
+            //if(heur == 5) return ((sumScoreP1*4 + pieceValue*16) - sumScoreP2*4) + (sumPlacementsP1 - sumPlacementsP2*2); //heur 5
+            if(heur == 4) return ((sumScoreP1 + pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
             else if(heur == 3) return ((sumScoreP1 + pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
             else if(heur == 2) return ((sumScoreP2 + pieceValue - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1)); //heur 2
             else return (sumScoreP2 - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1); // heur 1
