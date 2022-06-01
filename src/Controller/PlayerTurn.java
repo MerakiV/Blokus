@@ -24,10 +24,18 @@ public class PlayerTurn {
         this.game = game;
     }
 
+    /**
+     * canExecuteMove :
+     *      checks if player can execute any moves.
+     */
     public boolean canExecuteMove(){
-        return this.player.canMove();
+        return this.player.hasMoves();
     }
 
+    /**
+     * startTurn :
+     *      starts a players turn. if the player is an AI, starts a thread to generate a move.
+     */
     public void startTurn(){
         if(player.isAI()){
             playerThread = new Thread(new AITurn((PlayerAI) this.player, this.game, this));
@@ -36,16 +44,29 @@ public class PlayerTurn {
         this.startDateTimeInMillis = System.currentTimeMillis();
     }
 
+    /**
+     * hasTerminated :
+     *      checks if this player turn has ended (has generated a valid move).
+     */
     public boolean hasTerminated(){
         return this.turnPlayed;
     }
 
+    /**
+     * pause :
+     *      pauses (interrupts) a player's (AI) turn
+     */
     public void pause(){
         if(this.playerThread != null && this.playerThread.isAlive()){
             this.playerThread.interrupt();
         }
     }
 
+
+    /**
+     *  resume :
+     *     resumes (restarts) a player's (AI) turn
+     */
     public void resume(){
         this.playerThread.start();
     }
@@ -63,10 +84,18 @@ public class PlayerTurn {
         if(this.selectedMove != null) this.controller.paintImage(this.selectedMove, this.player.getColor());
     }
 
+    /**
+     * getSelectedMove :
+     *      gets the player's (generated (AI) or chosen (Human)) move for this turn.
+     */
     public Move getSelectedMove() {
         return this.selectedMove;
     }
 
+    /**
+     *  setMove :
+     *      sets the players chosen move and sets turnPlayed to true if the move is valid.
+     */
     public void setMove(Move currentMove) {
         //System.out.println("Going into set Move");
         this.selectedMove = currentMove;
@@ -89,6 +118,10 @@ public class PlayerTurn {
         }
     }
 
+    /**
+     * class AITurn :
+     *      private class for PlayerTurn that generates a move for an AI.
+     */
     private class AITurn implements Runnable {
 
         private final PlayerTurn playerTurn;
