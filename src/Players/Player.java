@@ -13,6 +13,7 @@ public abstract class Player implements Cloneable, Serializable {
     ArrayList<Piece> pieces;
     boolean isAI, hasMoves;
     int score;
+    PieceType lastPiecePlayed = null;
 
     public Color getColor(){return col;}
 
@@ -52,6 +53,10 @@ public abstract class Player implements Cloneable, Serializable {
 
     public void setHasMoves(boolean hasMoves) {
         this.hasMoves = hasMoves;
+    }
+
+    public PieceType getLastPiecePlayed() {
+        return lastPiecePlayed;
     }
 
     public void printPlayer(){
@@ -98,6 +103,7 @@ public abstract class Player implements Cloneable, Serializable {
             System.out.println("Piece "+pt.toString()+" not found");
         } else{
             score += pr.getValue();
+            lastPiecePlayed = pt;
             pieces.remove(pr);
         }
     }
@@ -118,6 +124,7 @@ public abstract class Player implements Cloneable, Serializable {
         this.isAI = p2.isAI;
         this.score = p2.score;
         this.hasMoves = p2.hasMoves;
+        this.lastPiecePlayed = p2.lastPiecePlayed;
     }
 
 }
