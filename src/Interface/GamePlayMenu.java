@@ -25,24 +25,36 @@ public class GamePlayMenu extends JPanel {
     }
 
     private void gameMenuinItUIButton() throws IOException {
-        this.newgame = new HoverButton(this, "NG", 500, 150);
+        this.newgame = new HoverButton(this, "NG", 0, 0);
         add(this.newgame);
-        this.resume = new HoverButton(this, "Resume", 500, 250);
+        this.resume = new HoverButton(this, "Resume", 0, 0);
         add(this.resume);
-        this.tutorial = new HoverButton(this, "Tutorial", 500, 350);
+        this.tutorial = new HoverButton(this, "Tutorial", 0, 0);
         add(this.tutorial);
-        this.restart = new HoverButton(this, "Restart", 500, 450);
+        this.restart = new HoverButton(this, "Restart", 0, 0);
         add(this.restart);
-        this.exit = new HoverButton(this, "Exit", 500, 550);
+        this.exit = new HoverButton(this, "Exit", 0, 0);
         add(this.exit);
     }
 
+    private void resetBound() {
+        Integer x = frame.getWidth() / 2;
+        Integer y = frame.getHeight();
+        int widthImage = this.newgame.getWidth() / 2;
+        this.newgame.setBounds(x - widthImage, (int) (y * 0.15), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.resume.setBounds(x - widthImage, (int) (y * 0.3),(int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.tutorial.setBounds(x - widthImage, (int) (y * 0.45), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.restart.setBounds(x - widthImage, (int) (y * 0.6), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.exit.setBounds(x - widthImage, (int) (y * 0.75), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+    }
+
     public void playMenudrawButtons(Graphics g) throws IOException {
-        g.drawImage(this.newgame.getCurrentImage(), 500, 150, this);
-        g.drawImage(this.resume.getCurrentImage(), 500, 250, this);
-        g.drawImage(this.tutorial.getCurrentImage(), 500, 350, this);
-        g.drawImage(this.restart.getCurrentImage(), 500, 450, this);
-        g.drawImage(this.exit.getCurrentImage(), 500, 550, this);
+        resetBound();
+        g.drawImage(this.newgame.getCurrentImage(), newgame.getX(), newgame.getY(), newgame.getWidth(), newgame.getHeight(),this);
+        g.drawImage(this.resume.getCurrentImage(), resume.getX(), resume.getY(), resume.getWidth(), resume.getHeight(),this);
+        g.drawImage(this.tutorial.getCurrentImage(), tutorial.getX(), tutorial.getY(), tutorial.getWidth(), tutorial.getHeight(),this);
+        g.drawImage(this.restart.getCurrentImage(), restart.getX(), restart.getY(), restart.getWidth(), restart.getHeight(),this);
+        g.drawImage(this.exit.getCurrentImage(), exit.getX(), exit.getY(), exit.getWidth(), exit.getHeight(),this);
     }
 
     public void paintComponent(Graphics g) {

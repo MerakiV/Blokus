@@ -3,6 +3,7 @@ package Interface;
 import Controller.ControllerGamePlay;
 import GamePanels.BoardPanel;
 import GamePanels.ColorPanel;
+import Players.Player;
 import Structures.Game2P;
 import Structures.GameSettings2P;
 
@@ -115,6 +116,7 @@ public class GamePlayInterface extends JPanel {
         this.add(boardPanel);
     }
 
+
     public void drawMenu() throws IOException {
         if (play && !existMenu){
             playMenu = new GamePlayMenu(frame, this);
@@ -180,6 +182,11 @@ public class GamePlayInterface extends JPanel {
 
     }
 
+    /**
+     *  Set Bounds
+     *      Sets the bounds of components in GamePlayInterface
+     *      - useful for resizing
+     * */
     private void setBound(){
         // Board
         boardPanel.setLocation(boardX, boardY);
@@ -244,6 +251,16 @@ public class GamePlayInterface extends JPanel {
         this.add(bottomRightPanel);
     }
 
+    public ColorPanel returnColorPanel(Player p){
+        if (controller.game.getPlayerList().get(0) == controller.currentPlayer)
+            return topLeftPanel;
+        if (controller.game.getPlayerList().get(1) == controller.currentPlayer)
+            return topRightPanel;
+        if (controller.game.getPlayerList().get(2) == controller.currentPlayer)
+            return bottomRightPanel;
+        return bottomLeftPanel;
+    }
+
     /**
      *   Initialise Buttons
      *       Calls functions to initialise the buttons on the screen
@@ -251,6 +268,7 @@ public class GamePlayInterface extends JPanel {
      *      - Hints: Enables/disables hints for the player
      *      - Undo: Reverts the game back to the previous turn of the player
      *      - Redo: Replaces the undone turn
+     *      - Save : Saves the game
      * */
     private void initialiseButtons() throws IOException {
         System.out.println("Size :" + widthFrame + " " + heightFrame);
@@ -291,10 +309,18 @@ public class GamePlayInterface extends JPanel {
         }
     }
 
-    public void errorMessage(Graphics g){
+    /**
+     *  Error Message
+     *      Initialises the error message string
+     * */
+    public void errorMessage(){
         errorMessage = new DrawString(controller.errorMessage);
     }
 
+    /**
+     *  Player Strings
+     *      Initialises the player and score strings
+     * */
     public void initialisePlayerStrings(){
         player1 = new DrawString("Player 1");
         player1Score = new DrawString("Score: " + p1Score);
@@ -306,12 +332,11 @@ public class GamePlayInterface extends JPanel {
         player2bottom = new DrawString("Player 2");
     }
 
-
     /**
      *   Check End Game
      *       If the game has ended, print end game message
      * */
-    public void checkEndGame(Graphics g) {
+    public void checkEndGame() {
         if (controller.game.end) {
             if (p2Score < p1Score)
                 currentPlayer = new DrawString("PLAYER 1 WON !!!");
@@ -362,11 +387,11 @@ public class GamePlayInterface extends JPanel {
 
         // Get the current player
         playerTurn();
+        checkEndGame();
         initialisePlayerStrings();
 
         // Message under board
-        errorMessage(g);
-        checkEndGame(g);
+        errorMessage();
         setBound();
         // Strings
         drawStrings(g);
@@ -382,6 +407,7 @@ public class GamePlayInterface extends JPanel {
         backGround.drawImg(g, 0, 0, widthFrame, heightFrame);
         logo.drawImg(g, (int) (widthFrame * 0.425), 0, (int) (widthFrame * 0.15), (int) (heightFrame * 0.15));
 
+        // TODO : center the Menu in Game
         try {
             drawMenu();
         } catch (IOException e) {

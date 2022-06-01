@@ -33,6 +33,7 @@ public class BoardMouseAdapter implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        System.out.println("Board Mouse Adapter entered");
         if (e.getButton() == MouseEvent.BUTTON3){
             System.out.println("Right Clicked!");
             if (controller.piece != null){
@@ -65,6 +66,7 @@ public class BoardMouseAdapter implements MouseListener {
 
             Move currentMove = new Move(this.controller.piece, new Tile(y, x));
             playerTurn.setMove(currentMove);
+            playerTurn.game.getBoard().printBoard(-1);
         }
     }
 

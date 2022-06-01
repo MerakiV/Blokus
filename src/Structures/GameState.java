@@ -11,7 +11,7 @@ public class GameState implements Serializable {
     ArrayList<Player> players;
     int currentPlayer;
     int heuristic;
-    Move nextMove, lastMove;
+    public Move lastMove, nextMove;
 
     GameState(Board b, ArrayList<Player> pl, int curpl){
         board = b;

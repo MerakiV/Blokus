@@ -40,11 +40,11 @@ public class GameMouseAdapter implements MouseListener {
         positionX = e.getX();
         positionY = e.getY();
         currentComponent = checkComponent(e);
-        System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
-        System.out.println(currentComponent.name());
+        //System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
+        //System.out.println(currentComponent.name());
         switch(currentComponent){
             case BOARD:
-                // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
+                System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
                 break;
             case TOPLEFT:
                 // System.out.println("Mouse Clicked On Top Left Color Panel " + positionX + " " + positionY);
@@ -60,7 +60,7 @@ public class GameMouseAdapter implements MouseListener {
                 break;
             case MENU:
                 // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
-                // System.out.println("Menu button Clicked");
+                System.out.println("Menu button Clicked");
                 game.play = true;
                 game.controller.piece = null;
                 game.controller.pauseTurn();
@@ -88,6 +88,7 @@ public class GameMouseAdapter implements MouseListener {
                 break;
             case SAVE:
                 System.out.println("Save button Clicked");
+                game.controller.command("save");
                 break;
             default:
                 break;
