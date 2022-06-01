@@ -62,6 +62,19 @@ public abstract class Game implements Serializable, Cloneable {
         setEnd(!e);
     }
 
+    public void endScoreCheck(){
+        for (Player p : players) {
+            if(p.getPieces().isEmpty()) {
+                System.out.println(p.getColor()+" played all pieces, +15 points");
+                p.updateScore(15);
+            }
+            if(p.getLastPiecePlayed().equals(PieceType.ONE)) {
+                System.out.println(p.getColor()+" last piece played is ONE, +5 points");
+                p.updateScore(5);
+            }
+        }
+    }
+
     public boolean hasEnded() {
         return end;
     }
@@ -93,10 +106,6 @@ public abstract class Game implements Serializable, Cloneable {
         pushToFuture(lm,nm);
         board = previous.board;
         players = previous.players;
-        System.out.println("List of pieces of Player 0: " + players.get(0).getPieces());
-        System.out.println("List of pieces of Player 1: " + players.get(1).getPieces());
-        System.out.println("List of pieces of Player 2: " + players.get(2).getPieces());
-        System.out.println("List of pieces of Player 3: " + players.get(3).getPieces());
         currentPlayer = previous.getCurrentPlayer();
         currentColor = currentPlayer.getColor();
         update2P();

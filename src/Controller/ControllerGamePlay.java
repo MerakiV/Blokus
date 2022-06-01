@@ -8,7 +8,6 @@ import Interface.GamePlayInterface;
 import Players.Player;
 import Players.PlayerAI;
 import Structures.Color;
-import Structures.Shape;
 import Structures.*;
 
 import javax.imageio.ImageIO;
@@ -43,6 +42,8 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     Save saveGame;
     private PlayerTurn turn;
+
+    public boolean pausedAI = false;
 
     /**
      *  Controller Game Play
@@ -123,8 +124,7 @@ public class ControllerGamePlay implements EventController, Runnable {
         while (!game.hasEnded()){
             Player player = game.getCurrentPlayer();
             player.checkForMoves(game.getBoard());
-            System.out.println("End Run line 122");
-            game.getBoard().printBoard(-1);
+//            game.getBoard().printBoard(-1);
             turn = new PlayerTurn(player, this.game, this);
             turn.startTurn();
 
@@ -162,6 +162,8 @@ public class ControllerGamePlay implements EventController, Runnable {
             game.updateEnd();
             gamePlayInterface.repaint();
         }
+        game.endScoreCheck();
+        gamePlayInterface.repaint();
     }
 
 
@@ -420,15 +422,19 @@ public class ControllerGamePlay implements EventController, Runnable {
         if (canUndo()){
             game.undo();
             boardPanel.undo(game.previous);
+            ColorPanel colorPanel = gamePlayInterface.getColorPanel();
+            colorPanel.piecePanels.get(game.previous.nextMove.getPieceType() + " " + game.getCurrentColor()).isClicked = false;
             game.undo();
             boardPanel.undo(game.previous);
+            color = game.getCurrentColor();
+            colorPanel = gamePlayInterface.getColorPanel();
+            colorPanel.piecePanels.get(game.previous.nextMove.getPieceType() + " " + game.getCurrentColor()).isClicked = false;
             gamePlayInterface.g2p = (Game2P) game;
             piece = hoveredPiece = null;
             currentPlayer = game.getCurrentPlayer();
             currentColor = game.getCurrentColor();
             game.getBoard().printBoard(-1);
             turn = new PlayerTurn(currentPlayer, this.game, this);
-            System.out.println("Current player : " + currentPlayer.getColor().name());
             turn.startTurn();
         } else{
             errorMessage = "Unable to Undo";
@@ -512,7 +518,20 @@ public class ControllerGamePlay implements EventController, Runnable {
                 redo();
                 break;
             case "pause":
-                System.out.println("pause");
+                if(pausedAI) {
+                    resumeTurn();
+                    System.out.println("Game unpaused");
+                    errorMessage = "Game unpaused";
+                    gamePlayInterface.repaint();
+                    pausedAI = false;
+                }
+                else {
+                    pauseTurn();
+                    System.out.println("Game paused, can't move");
+                    errorMessage = "Game paused, can't move";
+                    gamePlayInterface.repaint();
+                    pausedAI = true;
+                }
                 break;
             case "fullscreen":
                 System.out.println("fullscreen");
@@ -555,6 +574,8 @@ public class ControllerGamePlay implements EventController, Runnable {
         this.boardPanel = b;
 
     }
+
+    //public void resume()
 
     /**
      * resumeTurn :

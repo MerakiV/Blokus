@@ -27,7 +27,8 @@ public class MenuInterface extends JComponent {
         x = frame.getWidth() / 2;
         try {
             // create the font to use
-            Font font = Font.createFont(Font.TRUETYPE_FONT, new File("resources/font/ABeeZee-Regular.otf"));
+            InputStream in = ClassLoader.getSystemResourceAsStream("font/ABeeZee-Regular.otf");
+            Font font = Font.createFont(Font.TRUETYPE_FONT, in);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             // register the font
             ge.registerFont(font);

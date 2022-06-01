@@ -6,6 +6,7 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.net.URL;
 
 public class GameInterface implements Runnable {
     public Game game;
@@ -27,8 +28,9 @@ public class GameInterface implements Runnable {
             menu.setLayout(new BorderLayout());
 
             // loading background music
-            File in = new File("resources/sounds/bgm.wav");
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(in);
+            URL url = ClassLoader.getSystemResource("sounds/bgm.wav");
+            //File in = new File("resources/sounds/bgm.wav");
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             Mixer mixer = AudioSystem.getMixer(null);
             Clip clip = AudioSystem.getClip(mixer.getMixerInfo());
             clip.open(audioIn);

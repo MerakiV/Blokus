@@ -1,6 +1,8 @@
 package Interface;
 
-import java.io.IOException;
+import java.io.*;
+
+import javax.imageio.ImageIO;
 
 import java.awt.Image;
 
@@ -12,11 +14,13 @@ public class ColorSelect extends HoverButton {
         super(selectMenu, name, 0, 0);
         this.normalImage = super.normalImage;
         this.rolloverImage = super.rolloverImage;
-        selectedImage = rolloverImage;
-        rolloverSelectedImage = rolloverImage;
+        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("buttons/" + name + "/selected.png");
+        selectedImage = ImageIO.read(in);
+        rolloverSelectedImage = selectedImage;
     }
 
     public void setSelected(boolean selected) {
+        // changes the image to show it is selected
         if (selected) {
             super.normalImage = selectedImage;
             super.currentImage = selectedImage;

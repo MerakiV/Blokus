@@ -66,7 +66,11 @@ public class BoardMouseAdapter implements MouseListener {
 
             Move currentMove = new Move(this.controller.piece, new Tile(y, x));
             playerTurn.setMove(currentMove);
-            playerTurn.game.getBoard().printBoard(-1);
+            if(controller.pausedAI){
+                controller.errorMessage = "Game paused, can't move";
+                gamePlayInterface.repaint();
+            }
+            //playerTurn.game.getBoard().printBoard(-1);
         }
     }
 

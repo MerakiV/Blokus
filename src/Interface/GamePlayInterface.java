@@ -173,11 +173,11 @@ public class GamePlayInterface extends JPanel {
         menuY = (int) (heightFrame * 0.08);
         hintX = (int) (widthFrame * 0.05);
         hintY = (int) (heightFrame * 0.08);
-        redoX = (int) (widthFrame * 0.5 + boardSize/4 - arrowSize/2);
+        redoX = (int) (widthFrame * 0.5 + boardSize/4 - (3*arrowSize)/4);
         redoY = (int) (heightFrame * 0.86);
         undoX = (int) (widthFrame * 0.5 - boardSize /4);
         undoY = (int) (heightFrame * 0.86);
-        saveX = (int) (widthFrame * 0.5 - ((boardSize * 0.1)/2));
+        saveX = (int) (widthFrame * 0.5 - ((boardSize * 0.15)/2));
         saveY = (int) (heightFrame * 0.86);
 
     }
@@ -205,7 +205,7 @@ public class GamePlayInterface extends JPanel {
         save.setBounds(saveX, saveY, (int) (boardSize * 0.1), (int)(boardSize * 0.05));
 
         // Current Player
-        currentPlayer.setCoords((int) (widthFrame * 0.4), (int) (heightFrame * 0.18));
+        setCurrentPlayer();
         currentPlayer.setFontSize((int) (Math.min(widthFrame * 0.02, heightFrame * 0.05)));
         // Player 1
         player1.setCoords( (topLeftX + colorPanelSize.width/3), (int) (heightFrame * 0.18));
@@ -228,8 +228,59 @@ public class GamePlayInterface extends JPanel {
                 (int) (bottomLeftY - (heightFrame *0.015) ));
         player2bottom.setFontSize((int) (Math.min(widthFrame * 0.02, heightFrame * 0.05)));
         // Error Message
-        errorMessage.setCoords((widthFrame/2 - (controller.errorMessage.length()*11/2)), (int) (heightFrame * 0.85));
+        setError();
         errorMessage.setFontSize((int) (Math.min(widthFrame * 0.02, heightFrame * 0.05)));
+    }
+
+    private void setCurrentPlayer(){
+        currentPlayer.setStringSize();
+        if(currentPlayer.stringSize == 19) // RED
+            currentPlayer.setCoords((int) (widthFrame * 0.41), (int) (heightFrame * 0.18));
+        if(currentPlayer.stringSize == 20) // BLUE
+            currentPlayer.setCoords((int) (widthFrame * 0.405), (int) (heightFrame * 0.18));
+        if(currentPlayer.stringSize == 21) // GREEN
+            currentPlayer.setCoords((int) (widthFrame * 0.4), (int) (heightFrame * 0.18));
+        if(currentPlayer.stringSize == 22) // YELLOW
+            currentPlayer.setCoords((int) (widthFrame * 0.39), (int) (heightFrame * 0.18));
+        if (currentPlayer.stringSize == 16) // END
+            currentPlayer.setCoords((int) (widthFrame * 0.42), (int) (heightFrame * 0.18));
+    }
+
+    private void setError(){
+        errorMessage.setStringSize();
+        System.out.println("String size : " + errorMessage.stringSize);
+        if (errorMessage.stringSize == 14 || errorMessage.stringSize == 15)
+            errorMessage.setCoords((int) (widthFrame * 0.43), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 16 || errorMessage.stringSize == 17)
+            errorMessage.setCoords((int) (widthFrame * 0.42), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 18 || errorMessage.stringSize == 19)
+            errorMessage.setCoords((int) (widthFrame * 0.41), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 20)
+            errorMessage.setCoords((int) (widthFrame * 0.405), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 21)
+            errorMessage.setCoords((int) (widthFrame * 0.41), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 22)
+            errorMessage.setCoords((int) (widthFrame * 0.40), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 23 || errorMessage.stringSize == 24)
+            errorMessage.setCoords((int) (widthFrame * 0.4), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 25 || errorMessage.stringSize == 26)
+            errorMessage.setCoords((int) (widthFrame * 0.38), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 27 || errorMessage.stringSize == 28 || errorMessage.stringSize == 29)
+            errorMessage.setCoords((int) (widthFrame * 0.37), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 30 || errorMessage.stringSize == 31 || errorMessage.stringSize == 32)
+            errorMessage.setCoords((int) (widthFrame * 0.36), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 33 || errorMessage.stringSize == 34)
+            errorMessage.setCoords((int) (widthFrame * 0.35), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 35 || errorMessage.stringSize == 36)
+            errorMessage.setCoords((int) (widthFrame * 0.345), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 37)
+            errorMessage.setCoords((int) (widthFrame * 0.342), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 38)
+            errorMessage.setCoords((int) (widthFrame * 0.34), (int) (heightFrame * 0.85));
+        else if (errorMessage.stringSize == 39)
+            errorMessage.setCoords((int) (widthFrame * 0.338), (int) (heightFrame * 0.85));
+        else
+            errorMessage.setCoords((widthFrame/2 - (controller.errorMessage.length()*11/2)), (int) (heightFrame * 0.85));
     }
 
     /**
@@ -251,14 +302,16 @@ public class GamePlayInterface extends JPanel {
         this.add(bottomRightPanel);
     }
 
-    public ColorPanel returnColorPanel(Player p){
-        if (controller.game.getPlayerList().get(0) == controller.currentPlayer)
+    public ColorPanel getColorPanel(){
+        if (controller.game.getCurrentPlayer() == controller.game.getPlayerList().get(0))
             return topLeftPanel;
-        if (controller.game.getPlayerList().get(1) == controller.currentPlayer)
+        if (controller.game.getCurrentPlayer() == controller.game.getPlayerList().get(1))
             return topRightPanel;
-        if (controller.game.getPlayerList().get(2) == controller.currentPlayer)
+        if (controller.game.getCurrentPlayer() == controller.game.getPlayerList().get(2))
             return bottomRightPanel;
-        return bottomLeftPanel;
+        if (controller.game.getCurrentPlayer() == controller.game.getPlayerList().get(3))
+            return bottomLeftPanel;
+        return null;
     }
 
     /**

@@ -49,7 +49,7 @@ public class Buttons extends JButton {
     private String getPath(String name){
         switch(name){
             case "clockwise":
-                return "buttons/clockwise/normal.png";
+                return "buttons/Clockwise/normal.png";
         }
         return null;
     }
