@@ -41,11 +41,11 @@ public class GamePlayMenu extends JPanel {
         Integer x = frame.getWidth() / 2;
         Integer y = frame.getHeight();
         int widthImage = this.newgame.getWidth() / 2;
-        this.newgame.setBounds(x - widthImage, (int) (y * 0.2), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
-        this.resume.setBounds(x - widthImage, (int) (y * 0.35),(int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
-        this.tutorial.setBounds(x - widthImage, (int) (y * 0.5), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
-        this.restart.setBounds(x - widthImage, (int) (y * 0.65), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
-        this.exit.setBounds(x - widthImage, (int) (y * 0.8), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.newgame.setBounds(x - widthImage, (int) (y * 0.15), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.resume.setBounds(x - widthImage, (int) (y * 0.3),(int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.tutorial.setBounds(x - widthImage, (int) (y * 0.45), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.restart.setBounds(x - widthImage, (int) (y * 0.6), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
+        this.exit.setBounds(x - widthImage, (int) (y * 0.75), (int) (frame.getWidth()*0.3), (int) (frame.getHeight()* 0.116));
     }
 
     public void playMenudrawButtons(Graphics g) throws IOException {
