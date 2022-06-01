@@ -86,6 +86,10 @@ public class ControllerGamePlay implements EventController, Runnable {
         }
     }
 
+    /**
+     * startGame:
+     *      starts a new thread for the controller that controls the game flow
+     * */
     public void startGame() {
         t = new Thread(this);
         t.start();
@@ -142,7 +146,6 @@ public class ControllerGamePlay implements EventController, Runnable {
                         // TODO : Remove it once the IHM refresh bug is resolved
                         Thread.sleep(32);
                     }
-//                    System.out.println("Wait for player turn completion");
                 }
 
                 System.out.println("Player turn is terminated");
@@ -159,102 +162,8 @@ public class ControllerGamePlay implements EventController, Runnable {
             game.updateEnd();
             gamePlayInterface.repaint();
         }
-
-
-//        boolean allAI = true;
-//        for (Player p : game.getPlayerList()) {
-//            allAI = allAI && p.isAI();
-//        }
-//        long lag = refreshTime(allAI);
-//        while (!game.hasEnded()) {
-//            // System.out.println(currentPlayer.getColor() + "'s turn");
-//            try {
-//                t.sleep(lag);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            if (currentPlayer.isAI()) {
-//                if (currentPlayer.checkForMoves(game.getBoard())) {
-//                    Move m = generateMove();
-//                    if (m != null) {
-//                        shape = m.getShape();
-//                        piece = new Piece(shape);
-//                        piece.setName(m.getPieceType());
-//                        color = currentColor;
-//                        int x = m.getTile().getX();
-//                        int y = m.getTile().getY();
-//                        // piece.printPiece();
-//                        // System.out.println("Board tile " + x + " " + y);
-//                        paintImage(y, x);
-//                        put(x, y);
-//                        boardPanel.repaint();
-//                    }
-//                    else{
-//                        errorMessage = currentPlayer.getColor()+": Move generated is null";
-//                        System.out.println(errorMessage);
-//                        gamePlayInterface.repaint();
-//                    }
-//                } else {
-//                    errorMessage = "No more moves for AI " + currentPlayer.getColor();
-//                    System.out.println(errorMessage);
-//                    gamePlayInterface.repaint();
-//                }
-//                nextTurn();
-//                frame.repaint();
-//                game.updateEnd();
-//            } else { // not AI
-//                if (!currentPlayer.checkForMoves(game.getBoard())) {
-//                    errorMessage = "No more moves for Player " + currentPlayer.getColor();
-//                    System.out.println(errorMessage);
-//                    gamePlayInterface.repaint();
-//                    nextTurn();
-//                    frame.repaint();
-//                    game.updateEnd();
-//                }
-//            }
-//        }
-//        // game has ended
-//        errorMessage = "Game over";
-//        System.out.println(errorMessage);
-//        gamePlayInterface.repaint();
     }
 
-//    public void noEndRun() {
-//        boolean allAI = true;
-//        for (Player p : game.getPlayerList()) {
-//            allAI = allAI && p.isAI();
-//        }
-//        long lag = refreshTime(allAI);
-//        while (true) {
-//            // System.out.println(currentPlayer.getColor() + "'s turn");
-//            try {
-//                t.sleep(lag);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            if (currentPlayer.isAI()) {
-//                System.out.println("AI playing");
-//                Move m = ((PlayerAI) currentPlayer).generateMove(game);
-//                if (m != null) {
-//                    shape = m.getShape();
-//                    piece = new Piece(shape);
-//                    piece.setName(m.getPieceType());
-//                    color = currentColor;
-//                    int x = m.getTile().getX();
-//                    int y = m.getTile().getY();
-//                    piece.printPiece();
-//                    System.out.println("Board tile " + x + " " + y);
-//                    paintImage(y, x);
-//                    put(x, y);
-//                    boardPanel.repaint();
-//                } else {
-//                    System.out.println("No more moves for AI");
-//                }
-//                nextTurn();
-//                frame.repaint();
-//            }
-//        }
-//    }
 
     private void initialiseGame() {
         // Game Settings + Create Game
@@ -381,26 +290,6 @@ public class ControllerGamePlay implements EventController, Runnable {
             }
         }
     }
-
-//    public void paintImage(int x, int y) {
-//        Image image = getImage(this.color);
-//        boolean[][] shape = piece.getShape().shape;
-//        x -= piece.getShape().anchorY;
-//        y -= piece.getShape().anchorX;
-//        if (x >= 0 && x + piece.getShape().Ncol - 1 <= 19 && y >= 0 && y + piece.getShape().Nlin - 1 <= 19) {
-//            for (int i = 0; i < piece.getShape().Nlin; i++) {
-//                int temp = x;
-//                for (int j = 0; j < piece.getShape().Ncol; j++) {
-//                    if (shape[i][j]) {
-//                        boardPanel.labels.get(temp + " " + y).setIcon(new ImageIcon(image));
-//                        boardPanel.labels.get(temp + " " + y).repaint();
-//                    }
-//                    temp++;
-//                }
-//                y++;
-//            }
-//        }
-//    }
 
     /**
      *  Get Image
@@ -667,15 +556,21 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     }
 
+    /**
+     * resumeTurn :
+     *      resumes (restarts) the game flow thread after pause
+     */
     public void resumeTurn() {
         this.t = new Thread(this);
         this.t.start();
-//        if(this.turn != null){
-//            this.turn.resume();
-//        }
+
         System.out.println("Play turn resumed");
     }
 
+    /**
+     * pauseTurn :
+     *      pauses the game flow (interrupts the game flow thread) and interrupts the current player turn
+     */
     public void pauseTurn() {
         this.t.interrupt();
         if(this.turn != null){

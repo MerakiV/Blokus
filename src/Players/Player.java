@@ -120,7 +120,4 @@ public abstract class Player implements Cloneable, Serializable {
         this.hasMoves = p2.hasMoves;
     }
 
-    public boolean canMove() {
-        return this.hasMoves;
-    }
 }
