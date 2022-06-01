@@ -106,7 +106,7 @@ public class PlayerTurn {
         } else {
             if (currentMove == null)
                 System.out.println("Current Move = null");
-            if (!game.getBoard().canPut(currentMove.getShape(), this.player.getColor()
+            else if (!game.getBoard().canPut(currentMove.getShape(), this.player.getColor()
                     , currentMove.getTile().getX() , currentMove.getTile().getY())){
                 System.out.println(currentMove.getPieceType().name());
                 System.out.println(this.player.getColor().name());
