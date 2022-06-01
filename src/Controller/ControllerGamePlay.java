@@ -43,6 +43,8 @@ public class ControllerGamePlay implements EventController, Runnable {
     Save saveGame;
     private PlayerTurn turn;
 
+    public boolean pausedAI = false;
+
     /**
      *  Controller Game Play
      *      Version before color selection
@@ -516,7 +518,20 @@ public class ControllerGamePlay implements EventController, Runnable {
                 redo();
                 break;
             case "pause":
-                System.out.println("pause");
+                if(pausedAI) {
+                    resumeTurn();
+                    System.out.println("Game unpaused");
+                    errorMessage = "Game unpaused";
+                    gamePlayInterface.repaint();
+                    pausedAI = false;
+                }
+                else {
+                    pauseTurn();
+                    System.out.println("Game paused, can't move");
+                    errorMessage = "Game paused, can't move";
+                    gamePlayInterface.repaint();
+                    pausedAI = true;
+                }
                 break;
             case "fullscreen":
                 System.out.println("fullscreen");
@@ -559,6 +574,8 @@ public class ControllerGamePlay implements EventController, Runnable {
         this.boardPanel = b;
 
     }
+
+    //public void resume()
 
     /**
      * resumeTurn :
