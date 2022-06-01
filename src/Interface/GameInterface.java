@@ -27,9 +27,10 @@ public class GameInterface implements Runnable {
             menu.setLayout(new BorderLayout());
 
             // loading background music
-            File in = new File("resources/sounds/bg.wav");
+            File in = new File("resources/sounds/bgm.wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(in);
-            Clip clip = AudioSystem.getClip();
+            Mixer mixer = AudioSystem.getMixer(null);
+            Clip clip = AudioSystem.getClip(mixer.getMixerInfo());
             clip.open(audioIn);
             clip.start();
             clip.loop(Clip.LOOP_CONTINUOUSLY);
