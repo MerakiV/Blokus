@@ -14,6 +14,7 @@ public class ColorPicker extends JPanel {
     private String player;
 
     public ColorPicker(GameSelection selectMenu, String player) throws IOException {
+        // creating color selection buttons
         yellow = new ColorSelect(selectMenu, "YellowButton");
         selectMenu.add(yellow);
         buttonSize = yellow.getCurrentImageHeight();
@@ -29,6 +30,7 @@ public class ColorPicker extends JPanel {
     }
 
     public void setButtonBound(int x, int y, int width) {
+        // resizing the color selection buttons
         buttonSize = (int) (width / (4 + 5 / 4));
         sepSize = (int) (buttonSize / 4.5);
         setBounds(x, y, width, buttonSize + sepSize * 2);
@@ -39,6 +41,7 @@ public class ColorPicker extends JPanel {
     }
 
     public void setCurrentColor(Color color) {
+        // changes the selected color
         switch (color) {
             case RED:
                 red.setSelected(true);
@@ -74,6 +77,7 @@ public class ColorPicker extends JPanel {
     }
 
     public int getX(String color) {
+        // returns the x coordinate of the button of the given color
         switch (color) {
             case "red":
                 return red.getX();
@@ -89,6 +93,7 @@ public class ColorPicker extends JPanel {
     }
 
     public int getY(String color) {
+        // returns the y coordinate of the button of the given color
         switch (color) {
             case "red":
                 return red.getY();
@@ -108,6 +113,7 @@ public class ColorPicker extends JPanel {
     }
 
     public Image getCurrentImage(String color) {
+        // returns the current image of the button of the given color
         switch (color) {
             case "red":
                 return red.getCurrentImage();
@@ -123,10 +129,15 @@ public class ColorPicker extends JPanel {
     }
 
     public int getCurrentImageWidth() {
+        // returns the width of the current image of the color buttons
+        // returns the width of the red buttons because all buttons have the same width
         return red.getCurrentImageWidth();
     }
 
     public int getCurrentImageHeight() {
+        // returns the height of the current image of the color buttons
+        // returns the height of the red buttons because all buttons have the same
+        // height
         return red.getCurrentImageHeight();
     }
 

@@ -22,13 +22,14 @@ public class DrawString extends JPanel {
         this.y = y;
         this.g = g;
         font = new Font("ABeeZee-Regular", Font.PLAIN, fontSize);
-        getStringSize();
+        setStringSize();
     }
 
-    public DrawString(String text, Color color){
+    public DrawString(String text, Color color) {
         this.text = text;
         this.color = color;
     }
+
     public DrawString(Graphics g, String text, Color color, int x, int y, int fontSize) {
         this.text = text;
         this.x = x;
@@ -36,7 +37,7 @@ public class DrawString extends JPanel {
         this.g = g;
         this.color = color;
         font = new Font("ABeeZee-Regular", Font.PLAIN, fontSize);
-        getStringSize();
+        setStringSize();
     }
 
     public void paint(Graphics g) {
@@ -63,7 +64,7 @@ public class DrawString extends JPanel {
         this.g = g;
     }
 
-    public void getStringSize(){
+    public void setStringSize() {
         stringSize = text.length();
     }
 }

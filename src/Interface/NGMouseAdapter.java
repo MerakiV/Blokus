@@ -29,10 +29,12 @@ public class NGMouseAdapter implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        // handling mouse clicks for the buttons
         if (hover != null) {
             System.out.println("Name:" + hover.name);
             switch (hover.name) {
                 case "Back":
+                    // goes back to the main menu
                     selectMenu.frame.getContentPane().remove(selectMenu);
                     try {
                         menu = new MenuInterface(selectMenu.frame);
@@ -44,6 +46,7 @@ public class NGMouseAdapter implements MouseListener {
                     selectMenu.frame.getContentPane().validate();
                     break;
                 case "Play":
+                    // creates a new game and starts the gameplay interface
                     if (selectMenu.validColors()) {
                         Game g2p = selectMenu.getGame();
                         selectMenu.gs2p.printSettings();
@@ -68,18 +71,22 @@ public class NGMouseAdapter implements MouseListener {
                     }
                     break;
                 case "RedButton":
+                    // sets the current player color to red
                     selectMenu.setColor(Color.RED);
                     selectMenu.repaint();
                     break;
                 case "GreenButton":
+                    // sets the current player color to green
                     selectMenu.setColor(Color.GREEN);
                     selectMenu.repaint();
                     break;
                 case "BlueButton":
+                    // sets the current player color to blue
                     selectMenu.setColor(Color.BLUE);
                     selectMenu.repaint();
                     break;
                 case "YellowButton":
+                    // sets the current player color to yellow
                     selectMenu.setColor(Color.YELLOW);
                     selectMenu.repaint();
                     break;
@@ -107,6 +114,7 @@ public class NGMouseAdapter implements MouseListener {
             hover.currentImage = hover.rolloverImage;
         }
         if (picker != null) {
+            // changes the current player when entering a color picker
             selectMenu.setCurrentPlayer(picker.getPlayer());
         }
         selectMenu.repaint();

@@ -29,6 +29,7 @@ public class GameSelection extends JComponent {
         width = frame.getWidth();
         height = frame.getHeight();
         errorPlay = false;
+        // loading images
         backGround = new Image(frame, "images/border.png");
         board = new Image(frame, "images/board.png");
         logo = new Image(frame, "images/LogoBlokus.png");
@@ -37,21 +38,20 @@ public class GameSelection extends JComponent {
         green = new Image(frame, "tiles/GreenBloc.png");
         blue = new Image(frame, "tiles/BlueBloc.png");
         red = new Image(frame, "tiles/RedBloc.png");
+        // loading game settings
         gs2p = new GameSettings2P();
         initUIButton();
     }
 
     private void initUIButton() throws IOException {
-        String[] players = { "Human", "AI Easy", "AI Medium", "AI Hard" };
-        // selectP1, selectP2;
-
         // Combo boxes
+        String[] players = { "Human", "AI Easy", "AI Medium", "AI Hard" };
         selectP1 = new JComboBox(players);
         add(selectP1);
         selectP2 = new JComboBox(players);
         add(selectP2);
 
-        // Listeners for combo boxes (to modify)
+        // Listeners for combo boxes
         selectP1.addActionListener(e -> {
             JComboBox comboBox = (JComboBox) e.getSource();
             String p1 = (String) comboBox.getSelectedItem();
@@ -63,11 +63,9 @@ public class GameSelection extends JComponent {
                     gs2p.setP1AI(0);
                     break;
                 case "AI Medium":
-                    System.out.println("P1 AI Medium");
                     gs2p.setP1AI(1);
                     break;
                 case "AI Hard":
-                    System.out.println("P1 AI Hard");
                     gs2p.setP1AI(2);
                     break;
                 default:
@@ -101,6 +99,7 @@ public class GameSelection extends JComponent {
         });
 
         // buttons to pick a color for a player
+        // default colors : c1p1 : yellow, c2p1 : green, c1p2 : blue, c2p2 : red
         selectC1P1 = new ColorPicker(this, "C1P1");
         gs2p.setP1Color1(Color.YELLOW);
         selectC1P1.setCurrentColor(Color.YELLOW);
@@ -128,7 +127,7 @@ public class GameSelection extends JComponent {
         playButton = new HoverButton(this, "Play", 0, 0);
         add(playButton);
 
-        // player selection text
+        // player and color selection text
         player1 = new DrawString("Player 1");
         player2 = new DrawString("Player 2");
         colorText11 = new DrawString("First color");
@@ -141,6 +140,7 @@ public class GameSelection extends JComponent {
     }
 
     private void resetBound() {
+        // changing the position and size of all the components
         // getting frame width and height
         height = frame.getHeight();
         width = frame.getWidth();
@@ -204,6 +204,7 @@ public class GameSelection extends JComponent {
     }
 
     public void setColor(Color color) {
+        // setting the color of the current player and updating game settings
         switch (currentPlayerPicking) {
             case "C1P1":
                 System.out.println("Changing C1P1 color to " + color);
@@ -235,6 +236,7 @@ public class GameSelection extends JComponent {
     }
 
     public Image colorToImage(Color color) {
+        // returns the image of the color
         switch (color) {
             case YELLOW:
                 return yellow;
@@ -254,11 +256,14 @@ public class GameSelection extends JComponent {
     }
 
     public Game getGame() {
+        // creates and return a new game with the current settings
         Game g2p = new Game2P(gs2p);
         return g2p;
     }
 
     public boolean validColors() {
+        // checks if the colors are valid (all colors are different and no color is
+        // null)
         Color[] colors = new Color[4];
         colors[0] = gs2p.p1c1;
         colors[1] = gs2p.p2c1;
@@ -278,6 +283,7 @@ public class GameSelection extends JComponent {
     }
 
     public void errorPlay() {
+        // shows an error message if the colors are not valid
         errorPlay = true;
     }
 
@@ -297,6 +303,7 @@ public class GameSelection extends JComponent {
     }
 
     public void drawColorPicker(Graphics g, ColorPicker p) {
+        // drawing buttons to pick a color for a player
         int redX = p.getX("red");
         int redY = p.getY("red");
         int blueX = p.getX("blue");
@@ -318,7 +325,7 @@ public class GameSelection extends JComponent {
         player1.paint(g);
         player2.paint(g);
 
-        // drawing "first color" and "second color" on top of the color selection boxes
+        // drawing text for color selection
         colorText11.paint(g);
         colorText12.paint(g);
         colorText21.paint(g);
@@ -331,11 +338,13 @@ public class GameSelection extends JComponent {
     }
 
     public void drawBg(Graphics g) {
+        // drawing the background and logo of the game
         backGround.drawImg(g, 0, 0, width, height);
-        logo.drawImg(g, (int) (width * 0.425), (int) (height * 0.1) , (int) (width * 0.15), (int) (height * 0.15));
+        logo.drawImg(g, (int) (width * 0.425), (int) (height * 0.1), (int) (width * 0.15), (int) (height * 0.15));
     }
 
     public void drawBoard(Graphics g) {
+        // drawing the board and players selected colors
         board.drawImg(g, (width - boardWidth) / 2, (height - boardHeight) / 2, boardWidth, boardHeight);
         p1c1.drawImg(g, (width - boardWidth) / 2, (height - boardHeight) / 2, imageSize, imageSize);
         p2c1.drawImg(g, (width + boardWidth) / 2 - imageSize, (height - boardHeight) / 2, imageSize, imageSize);
@@ -345,12 +354,14 @@ public class GameSelection extends JComponent {
     }
 
     public void paintComponent(Graphics g) {
+        // getting the dimension of the frame and resizing the board and color images
         width = frame.getWidth();
         height = frame.getHeight();
         boardWidth = width / 4;
         boardHeight = width / 4;
         imageSize = boardWidth / 13;
 
+        // drawing components on the frame
         drawBg(g);
         drawButtons(g);
         drawBoard(g);

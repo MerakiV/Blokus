@@ -20,6 +20,7 @@ public class ColorSelect extends HoverButton {
     }
 
     public void setSelected(boolean selected) {
+        // changes the image to show it is selected
         if (selected) {
             super.normalImage = selectedImage;
             super.currentImage = selectedImage;
