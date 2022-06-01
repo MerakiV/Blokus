@@ -105,7 +105,7 @@ public class PiecePanel extends JPanel {
                     break;
             }
             if (colorPanel.controller.game.getBoard().sumPiecePlacements(piece, colorPanel.color) == 0){
-                System.out.println("Not playable");
+                //System.out.println("Not playable");
                 return "tiles/GreyBloc.png";
             }
             return path;
