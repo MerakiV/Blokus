@@ -181,7 +181,7 @@ public class MenuMouseAdapter implements MouseListener {
                 Game g2p = new Game2P(gamePlay.gs2p);
                 ControllerGamePlay controller = new ControllerGamePlay(g2p, gamePlay.frame);
                 gamePlay.frame.getContentPane().remove(gamePlay);
-
+                gamePlay.frame.addKeyListener(new KeyBoardAdapter(controller));
                 try {
                     gamePlay2 = new GamePlayInterface(gamePlay.frame, controller, gamePlay.gs2p);
                 } catch (IOException ex) {
