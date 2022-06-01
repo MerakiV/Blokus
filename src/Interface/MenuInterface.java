@@ -18,6 +18,7 @@ public class MenuInterface extends JComponent {
 
     public MenuInterface(JFrame f) throws IOException {
         frame = f;
+        frame.setResizable(true);
         String bg = "images/background.png";
         backGround = new Image(frame, bg);
         whiteBack = new Image(frame, "images/whiteBackground.png");

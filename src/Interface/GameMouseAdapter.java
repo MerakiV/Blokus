@@ -40,11 +40,11 @@ public class GameMouseAdapter implements MouseListener {
         positionX = e.getX();
         positionY = e.getY();
         currentComponent = checkComponent(e);
-        System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
-        System.out.println(currentComponent.name());
+        //System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
+        //System.out.println(currentComponent.name());
         switch(currentComponent){
             case BOARD:
-                // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
+                System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
                 break;
             case TOPLEFT:
                 // System.out.println("Mouse Clicked On Top Left Color Panel " + positionX + " " + positionY);
@@ -60,7 +60,7 @@ public class GameMouseAdapter implements MouseListener {
                 break;
             case MENU:
                 // System.out.println("Mouse Clicked On Board " + positionX + " " + positionY);
-                // System.out.println("Menu button Clicked");
+                System.out.println("Menu button Clicked");
                 game.play = true;
                 game.controller.piece = null;
                 game.controller.pauseTurn();
@@ -79,16 +79,16 @@ public class GameMouseAdapter implements MouseListener {
                 game.repaint();
                 break;
             case REDO:
-                 System.out.println("REDO button Clicked");
+                System.out.println("REDO button Clicked");
                 game.controller.command("redo");
                 break;
             case UNDO:
-                 System.out.println("UNDO button Clicked");
+                System.out.println("UNDO button Clicked");
                 game.controller.command("undo");
                 break;
             case SAVE:
-                 System.out.println("Save button Clicked");
-
+                System.out.println("Save button Clicked");
+                game.controller.command("save");
                 break;
             default:
                 break;
@@ -96,10 +96,7 @@ public class GameMouseAdapter implements MouseListener {
     }
 
     public component checkComponent(MouseEvent e){
-        Integer width = game.frame.getWidth();
-        Integer height = game.frame.getHeight();
-        System.out.println(((int) (width * 0.55) - 50) + " "+ (((int) (width * 0.55) - 50 + (int) (height * 0.055))));
-        System.out.println((int) (height * 0.85) + " "+ ((int) (height * 0.85)+(int) (height * 0.055)));
+        game.setSize();
         // BOARD
         if (game.boardX <= e.getX() && (game.boardX + game.boardPanel.boardSize) >= e.getX()
                 && game.boardY <= e.getY() && (game.boardY + game.boardPanel.boardSize) >= e.getY()){
@@ -121,24 +118,24 @@ public class GameMouseAdapter implements MouseListener {
                 && game.bottomRightY <= e.getY() && (game.bottomRightY + game.colorPanelSize.height) >= e.getY()){
             return component.BOTTOMRIGHT;
         }// MENU BUTTON
-        else if (1223 <= e.getX() && (1223+menu.getCurrentImageWidth()) >= e.getX()
-                && 60 <= e.getY() && (60 + menu.getCurrentImageHeight())>= e.getY()){
+        else if (game.menuX <= e.getX() && (game.menuX+(int) (game.heightFrame * 0.06)) >= e.getX()
+                && game.menuY <= e.getY() && (game.menuY + (int) (game.heightFrame * 0.06))>= e.getY()){
             return component.MENU;
         } // HINT BUTTON
-        else if (67 <= e.getX() && (67+hint.getCurrentImageWidth()) >= e.getX()
-                && 60 <= e.getY() && (60 + hint.getCurrentImageHeight())>= e.getY()){
+        else if (game.hintX <= e.getX() && (game.hintX+(int) (game.heightFrame * 0.07)) >= e.getX()
+                && game.hintY <= e.getY() && (game.hintY + (int) (game.heightFrame * 0.07))>= e.getY()){
             return component.HINTS;
         } // REDO BUTTON
-        else if ((int) (width * 0.6 - 50) <= e.getX() && ((int) (width * 0.6 - 50) + (int) (height * 0.055)) >= e.getX()
-                && (int) (height * 0.85) <= e.getY() && ((int) (height * 0.85)+(int) (height * 0.055))>= e.getY()){
+        else if (game.redoX <= e.getX() && (game.redoX+ game.arrowSize) >= e.getX()
+                && game.redoY <= e.getY() && (game.redoY+ game.arrowSize)>= e.getY()){
             return component.REDO;
         } // UNDO BUTTON
-        else if ((int) (width * 0.45) - 50 <= e.getX() && ((int) (width * 0.45) - 50 + (int) (height * 0.055)) >= e.getX()
-                && (int) (height * 0.85) <= e.getY() && ((int) (height * 0.85)+(int) (height * 0.055))>= e.getY()){
+        else if (game.undoX <= e.getX() && (game.undoX + game.arrowSize) >= e.getX()
+                && game.undoY <= e.getY() && (game.undoY+ game.arrowSize)>= e.getY()){
             return component.UNDO;
         } // SAVE BUTTON
-        else if (((int) (width * 0.5 - 40)) <= e.getX() &&  ((int) (width * 0.5 + 40)) >= e.getX()
-                && ((int) (height * 0.85)) <= e.getY() && ((int) (height * 0.85)+ 39) >= e.getY()){
+        else if (game.saveX <= e.getX() && (game.saveX+save.getCurrentImageWidth()) >= e.getX()
+                && game.saveY <= e.getY() && (game.saveY+save.getCurrentImageHeight())>= e.getY()){
             System.out.println("Save");
             return component.SAVE;
         }

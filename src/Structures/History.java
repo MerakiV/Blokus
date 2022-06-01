@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.Stack;
 
 public class History implements Serializable {
-    Stack<GameState> past, future;
+    public Stack<GameState> past;
+    public Stack<GameState> future;
 
     public History() {
         past = new Stack<GameState>();
@@ -12,7 +13,7 @@ public class History implements Serializable {
     }
 
     public boolean canUndo() {
-        return !past.empty();
+        return past.size() >= 1;
     }
 
     public GameState undo() {
@@ -25,7 +26,7 @@ public class History implements Serializable {
     }
 
     public boolean canRedo() {
-        return !future.empty();
+        return future.size() >= 1;
     }
 
     public GameState redo() {

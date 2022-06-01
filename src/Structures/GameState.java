@@ -11,6 +11,7 @@ public class GameState implements Serializable {
     ArrayList<Player> players;
     int currentPlayer;
     int heuristic;
+    public Move lastMove, nextMove;
 
     GameState(Board b, ArrayList<Player> pl, int curpl){
         board = b;
@@ -18,6 +19,25 @@ public class GameState implements Serializable {
         currentPlayer = curpl;
         heuristic = Integer.MAX_VALUE; // default uninitialized value
     }
+
+    GameState(Game g2p, Move lm, Move nm){
+        lastMove = lm;
+        nextMove = nm;
+        board = g2p.board.clone();
+        players = new ArrayList<>();
+        for(Player p : g2p.players){
+            players.add(p.clone());
+        }
+        int pl = -1;
+        for (int i = 0; i < g2p.players.size() && pl == -1; i++) {
+            if (g2p.currentPlayer ==  g2p.players.get(i)) {
+                pl = i;
+            }
+        }
+        currentPlayer = pl;
+        heuristic = Integer.MAX_VALUE; // default uninitialized value
+    }
+
 
     public Player getCurrentPlayer() {
         return players.get(currentPlayer);
@@ -36,15 +56,6 @@ public class GameState implements Serializable {
             // initialize heuristic
         }
         return heuristic;
-    }
-
-    public GameState clone() {
-        ArrayList<Player> pl2 = new ArrayList<>(this.players.size());
-        for (int i=0; i<this.players.size(); i++) {
-            pl2.add(this.players.get(i).clone());
-        }
-
-        return new GameState(this.board.clone(), pl2, this.currentPlayer);
     }
 
 }

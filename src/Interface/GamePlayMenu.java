@@ -16,6 +16,7 @@ public class GamePlayMenu extends JPanel {
     public GamePlayMenu(JFrame f, GamePlayInterface g) throws IOException {
         System.out.println("GamePlayMenu");
         frame = f;
+        frame.setResizable(true);
         game = g;
         String bg = "images/greyBackground.png";
         backGround = new Image(frame, bg);
