@@ -7,12 +7,12 @@ public class PlayerAIMedium extends PlayerAI {
     private final long seed;
     private final Random generator;
 
-    //int type;
+    int mode = 1;
 
-    public PlayerAIMedium(Color c) {
+    public PlayerAIMedium(Color c, int m) {
         isAI = true;
         hasMoves = true;
-        //type = t;
+        mode = m;
         PieceReader pRead = null;
         try {
             pRead = new PieceReader();
@@ -28,24 +28,6 @@ public class PlayerAIMedium extends PlayerAI {
         col = c;
     }
 
-    /*public PlayerAIMedium(Color c, long s) {
-        isAI = true;
-        score = 0;
-        PieceReader pRead = null;
-        try {
-            pRead = new PieceReader();
-            pieces = pRead.getPiecesList();
-        } catch(Exception e) {
-            System.err.println("FATAL ERROR : missing piece file");
-            System.exit(1);
-        }
-
-        seed = s;
-        this.generator = new Random(s);
-        difficultyLevel = 1;
-        col = c;
-    }*/
-
     @Override
     public void playPiece(Board b) {
         return;
@@ -58,74 +40,138 @@ public class PlayerAIMedium extends PlayerAI {
     @Override
     public Player clone() {
         PlayerAIMedium p2 = new PlayerAIMedium(this.seed);
+        p2.mode = this.mode;
         p2.cloneFields(this);
         return p2;
     }
 
-    // Place pieces of the best value in a random order first
-    /*public void PlayPieceByValue(Game g){
-        Board b = g.getBoard();
-        int x,y;
-        List<Shape> tried = new ArrayList<>();
-        List<Tile> possiblePut;
-        int colorCode = b.getCorner(this.col);
-        boolean notPlaced = true;
+    public ArrayList<Move> moves(Game config) {
+        ArrayList<Move> lm = new ArrayList<Move>();
+        Iterator<Piece> it1 = config.getCurrentPlayer().getPieces().iterator();;
+        Iterator<Shape> it2;
+        Iterator<Tile> it3;
+        HashSet<Tile> hs;
+        Piece pi;
+        Shape sh;
+        Tile t;
+        Color col = config.getCurrentColor();
+        Board b = config.getBoard();
 
-        //see label of last piece
-        String name = pieces.get(pieces.size()-1).getName().toString();
-        String pieceValue;
-        if(name.contains("FIVE")) pieceValue = "FIVE";
-        else if(name.contains("FOUR")) pieceValue = "FOUR";
-        else if(name.contains("THREE")) pieceValue = "THREE";
-        else if(name.contains("TWO")) pieceValue = "TWO";
-        else if(name.contains("ONE")) pieceValue = "ONE";
-        else return; //no remaining pieces
-
-        int pieceCount = 1; //count number of pieces of same value
-        for(int i = pieces.size()-2; i>=0; i--){
-            if(pieces.get(i).getName().toString().contains(pieceValue)) {
-                System.out.println(pieces.get(i).getName().toString());
-                pieceCount++;
-                System.out.println(pieceCount);
-            }
-        }
-
-        while(notPlaced) {
-
-            possiblePut = new ArrayList<>();
-            int idx = this.generator.nextInt(pieceCount);
-            Piece play = pieces.get(pieces.size()-1-idx);
-            play.setDisp(generator.nextInt(16));
-            while(tried.contains(play.getShape())){
-                idx = this.generator.nextInt(pieceCount);
-                play = pieces.get(pieces.size()-1-idx);
-                play.setDisp(generator.nextInt(16));
-            }
-            tried.add(play.getShape());
-            //test for can put
-            for (x=0; x<20; x++) {
-                for (y=0; y<20; y++) {
-                    if (b.canPut(play, colorCode, x, y)) {
-                        possiblePut.add(new Tile(x,y));
-                    }
+        while (it1.hasNext()) {
+            pi = it1.next();
+            it2 = pi.getShapeList().iterator();
+            while (it2.hasNext()) {
+                sh = it2.next();
+                hs = b.fullcheck(sh, col);
+                it3 = hs.iterator();
+                while(it3.hasNext()) {
+                    t = it3.next();
+                    Move m2 = new Move(sh, pi.getName(), t);
+                    lm.add(m2);
                 }
             }
-            //randomly choose where to put if exists
-            if(!possiblePut.isEmpty()) {
-                int idxPut = this.generator.nextInt(possiblePut.size());
-                Tile putTile = possiblePut.get(idxPut);
-                b.checkAndPut(play, colorCode, putTile.getX(), putTile.getY());
-                pieces.remove(play);
-                notPlaced = false;
-            }
         }
-    }*/
 
-    /*public void PlayPieceValueAndAvCorners(g){
-    }*/
+        return lm;
+    }
+
+
+    int evaluationByPieceValue(PieceType pt){
+        if (pt.toString().contains("FIVE")) return 5;
+        else if (pt.toString().contains("FOUR")) return 4;
+        else if (pt.toString().contains("THREE")) return 3;
+        else if (pt.toString().contains("TWO")) return 2;
+        else if (pt.toString().contains("ONE")) return 1;
+        else return 0;
+
+    }
+
+    // try to create openings for itself
+    int evaluationByOpenings(Game g, Move m, int currPl){
+        Game g2 = g.clone();
+        g2.directPut(m.getShape(), m.getPieceType(), col, m.getTile().getX(), m.getTile().getY());
+        Board b = g2.getBoard();
+        List<Player> lp = g2.getPlayerList();
+        if(currPl == 1)
+            return b.sumAllPlacements(lp.get(0).getPieces(), lp.get(0).col) + b.sumAllPlacements(lp.get(2).getPieces(), lp.get(2).col);
+        else
+            return b.sumAllPlacements(lp.get(1).getPieces(), lp.get(1).col) + b.sumAllPlacements(lp.get(3).getPieces(), lp.get(3).col);
+    }
+
+    // try to block the opponent
+    int evaluationByBlocks(Game g, Move m, int currPl){
+        Game g2 = g.clone();
+        g2.directPut(m.getShape(), m.getPieceType(), col, m.getTile().getX(), m.getTile().getY());
+        Board b = g2.getBoard();
+        List<Player> lp = g2.getPlayerList();
+        if(currPl == 1)
+            return b.sumAllPlacements(lp.get(1).getPieces(), lp.get(1).col) + b.sumAllPlacements(lp.get(3).getPieces(), lp.get(3).col);
+        else
+            return b.sumAllPlacements(lp.get(0).getPieces(), lp.get(0).col) + b.sumAllPlacements(lp.get(2).getPieces(), lp.get(2).col);
+    }
+
+    public Move poll_rdm(ArrayList<Move> li) {
+        int i = generator.nextInt(li.size());
+        Move mo = li.get(i);
+        Move m_end = li.remove(li.size()-1);
+        if (i<li.size()) { li.set(i, m_end); }
+        return mo;
+    }
 
     @Override
     public Move generateMove(Game g){
+
+        if(mode == 0){
+            return generatePieceByValue(g);
+        }
+
+        int currPl = 0; //current player
+        if(g.getCurrentPlayer() == g.getPlayerList().get(0) || g.getCurrentPlayer() == g.getPlayerList().get(2))
+            currPl = 1;
+        else
+            currPl = 2;
+
+        ArrayList<Move> lm = moves(g);
+        Move currMove = null;
+        ArrayList<Move> bestMoves = null;
+        if(mode==1) {
+            int bestHeur = 0;
+            int heur;
+            while (!lm.isEmpty()) {
+                currMove = poll_rdm(lm);
+                heur = evaluationByOpenings(g, currMove, currPl);
+                if (heur > bestHeur) {
+                    bestHeur = heur;
+                    bestMoves = new ArrayList<Move>(); // a better one has been found, we must erase everything now
+                }
+                if (heur == bestHeur) {
+                    bestMoves.add(currMove);
+                }
+            }
+        } else if(mode==2){
+            int bestHeur = Integer.MAX_VALUE;
+            int heur;
+            while(!lm.isEmpty()){
+                currMove = poll_rdm(lm);
+                heur = evaluationByBlocks(g, currMove, currPl);
+                if (heur < bestHeur){
+                    bestHeur = heur;
+                    bestMoves = new ArrayList<Move>(); // a better one has been found, we must erase everything now
+                }
+                if (heur == bestHeur){
+                    bestMoves.add(currMove);
+                }
+            }
+        } else{
+            System.out.println("The specified mode for AI Medium does not exist.");
+            System.exit(1);
+        }
+        int idx = this.generator.nextInt(bestMoves.size());
+        return bestMoves.get(idx);
+    }
+
+    // return a random Move with the maximum piece value among those still in the list of pieces of the current player
+    public Move generatePieceByValue(Game g){
         Move res = null;
         Board b = g.getBoard();
         int x,y;
@@ -148,7 +194,7 @@ public class PlayerAIMedium extends PlayerAI {
             List<Piece> listPieceValue = new ArrayList<Piece>();
             listPieceValue.add(pieces.get(nbPuttablePieces - 1)); //list of pieces of same value
 
-            //fills the list with every pieces of same value
+            //fill the list with every piece of same value
             int i = nbPuttablePieces - 2;
             boolean isSameValue = true;
             while(i >= 0 && isSameValue){
@@ -161,7 +207,7 @@ public class PlayerAIMedium extends PlayerAI {
                 }
             }
 
-            //tries to put every piece of same value
+            //try to put every piece of same value
             while (!listPieceValue.isEmpty()) {
                 possiblePut = new ArrayList<>();
                 // choose a random piece
@@ -170,14 +216,13 @@ public class PlayerAIMedium extends PlayerAI {
                 int countShapes = play.getShapeList().size();
                 tried = new ArrayList<>();
 
-                // tries all shapes for the randomly selected piece
+                // try all shapes for the randomly selected piece
                 while (countShapes != tried.size()) {
 
                     play.setDisp(generator.nextInt(16));
                     while (tried.contains(play.getShape())) {
                         play.setDisp(generator.nextInt(16));
                     }
-                    //play.getShape().printShape(); //debug
                     tried.add(play.getShape());
 
                     //look at every possible puts for a shape
@@ -196,8 +241,6 @@ public class PlayerAIMedium extends PlayerAI {
                         res = new Move(play, putTile);
                         return res;
                     }
-                    //System.out.println("COUNT SHAPES " + countShapes); //debug
-                    //System.out.println("TRIED SIZE " + tried.size()); //debug
                 }
                 listPieceValue.remove(idx);
                 nbPuttablePieces--;
