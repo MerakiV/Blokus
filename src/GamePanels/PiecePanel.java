@@ -21,7 +21,7 @@ public class PiecePanel extends JPanel {
     final static boolean shouldFill = true;
     GridBagConstraints gridBagConstraints;
 
-    boolean isClicked = false;
+    public boolean isClicked = false;
 
     public PiecePanel(ColorPanel c, Piece p){
         this.colorPanel = c;
@@ -83,7 +83,9 @@ public class PiecePanel extends JPanel {
 
     private String getPath(){
         int col = colorPanel.controller.game.getBoard().getCorner(colorPanel.color);
+        piece = colorPanel.controller.game.getPlayerList().get(col).getPiece(piece);
         if (colorPanel.controller.game.getPlayerList().get(col).getPieces().contains(piece)){
+            //System.out.println("Piece in list : " + this.getName());
             String path = null;
             switch(colorPanel.player.getColor()){
                 case RED:
@@ -107,7 +109,7 @@ public class PiecePanel extends JPanel {
             }
             return path;
         } else {
-            //System.out.println("Piece not in list : " + this.getName());
+            System.out.println("Piece not in list : " + this.getName() + " " + piece);
             switch(colorPanel.player.getColor()){
                 case RED:
                     return "tiles/RedHighlight.png";

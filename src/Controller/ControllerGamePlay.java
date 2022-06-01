@@ -1,6 +1,7 @@
 package Controller;
 
 import GamePanels.BoardPanel;
+import GamePanels.ColorPanel;
 import GamePanels.PiecePanel;
 import Interface.EventController;
 import Interface.GamePlayInterface;
@@ -39,7 +40,6 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     JFrame frame;
     Thread t;
-    Shape shape;
 
     Save saveGame;
     private PlayerTurn turn;
@@ -119,6 +119,8 @@ public class ControllerGamePlay implements EventController, Runnable {
         while (!game.hasEnded()){
             Player player = game.getCurrentPlayer();
             player.checkForMoves(game.getBoard());
+            System.out.println("End Run line 122");
+            game.getBoard().printBoard(-1);
             turn = new PlayerTurn(player, this.game, this);
             turn.startTurn();
 
@@ -146,10 +148,9 @@ public class ControllerGamePlay implements EventController, Runnable {
                 System.out.println("Player turn is terminated");
 
                 Move currentMove = turn.getSelectedMove();
-                Shape s = currentMove.getShape();
-                Tile t = currentMove.getTile();
-                System.out.println("Selected Move = " + currentMove);
-                put(currentMove, player.getColor());
+                //System.out.println("Selected Move = " + currentMove.getPieceType().name());
+                put(currentMove, currentPlayer.getColor());
+                //System.out.println("Player Color line 155 :" + currentPlayer.getColor().name());
             }
 
             //game.getBoard().printBoard(-1);
@@ -157,8 +158,6 @@ public class ControllerGamePlay implements EventController, Runnable {
             nextTurn();
             game.updateEnd();
             gamePlayInterface.repaint();
-            frame.repaint();
-            boardPanel.repaint();
         }
 
 
@@ -307,7 +306,7 @@ public class ControllerGamePlay implements EventController, Runnable {
                 // System.out.println("It's " + currentColor);
                 return true;
             } else{
-                System.out.println("Invalid");
+                System.out.println("Invalid : " +  m.getTile().getX() + " " + m.getTile().getY());
                 errorMessage = "Invalid piece placement";
                 gamePlayInterface.repaint();
             }
@@ -329,6 +328,10 @@ public class ControllerGamePlay implements EventController, Runnable {
         // game.getBoard().printBoard(game.getBoard().getCorner(currentColor));
     }
 
+    /**
+     *  Paint Image
+     *      Changes the tiles on the board to match the piece manipulation
+     * */
     public void paintImage() {
         Image image = getImage(this.color);
         String[] split = tile.getName().split(" ");
@@ -353,6 +356,10 @@ public class ControllerGamePlay implements EventController, Runnable {
         }
     }
 
+    /**
+     *  Paint Image
+     *      Changes the tiles on the board to match the piece manipulation
+     * */
     public void paintImage(Move move, Color color) {
         int x = move.getTile().getY();
         int y = move.getTile().getX();
@@ -434,6 +441,10 @@ public class ControllerGamePlay implements EventController, Runnable {
         return null;
     }
 
+    /**
+     *  Replace Original Image
+     *      Replaces the tiles painted during the hover by the original tiles of the board
+     * */
     public void replaceOriginal() {
         if (originalImages.isEmpty()) {
             originalImages = boardPanel.originalImages;
@@ -463,8 +474,11 @@ public class ControllerGamePlay implements EventController, Runnable {
 
     }
 
+    /**
+     *  New Game
+     *      Starts a new game using the same settings as the current game
+     * */
     void newGame() {
-        // TODO: reset board and player turn to original
         game = originalGame;
         piece = null;
         color = null;
@@ -476,27 +490,85 @@ public class ControllerGamePlay implements EventController, Runnable {
         hintsActivated = false;
     }
 
+    /**
+     *  Redo
+     *      Verifies if redo is possible, if so, redoes to turn of player
+     *      else an error message is given
+     * */
     void redo() {
-        game.redo();
-        piece = hoveredPiece = null;
-        currentPlayer = game.getCurrentPlayer();
-        currentColor = game.getCurrentColor();
-        game.getBoard().printBoard(-1);
+        if (canRedo()){
+            game.redo();
+            boardPanel.redo(game.next);
+            game.redo();
+            boardPanel.redo(game.next);
+            piece = hoveredPiece = null;
+            currentPlayer = game.getCurrentPlayer();
+            currentColor = game.getCurrentColor();
+            game.getBoard().printBoard(-1);
+            turn = new PlayerTurn(currentPlayer, this.game, this);
+            System.out.println("Current player : " + currentPlayer.getColor().name());
+        } else {
+            errorMessage = "Unable to Redo";
+        }
         gamePlayInterface.repaint();
         // updateInterface();
     }
 
+    /**
+     *  Can Redo
+     *      Verifies if redo is possible
+     * */
+    public boolean canRedo() {
+        return game.history.future.size() >= 2;
+    }
+
+    /**
+     *  Undo
+     *      Verifies if undo is possible, if so, undoes to turn of player
+     *      else an error message is given
+     * */
     void undo() {
-        game.undo();
-        game.undo();
-        gamePlayInterface.g2p = (Game2P) game;
-        piece = hoveredPiece = null;
-        currentPlayer = game.getCurrentPlayer();
-        currentColor = game.getCurrentColor();
-        game.getBoard().printBoard(-1);
+        if (canUndo()){
+            game.undo();
+            boardPanel.undo(game.previous);
+            game.undo();
+            boardPanel.undo(game.previous);
+            gamePlayInterface.g2p = (Game2P) game;
+            piece = hoveredPiece = null;
+            currentPlayer = game.getCurrentPlayer();
+            currentColor = game.getCurrentColor();
+            game.getBoard().printBoard(-1);
+            turn = new PlayerTurn(currentPlayer, this.game, this);
+            System.out.println("Current player : " + currentPlayer.getColor().name());
+            turn.startTurn();
+        } else{
+            errorMessage = "Unable to Undo";
+        }
         gamePlayInterface.repaint();
     }
 
+    /**
+     *  Undo
+     *      Verifies if undo is possible
+     * */
+    public boolean canUndo() {
+        return game.history.past.size() >= 2;
+    }
+
+    /**
+     *  Command
+     *      Performs (if verified) the different possible actions :
+     *      - clockwise : turns the piece clockwise
+     *      - counterclockwise : turns the piece counterclockwise
+     *      - horizontal : flips the piece horizontally
+     *      - vertical : flips the piece vertically
+     *      - quit : exits the game
+     *      - undo : undoes to the previous turn of player
+     *      - redo : redoes to the previous turn of player
+     *      - newgame : restarts the game with same settings
+     *      - hints : activates/deactivaes hints
+     *      - save : saves the game
+     * */
     @Override
     public boolean command(String c) {
         switch (c) {
@@ -530,7 +602,7 @@ public class ControllerGamePlay implements EventController, Runnable {
             case "vertical":
                 boardPanel.orientated = true;
                 System.out.println("vertical");
-                errorMessage = "Piece flipped horizontally";
+                errorMessage = "Piece flipped vertically";
                 replaceOriginal();
                 piece.flipV();
                 paintImage();
