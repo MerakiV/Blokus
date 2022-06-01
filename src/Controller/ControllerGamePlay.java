@@ -122,8 +122,7 @@ public class ControllerGamePlay implements EventController, Runnable {
         while (!game.hasEnded()){
             Player player = game.getCurrentPlayer();
             player.checkForMoves(game.getBoard());
-            System.out.println("End Run line 122");
-            game.getBoard().printBoard(-1);
+//            game.getBoard().printBoard(-1);
             turn = new PlayerTurn(player, this.game, this);
             turn.startTurn();
 
@@ -161,6 +160,8 @@ public class ControllerGamePlay implements EventController, Runnable {
             game.updateEnd();
             gamePlayInterface.repaint();
         }
+        game.endScoreCheck();
+        gamePlayInterface.repaint();
     }
 
 
