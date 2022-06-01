@@ -114,8 +114,25 @@ public class BoardPanel extends JPanel{
     private String getPath(int i, int j){
         if (controller.hintsActivated && isHint){
             //System.out.println("Hint activated and is hint");
-            if (removeHint)
-                return "tiles/boardTile.png";
+            if (removeHint){
+                Game2P g2p = (Game2P) controller.game;
+                Color p1c1 = g2p.gs2p.p1c1;
+                Color p1c2 = g2p.gs2p.p1c2;
+                Color p2c1 = g2p.gs2p.p2c1;
+                Color p2c2 = g2p.gs2p.p2c2;
+                if(i == 0 && j == 0){
+                    return "tiles/boardTile"+p1c1+"TopLeft.png";
+                }else if(i == 0 && j == 19){
+                    return "tiles/boardTile"+p2c1+"TopRight.png";
+                }else if(i == 19 && j == 0){
+                    return "tiles/boardTile"+p2c2+"BotLeft.png";
+                }else if(i == 19 && j == 19){
+                    return "tiles/boardTile"+p1c2+"BotRight.png";
+                }
+                else {
+                    return "tiles/boardTile.png";
+                }
+            }
             switch(controller.currentColor){
                 case RED:
                     return "tiles/RedHighlight.png";

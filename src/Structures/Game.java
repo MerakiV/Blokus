@@ -93,10 +93,6 @@ public abstract class Game implements Serializable, Cloneable {
         pushToFuture(lm,nm);
         board = previous.board;
         players = previous.players;
-        System.out.println("List of pieces of Player 0: " + players.get(0).getPieces());
-        System.out.println("List of pieces of Player 1: " + players.get(1).getPieces());
-        System.out.println("List of pieces of Player 2: " + players.get(2).getPieces());
-        System.out.println("List of pieces of Player 3: " + players.get(3).getPieces());
         currentPlayer = previous.getCurrentPlayer();
         currentColor = currentPlayer.getColor();
         update2P();

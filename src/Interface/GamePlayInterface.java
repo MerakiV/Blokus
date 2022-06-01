@@ -251,14 +251,16 @@ public class GamePlayInterface extends JPanel {
         this.add(bottomRightPanel);
     }
 
-    public ColorPanel returnColorPanel(Player p){
-        if (controller.game.getPlayerList().get(0) == controller.currentPlayer)
+    public ColorPanel getColorPanel(){
+        if (controller.game.getCurrentPlayer() == controller.game.getPlayerList().get(0))
             return topLeftPanel;
-        if (controller.game.getPlayerList().get(1) == controller.currentPlayer)
+        if (controller.game.getCurrentPlayer() == controller.game.getPlayerList().get(1))
             return topRightPanel;
-        if (controller.game.getPlayerList().get(2) == controller.currentPlayer)
+        if (controller.game.getCurrentPlayer() == controller.game.getPlayerList().get(2))
             return bottomRightPanel;
-        return bottomLeftPanel;
+        if (controller.game.getCurrentPlayer() == controller.game.getPlayerList().get(3))
+            return bottomLeftPanel;
+        return null;
     }
 
     /**
