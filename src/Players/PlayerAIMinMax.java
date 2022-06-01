@@ -60,10 +60,10 @@ public class PlayerAIMinMax extends PlayerAI {
         }
 
         // MinMax and AlphaBeta //
-        // To explore a whole turn, the depth should be at least 3. A whole another turn is n with n%4==3
+        // To explore a whole turn, the depth should be at least 4. A whole another turn is every multiple of 4
         // The maximum depth is 84 (every player has put every piece)
 
-        int depth = 0;
+        /*int depth = 0;
         if(pieces.size() > 13){
             depth = 1;
         } else if(pieces.size() > 9){
@@ -72,9 +72,9 @@ public class PlayerAIMinMax extends PlayerAI {
             depth = 3;
         } else{
             depth = 7;
-        }
+        }*/
 
-        /*Player p1c1 = g.getPlayerList().get(0);
+        Player p1c1 = g.getPlayerList().get(0);
         Player p2c1 = g.getPlayerList().get(1);
         Player p1c2 = g.getPlayerList().get(2);
         Player p2c2 = g.getPlayerList().get(3);
@@ -90,7 +90,7 @@ public class PlayerAIMinMax extends PlayerAI {
             depth = 4;
         } else {
             depth = 7;
-        }*/
+        }
 
         if(g.getPlayerList().get(0) == g.getCurrentPlayer() || g.getPlayerList().get(2) == g.getCurrentPlayer()) {
             if(this.isAlphaBeta == true) AlgoAlphaBeta(null, g, true, depth, MIN, MAX);
@@ -506,13 +506,15 @@ public class PlayerAIMinMax extends PlayerAI {
         int sumPlacementsP2 = config.getBoard().sumAllPlacements(p2c1.getPieces(), p2c1.col) + config.getBoard().sumAllPlacements(p2c2.getPieces(), p2c2.col);
 
         if(max){
+            if(heur == 5) return ((sumScoreP1*4 + pieceValue*16) - sumScoreP2*4) + (sumPlacementsP1 - sumPlacementsP2/2); //heur 5
             if(heur == 4) return ((sumScoreP1 - pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
             else if(heur == 3) return ((sumScoreP1 - pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
             else if(heur == 2) return ((sumScoreP1 - pieceValue) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 2
             else return (sumScoreP1 - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); // heur 1
         }
         else{
-            if(heur == 4) return ((sumScoreP1 + pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
+            if(heur == 5) return ((sumScoreP1*4 + pieceValue*16) - sumScoreP2*4) + (sumPlacementsP1 - sumPlacementsP2*2); //heur 5
+            else if(heur == 4) return ((sumScoreP1 + pieceValue*16) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 4
             else if(heur == 3) return ((sumScoreP1 + pieceValue*8) - sumScoreP2) + (sumPlacementsP1 - sumPlacementsP2); //heur 3
             else if(heur == 2) return ((sumScoreP2 + pieceValue - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1)); //heur 2
             else return (sumScoreP2 - sumScoreP1) + (sumPlacementsP2 - sumPlacementsP1); // heur 1
