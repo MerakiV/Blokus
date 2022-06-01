@@ -133,7 +133,7 @@ public class PlayerAIMedium extends PlayerAI {
 
         ArrayList<Move> lm = moves(g);
         Move currMove = null;
-        ArrayList<Move> bestMoves = null;
+        ArrayList<Move> bestMoves = new ArrayList<Move>();
         if(mode==1) {
             int bestHeur = 0;
             int heur;
@@ -166,6 +166,7 @@ public class PlayerAIMedium extends PlayerAI {
             System.out.println("The specified mode for AI Medium does not exist.");
             System.exit(1);
         }
+        if(bestMoves.isEmpty()) return null;
         int idx = this.generator.nextInt(bestMoves.size());
         return bestMoves.get(idx);
     }
@@ -182,8 +183,9 @@ public class PlayerAIMedium extends PlayerAI {
 
         while(true) {
             //see label of last piece
+            if(nbPuttablePieces == 0) return null;
             String name = pieces.get(nbPuttablePieces - 1).getName().toString();
-            String pieceValue;
+            String pieceValue = new String();
             if (name.contains("FIVE")) pieceValue = "FIVE";
             else if (name.contains("FOUR")) pieceValue = "FOUR";
             else if (name.contains("THREE")) pieceValue = "THREE";

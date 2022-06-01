@@ -461,7 +461,7 @@ public class PlayerAIMinMax extends PlayerAI {
         List<Player> players = g.getPlayerList();
         int nbPlayers = players.size();
         for(i = 0; i<nbPlayers; i++){
-            if(players.get(i).getPieces().size() == 0 || g.getBoard().numberOfCorners(players.get(i).getColor()) == 0)
+            if(!g.getBoard().canPlacePieces(players.get(i).getPieces(), g.getPlayerList().get(i).getColor()))
                 cannotPutPiece++;
         }
         return cannotPutPiece == nbPlayers;

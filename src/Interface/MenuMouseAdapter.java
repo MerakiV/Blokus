@@ -31,21 +31,33 @@ public class MenuMouseAdapter implements MouseListener {
 
     GamePlayMenu playMenu;
 
+    /**
+     *  MenuMouseAdapter for MenuInterface
+     * */
     MenuMouseAdapter(HoverButton b, MenuInterface m) {
         current = b;
         menuUi = m;
     }
 
+    /**
+     *  MenuMouseAdapter for TutorialInterface
+     * */
     MenuMouseAdapter(HoverButton b, TutorialInterface g) {
         current = b;
         tutoUi = g;
     }
 
+    /**
+     *  MenuMouseAdapter for TutorialInterface2 (current one)
+     * */
     MenuMouseAdapter(HoverButton b, TutorialInterface2 g) {
         current = b;
         tuto2 = g;
     }
 
+    /**
+     *  MenuMouseAdapter for GamePlayMenu
+     * */
     MenuMouseAdapter(HoverButton b, GamePlayInterface g, GamePlayMenu gameMenu) {
         current = b;
         gamePlay = g;
@@ -58,12 +70,14 @@ public class MenuMouseAdapter implements MouseListener {
         switch (current.name){
             case "Tutorial":
                 try {
+                    // for tutorial button on main menuInterface
                     if (menuUi != null) {
 //                        tuto = new TutorialInterface(menuUi.frame);
 //                        changePanel(tuto);
                         tuto2 = new TutorialInterface2(menuUi.frame);
                         changePanel(tuto2);
-                    } else if (playMenu != null){
+                    } //for tutorial button on gamePlayMenu
+                    else if (playMenu != null){
                         tuto2 = new TutorialInterface2(gamePlay.frame, gamePlay.g2p);
 
                         gamePlay.frame.getContentPane().remove(gamePlay);
@@ -78,10 +92,12 @@ public class MenuMouseAdapter implements MouseListener {
                 break;
             case "NG":
                 try {
+                    // for New Game button on main menuInterface
                     if(menuUi != null) {
                         gameSelec = new GameSelection(menuUi.frame);
                         changePanel(gameSelec);
-                    } else if (playMenu != null){
+                    } //for New Game button on gamePlayMenu
+                    else if (playMenu != null){
                         gameSelec = new GameSelection(gamePlay.frame);
 
                         gamePlay.frame.getContentPane().removeAll();
@@ -94,6 +110,7 @@ public class MenuMouseAdapter implements MouseListener {
                 }
                 break;
             case "Back":
+                // for back button on tuto page
                 if(tutoUi != null) {
                     tutoUi.frame.getContentPane().removeAll();
                     try {
@@ -104,7 +121,9 @@ public class MenuMouseAdapter implements MouseListener {
                     tutoUi.frame.getContentPane().add(menu, BorderLayout.CENTER);
                     tutoUi.frame.getContentPane().invalidate();
                     tutoUi.frame.getContentPane().validate();
-                } else if (tuto2 != null){
+                } // for back button on tuto2 page
+                else if (tuto2 != null){
+                    // for back button on tuto2 page from gamePlay Interface
                     if(tuto2.g2p != null){
                         tuto2.frame.getContentPane().removeAll();
                         ControllerGamePlay controller = new ControllerGamePlay(tuto2.g2p, tuto2.frame);
@@ -154,7 +173,6 @@ public class MenuMouseAdapter implements MouseListener {
                     }
                 } catch (InvalidClassException ex) {
                     System.out.println("There was an invalid class exception");
-                    //throw new RuntimeException(ex);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -206,21 +224,8 @@ public class MenuMouseAdapter implements MouseListener {
             }
         } else if (menuUi != null) {
             menuUi.repaint();
-//        }
         } else if (playMenu != null){
-            System.out.println("Repaint Enter");
             playMenu.repaint();
-//            playMenu.playMenu.tutorial.repaint();
-//            switch (current.name){
-//                case "NG":
-//                    playMenu.newgame.repaint();
-//                    break;
-//                case "Tutorial":
-//                    playMenu.tutorial.repaint();
-//                    break;
-//                default:
-//                    break;
-//            }
         }
 
     }
@@ -237,23 +242,8 @@ public class MenuMouseAdapter implements MouseListener {
             }
         } else if (menuUi != null) {
             menuUi.repaint();
-//        }
         } else if (playMenu != null){
-            System.out.println("Repaint Exit");
-//            switch (current.name){
-//                case "NG":
-//                    HoverButton b = playMenu.newgame;
-//                    b.repaint();
-//                    break;
-//                case "Tutorial":
-//                    HoverButton b2 = playMenu.tutorial;
-//                    b2.repaint();
-//                    break;
-//                default:
-//                    break;
-//            }
             playMenu.repaint();
-            //playMenu.playMenu.tutorial.repaint();
         }
     }
 
